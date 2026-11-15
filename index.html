@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lunar Lighting Planner</title>
+<meta name="description" content="Plan a Moon landing around sunlight and Earth contact, or explore how light moves across the lunar south pole. Real JPL Horizons and LRO LOLA data, 1969-2040.">
+<link rel="stylesheet" href="style.css?v=37">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="brand">
+    <h1>Lunar Lighting Planner</h1>
+    <p>Sun and Earth at any lunar site, 1969–2040</p>
+  </div>
+  <nav class="modes" role="tablist" aria-label="Mode">
+    <button type="button" role="tab" id="tabPlan" aria-controls="plan" aria-selected="true">Plan a landing</button>
+    <button type="button" role="tab" id="tabExplore" aria-controls="explore" aria-selected="false">Explore the Moon</button>
+    <button type="button" role="tab" id="tabField" aria-controls="field" aria-selected="false">In the field</button>
+  </nav>
+</header>
+<p id="status" class="status" role="status" aria-live="polite" hidden></p>
+
+<main id="main">
+<!-- ======================= PLANNER ======================= -->
+<section id="plan" role="tabpanel" aria-labelledby="tabPlan">
+  <details id="pScen" class="scenwrap" open>
+  <summary><span class="sumlabel">Scenario</span> <span id="pScenSum"></span> <span class="edit">Change</span></summary>
+  <form class="scenario" onsubmit="return false" aria-label="Landing scenario">
+    <div class="field small-f">
+      <label for="pDur">Mission length (days)</label>
+      <input id="pDur" type="number" min="1" max="60" step="1" inputmode="numeric">
+    </div>
+    <div class="field">
+      <label for="pShare">Power needs</label>
+      <select id="pShare">
+        <option value="0">Any part of the Sun visible</option>
+        <option value="0.5">At least half the Sun's disk</option>
+        <option value="1">The whole Sun's disk</option>
+      </select>
+    </div>
+    <label class="check" for="pEarth"><input id="pEarth" type="checkbox"> Needs direct-to-Earth contact</label>
+    <div class="field">
+      <label for="pLand">Landing time (UTC): also where the search starts</label>
+      <input id="pLand" type="datetime-local" step="60">
+    </div>
+    <div class="field wide-f">
+      <label for="pSite">Place (or choose one from the results below)</label>
+      <select id="pSite"></select>
+      <p id="pSiteInfo" class="hint"></p>
+      <button id="pActual" type="button" class="btn" hidden></button>
+    </div>
+    <details class="custom">
+      <summary>Use coordinates instead</summary>
+      <div class="coords">
+        <div class="field small-f"><label for="pLat">Latitude (°)</label><input id="pLat" type="number" step="0.001" min="-90" max="90" inputmode="decimal"></div>
+        <div class="field small-f"><label for="pLon">Longitude (°E)</label><input id="pLon" type="number" step="0.001" min="-180" max="360" inputmode="decimal"></div>
+        <button id="pGo" type="button" class="btn">Use this point</button>
+      </div>
+      <p class="hint">Or click the map. Defaults are examples, not NASA or CLPS requirements.</p>
+    </details>
+  </form>
+  </details>
+
+  <div class="two">
+    <div class="col">
+    <section id="pVerdict" class="verdict" aria-live="polite">
+      <p id="pNotice" class="note" hidden></p>
+      <h2 id="pVerdictTitle" tabindex="-1"></h2>
+      <p id="pSiteNote" class="note" hidden></p>
+      <p id="pWhy" class="why"></p>
+      <p id="pClose" class="close" hidden></p>
+      <div id="pNearest"></div>
+      <details id="pAssume" class="assume">
+        <summary><span class="sumlabel">Assumptions</span> <span id="pAssumeSum"></span></summary>
+        <div class="tablewrap"><table id="pAssumeTable"><caption class="sr-only">What this answer rests on</caption><tbody></tbody></table></div>
+        <div class="row">
+          <button id="pCsv" type="button" class="btn">Download this mission as CSV</button>
+          <span id="pCsvNote" class="hint" role="status"></span>
+        </div>
+      </details>
+    </section>
+    <section class="panel" aria-labelledby="hClock">
+      <h2 id="hClock">Mission clock</h2>
+      <p id="pClockLead" class="lead" aria-live="polite"></p>
+      <canvas id="pTimeline" role="img" aria-label="Sun and Earth visibility from landing through the mission"></canvas>
+    <p id="pTimelineText" class="hint"></p>
+      <p class="legend"><span class="li"><span class="key sunk"></span>Sun up</span><span class="li"><span class="key earthk"></span>Earth in view</span><span class="li"><span class="key full"></span>Usable</span><span class="li">Dashed: mission ends</span><span class="li">Red line: first loss</span><span class="li">White line: the moment below</span></p>
+      <label for="pMapTime" class="slider">Moment in the mission <output id="pMapLabel"></output></label>
+    <input id="pMapTime" type="range" min="0" step="1" value="0">
+    <div id="pTiles" class="tiles" aria-live="polite"></div>
+    <canvas id="pSky" role="img" aria-label="Sky all the way round the site, with the Sun and Earth"></canvas>
+    <p class="legend"><span class="li"><span class="key sunk"></span>Sun path</span><span class="li"><span class="key earthk"></span>Earth path</span><span class="li"><span class="key terr"></span>Terrain</span><span class="li">Dashed ring: hidden by terrain</span></p>
+    </section>
+    </div>
+    <section class="panel" aria-labelledby="hMap">
+      <div class="panelhead">
+        <h2 id="hMap">Map</h2>
+        <div class="row tight">
+          <label class="sr-only" for="pLayer">What the map shows</label>
+          <select id="pLayer"><option value="sun">Sunlight at the chosen moment</option><option value="land">Landing areas for this mission</option><option value="left">Where this landing holds the mission</option></select>
+          <label class="sr-only" for="pZoom">Map view</label>
+          <select id="pZoom"><option value="pole">Whole south pole</option><option value="site">Around the site (240 m)</option><option value="close">Close-up (40 m)</option></select>
+        </div>
+      </div>
+      <p id="pMapNone" class="hint" hidden></p>
+      <div id="pMapWrap">
+        <p id="pMapTap" class="tapnote" hidden>Tap the map to add a waypoint</p>
+        <canvas id="pMap" class="map" role="img" aria-label="Lit-terrain map of the lunar south pole at the chosen time"></canvas>
+        <p class="legend" id="pLegSun"><span class="li"><span class="key lit"></span>Sunlit</span><span class="li"><span class="key shade"></span>Shadow</span><span class="li"><span class="key box"></span>Artemis III regions</span><span class="li"><output id="pMapWhen"></output>&nbsp;·&nbsp;<span id="pMapRes">1.2 km</span>/px</span></p>
+        <p class="legend" id="pLegLand" hidden><span class="li"><span class="key pad"></span>Landing area</span><span class="li"><span class="key full"></span><span id="pLegFull">Window holds the mission</span></span><span class="li"><span class="key short"></span><span id="pLegShort">Usable, too short</span></span><span class="li"><span class="key cant"></span><span id="pLegNone">Never usable</span></span><span class="li"><span class="key stripes"></span>Too steep</span><span class="li"><span class="key dots"></span>Too close to call</span><span class="li">Dots: catalogue places</span></p>
+        <div id="pBest" hidden>
+          <p id="pBestText" class="lead" aria-live="polite"></p>
+          <ol id="pAreas" class="rows" aria-label="Landing areas found, largest first"></ol>
+          <p id="pBestNote" class="hint"></p>
+        </div>
+        <p id="pZoomNote" class="hint" hidden>The 40 m terrain covers 85–90°S; this place is outside it, so the map shows the 240 m view.</p>
+        <p class="hint">The verdict uses the finer horizon at the site, so it can differ from the map at a shadow edge.</p>
+      </div>
+    </section>
+  </div>
+
+  <nav class="modes sub" role="tablist" aria-label="More for this mission">
+    <button type="button" role="tab" id="ptPlaces" aria-controls="ppPlaces" aria-selected="true">Places and windows</button>
+    <button type="button" role="tab" id="ptCompare" aria-controls="ppCompare" aria-selected="false" tabindex="-1">Compare sites</button>
+    <button type="button" role="tab" id="ptTools" aria-controls="ppTools" aria-selected="false" tabindex="-1">Ellipse and route</button>
+  </nav>
+
+  <div id="ppPlaces" role="tabpanel" aria-labelledby="ptPlaces" class="two">
+    <section class="panel" aria-labelledby="hOthers" id="pOthersBox">
+      <h2 id="hOthers">Where this mission fits</h2>
+      <p id="pOthersLead" class="lead"></p>
+      <button id="pFind" type="button" class="btn primary">Find landing areas on the map</button>
+      <h3>Candidate sites and regions</h3>
+      <ul id="pOthers" class="rows"></ul>
+      <details><summary id="pPastSum">Past landing sites, for reference</summary><ul id="pOthersMore" class="rows"></ul></details>
+      <h3>Search around the selected place</h3>
+      <p id="pNearNote" class="hint"></p>
+      <button id="pNearBtn" type="button" class="btn primary">Check points within 20 km</button>
+      <div id="pNear"></div>
+    </section>
+    <section class="panel" aria-labelledby="hWins">
+      <h2 id="hWins">Usable windows at this place</h2>
+      <p id="pWinsLead" class="hint"></p>
+      <ol id="pWins" class="wins"></ol>
+      <p class="legend"><span class="li"><span class="key full"></span>Holds the mission</span><span class="li"><span class="key short"></span>Too short</span><span class="li">Tick: mission length</span></p>
+    </section>
+  </div>
+
+  <div id="ppCompare" role="tabpanel" aria-labelledby="ptCompare" class="col" hidden>
+    <section class="panel" aria-labelledby="hCmp">
+      <div class="panelhead">
+        <h2 id="hCmp">Sites side by side</h2>
+        <div class="row tight">
+          <label class="sr-only" for="pCmpAdd">Add a site to compare</label><select id="pCmpAdd"></select>
+          <button id="pCmpReset" type="button" class="btn" hidden>Back to suggested sites</button>
+        </div>
+      </div>
+      <p class="hint" id="pCmpLead"></p>
+      <canvas id="pCmp" role="img" aria-label="Sun, Earth and usable time at several sites on one time axis"></canvas>
+      <p class="legend"><span class="li"><span class="key sunk"></span>Sun</span><span class="li"><span class="key earthk"></span>Earth</span><span class="li"><span class="key full"></span><span id="pCmpNeed"></span></span><span class="li">Outline: best window</span><span class="li">Tick: mission length</span><span class="li">Dashed: selected landing</span></p>
+      <div class="tablewrap"><table id="pCmpTable" class="cmp"><thead><tr><th scope="col">Site</th><th scope="col">Best window</th><th scope="col">Lasts</th><th scope="col">Closed by</th><th scope="col">Holds the mission</th></tr></thead><tbody></tbody></table></div>
+    </section>
+    <details class="panel fold" id="pAll">
+      <summary><h2>All sites, all windows</h2></summary>
+      <label class="inline" for="pCalDays">Look ahead
+        <select id="pCalDays"><option value="91">3 months</option><option value="182">6 months</option><option value="365" selected>12 months</option></select>
+      </label>
+      <p class="hint" id="pCalLead"></p>
+      <div class="calwrap"><canvas id="pCal" tabindex="0" role="application" aria-roledescription="window chart" aria-label="Usable windows at every site on one calendar. Use the left and right arrow keys to move between a site's windows, up and down to move between sites, and Enter to plan a landing at that window's opening."></canvas></div>
+      <p id="pCalPick" class="hint" aria-live="polite"></p>
+      <div class="tablewrap"><table id="pCalTable"><thead><tr><th scope="col">Site</th><th scope="col">Windows that hold the mission</th><th scope="col">First such window</th></tr></thead><tbody></tbody></table></div>
+    </details>
+  </div>
+
+  <div id="ppTools" role="tabpanel" aria-labelledby="ptTools" hidden>
+    <div class="two even">
+      <section class="panel" aria-labelledby="hLand" id="pLandBox">
+        <h2 id="hLand">Landing ellipse</h2>
+        <form class="mini" onsubmit="return false" aria-label="Landing ellipse and approach">
+          <div class="field"><label for="eLen">Length (m)</label><input id="eLen" type="number" min="50" max="10000" step="50" inputmode="numeric"></div>
+          <div class="field"><label for="eWid">Width (m)</label><input id="eWid" type="number" min="20" max="10000" step="50" inputmode="numeric"></div>
+          <div class="field"><label for="eHdg">Approach (° from N)</label><input id="eHdg" type="number" min="0" max="359" step="1" inputmode="numeric"></div>
+          <div class="field"><label for="eMax">Max slope (°)</label><input id="eMax" type="number" min="0.5" max="60" step="0.5" inputmode="decimal"></div>
+          <div class="field"><label for="eElMin">Sun at least (°)</label><input id="eElMin" type="number" min="-5" max="90" step="0.5" inputmode="decimal"></div>
+          <div class="field"><label for="eElMax">Sun at most (°)</label><input id="eElMax" type="number" min="-5" max="90" step="0.5" inputmode="decimal"></div>
+        </form>
+        <div id="pLandBody">
+          <div id="pLandTiles" class="tiles three" aria-live="polite"></div>
+          <canvas id="pEll" class="ell" role="img" aria-label="Landing ellipse"></canvas>
+          <p class="legend"><span class="li"><span class="key full"></span>Slope OK</span><span class="li"><span class="key short"></span>Near limit</span><span class="li"><span class="key bad"></span>Too steep</span><span class="li"><span class="key night"></span>Shadow at touchdown</span></p>
+        </div>
+        <p id="pLandNote" class="hint"></p>
+      </section>
+
+      <section class="panel" aria-labelledby="hRoute" id="pRouteBox">
+        <h2 id="hRoute">Surface route</h2>
+        <div class="row routebar">
+          <button id="rAdd" type="button" class="btn primary">Add on the map</button>
+          <button id="rUndo" type="button" class="btn">Undo</button>
+          <button id="rClear" type="button" class="btn">Clear</button>
+          <label class="inline" for="rMax">Max slope (°)<input id="rMax" type="number" min="0.5" max="60" step="0.5" inputmode="decimal"></label>
+          <label class="inline" for="rSpeed">Speed (km/h)<input id="rSpeed" type="number" min="0.01" max="100" step="0.1" inputmode="decimal" placeholder="none"></label>
+        </div>
+        <p id="pRouteHint" class="hint"></p>
+        <details class="custom wpcoords">
+          <summary>Add by coordinates</summary>
+          <div class="coords">
+            <div class="field small-f"><label for="rLat">Latitude (°)</label><input id="rLat" type="number" step="0.001" min="-90" max="-75" inputmode="decimal"></div>
+            <div class="field small-f"><label for="rLon">Longitude (°E)</label><input id="rLon" type="number" step="0.001" min="-180" max="360" inputmode="decimal"></div>
+            <button id="rGo" type="button" class="btn">Add waypoint</button>
+          </div>
+        </details>
+        <div id="pRouteBody" hidden>
+          <div id="pRouteTiles" class="tiles three"></div>
+          <canvas id="pProfile" role="img" aria-label="Ground height along the route"></canvas>
+          <p class="legend"><span class="li"><span class="key terr"></span>Ground</span><span class="li"><span class="key bad"></span>Steeper than the limit</span></p>
+          <h3>Sun and Earth at each stop, over the mission</h3>
+          <p class="hint">Set a speed to time the drive: it leaves at the moment chosen above, and white marks show departure and each arrival.</p>
+          <canvas id="pRouteBands" role="img" aria-label="Sun and Earth at each waypoint"></canvas>
+          <ul id="pRouteList" class="wps"></ul>
+        </div>
+      </section>
+    </div>
+  </div>
+
+</section>
+
+<!-- ======================= EXPLORE ======================= -->
+<section id="explore" role="tabpanel" aria-labelledby="tabExplore" hidden>
+  <div class="panel timepanel">
+    <div class="timebar">
+      <button id="xPlay" type="button" class="btn primary" aria-pressed="false"><span>Play</span></button>
+      <label for="xTime" class="slider grow"><span class="sr-only">Time</span><output id="xTimeLabel"></output></label>
+    </div>
+    <input id="xTime" type="range" min="0" max="720" step="1" value="0">
+  </div>
+
+  <section class="panel" aria-labelledby="hGlobe">
+    <h2 id="hGlobe">Spin the Moon</h2>
+    <p class="hint">Drag to turn, tap to centre, pinch or scroll to zoom, twist two fingers (or Shift-drag) to change the axis.</p>
+    <div class="globegrid">
+      <div class="globecol">
+      <div class="globebox">
+        <canvas id="gCanvas" tabindex="0" role="img" aria-label="Rotatable globe of the Moon lit by the Sun at the chosen time. When focused, arrow keys turn it, plus or minus zoom, square brackets twist it and N puts north up."></canvas>
+        <div class="cross" aria-hidden="true"></div>
+      </div>
+      <p id="gFail" class="hint" hidden></p>
+      <p class="legend"><span class="li"><span class="key ring sunr"></span>Sun overhead</span><span class="li"><span class="key ring earthr"></span>Earth overhead</span><span class="li"><span class="key dot"></span>Compared sites</span><span class="li">Dashed: far side</span><span class="li">Shadows: 7.6 km terrain</span></p>
+      </div>
+      <div class="readout">
+        <p id="gPos" class="gpos"></p>
+        <div id="gNow" class="tiles"></div>
+        <p id="gSrc" class="hint"></p>
+        <div id="gMore" aria-live="polite"></div>
+        <div class="row">
+          <button id="gCompare" type="button" class="btn primary">Compare this point</button>
+          <button id="gPlan" type="button" class="btn">Plan a landing here</button>
+        </div>
+        <div class="nudges" role="group" aria-label="Globe view">
+          <button type="button" class="btn ghost zoom" data-zoom="0.8" aria-label="Zoom in">+</button>
+          <button type="button" class="btn ghost zoom" data-zoom="1.25" aria-label="Zoom out">−</button>
+          <button type="button" class="btn ghost zoom" data-twist="-15" aria-label="Twist anticlockwise">↺</button>
+          <button type="button" class="btn ghost zoom" data-twist="15" aria-label="Twist clockwise">↻</button>
+          <button type="button" class="btn ghost" data-north="1">North up</button>
+          <button type="button" class="btn ghost" data-goto="-89,0">South pole</button>
+          <button type="button" class="btn ghost" data-goto="0,0">Near side</button>
+          <button type="button" class="btn ghost" data-goto="0,180">Far side</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="exgrid">
+    <section class="panel" aria-labelledby="hXmap">
+      <h2 id="hXmap" class="sr-only">Lit-terrain map</h2>
+      <canvas id="xMap" class="map" role="img" aria-label="Map of the lunar south pole showing which ground is sunlit at the chosen time"></canvas>
+      <p class="legend"><span class="li"><span class="key lit"></span>Sunlit</span><span class="li"><span class="key shade"></span>Shadow</span><span class="li"><span class="key box"></span>Artemis III regions</span><span class="li">Tap to add a point</span></p>
+      <p id="xMapNote" class="hint"></p>
+    </section>
+    <section aria-labelledby="hXsites">
+      <h2 id="hXsites">Compare sites</h2>
+      <ul id="xSites" class="chips" aria-label="Sites being compared"></ul>
+      <div class="row">
+        <label class="sr-only" for="xAdd">Add a site</label><select id="xAdd"></select>
+        <label class="inline" for="xStart">Month starting <input id="xStart" type="date"></label>
+      </div>
+      <div id="xCards" class="cards"></div>
+      <p class="legend"><span class="li"><span class="key sunk"></span>Sun</span><span class="li"><span class="key earthk"></span>Earth</span><span class="li"><span class="key terr"></span>Terrain</span><span class="li">Sky −5° to 15°; bars: the month</span></p>
+    </section>
+  </div>
+  <section class="panel" aria-labelledby="hPair">
+    <h2 id="hPair">Why a short move changes everything</h2>
+    <p class="hint">Pick a polar site. The page finds the lowest ground within 10 km and shows both skies at the time chosen above.</p>
+    <div class="row">
+      <label class="sr-only" for="xPairSite">Site to compare with nearby low ground</label><select id="xPairSite"></select>
+      <button id="xPairGo" type="button" class="btn primary">Compare with nearby low ground (29 MB terrain)</button>
+    </div>
+    <div id="xPairBody" hidden>
+      <h3 id="xPairHeadA"></h3>
+      <canvas id="xPairA" role="img" aria-label="Sky round the chosen site"></canvas>
+      <h3 id="xPairHeadB"></h3>
+      <canvas id="xPairB" role="img" aria-label="Sky round the nearby low ground"></canvas>
+      <p class="legend"><span class="li"><span class="key sunk"></span>Sun</span><span class="li"><span class="key earthk"></span>Earth</span><span class="li"><span class="key terr"></span>Terrain, same scale in both</span><span class="li">Dashed ring: hidden by terrain</span></p>
+      <p id="xPairText" class="pairtext"></p>
+      <p id="xPairMonth" class="hint"></p>
+      <p id="xPairNote" class="hint"></p>
+    </div>
+  </section>
+  <section class="panel learn" aria-labelledby="hLearn">
+    <h2 id="hLearn">Why it works this way</h2>
+    <div class="facts">
+      <div><h3>The Sun skims the horizon</h3><p>The Moon's axis is tilted only 1.5°, so at the pole the Sun circles the sky within about 1.5° of the horizon. A ridge a few hundred metres high, tens of kilometres away, can block it.</p></div>
+      <div><h3>A day lasts a month</h3><p>Away from the poles the Sun is up for about 14.75 Earth days, then down for 14.75. Solar-powered landers must finish their work, or survive the night.</p></div>
+      <div><h3>Earth hangs almost still</h3><p>The Moon keeps one face toward Earth, so Earth barely moves in the sky. On the far side it never rises, and near the pole it wobbles on and off the horizon each month.</p></div>
+      <div><h3>No air, sharp shadows</h3><p>With no atmosphere there is no twilight and no bending of light over the horizon: the line between sunlit and dark ground is pure geometry.</p></div>
+    </div>
+  </section>
+</section>
+<!-- ======================= FIELD ======================= -->
+<section id="field" role="tabpanel" aria-labelledby="tabField" hidden>
+  <form class="scenario" onsubmit="return false" aria-label="Field reading">
+    <div class="field wide-f"><label for="fSite">Site</label><select id="fSite"></select></div>
+    <div class="field small-f"><label for="fTask">Task length (hours)</label><input id="fTask" type="number" min="0.25" max="240" step="0.25" inputmode="decimal"></div>
+    <label class="check" for="fEarth"><input id="fEarth" type="checkbox"> Task needs Earth contact</label>
+  </form>
+  <section id="fMain" class="fmain" aria-labelledby="fHead">
+    <p id="fStale" class="fstale" role="alert" hidden></p>
+    <p class="flabel">Now, on this device's clock</p>
+    <h2 id="fHead"></h2>
+    <p id="fSub" class="fsub"></p>
+    <p id="fFit" class="ffit"></p>
+    <p id="fAnnounce" class="sr-only" role="status"></p>
+    <div id="fTiles" class="tiles"></div>
+    <p id="fValid" class="hint"></p>
+    <button id="fHold" type="button" class="btn" aria-pressed="false">Hold this reading</button>
+  </section>
+  <p class="hint">Sunlight is a power input and Earth is line of sight only. This is a training and planning aid on public terrain data, not flight software: it has not been tested with crews.</p>
+</section>
+</main>
+
+<footer>
+  <p>Data: <a href="https://ssd.jpl.nasa.gov/horizons/">JPL Horizons</a> (DE441) · LRO LOLA terrain (NASA PDS) · <a href="data/sites.json">site sources</a> · <a href="https://github.com/astoreyai/lunar-lighting-planner">source and method</a></p>
+  <details>
+    <summary>Method and accuracy</summary>
+    <p>Sun and Earth: JPL Horizons, MOON_ME frame, hourly, 1969–2040. Terrain: LOLA LDEM_85S_40M, LDEM_75S_240M and LDEM_16. The Sun counts as up while any part of it clears the terrain; Earth while its centre does; eye height 2 m.</p>
+    <p>Sun and Earth directions match Horizons' own sky tables to 0.0002° and 0.006°. Long-term sunlight matches the LOLA team's polar maps (r = 0.994). On the same terrain grid, the lit-terrain map agrees with the horizon tracer at 99.8% of tested points and times.</p>
+    <p>Compare with <a href="https://quickmap.lroc.im-ldi.com/">LROC QuickMap</a> and <a href="https://trek.nasa.gov/moon/">Moon Trek</a>.</p>
+  </details>
+  <p>An independent project inspired by the 2026 NASA Space Apps challenge "Lunar Landing Site Navigator"; not a Space Apps entry.</p>
+</footer>
+<!-- Versioned module URLs: a redeploy can never pair new pages with stale cached modules. Bump v on each deploy. -->
+<script type="importmap">
+{
+ "imports": {
+  "./core.js": "./core.js?v=37",
+  "./dem.js": "./dem.js?v=37",
+  "./ephem.js": "./ephem.js?v=37",
+  "./explore.js": "./explore.js?v=37",
+  "./export.js": "./export.js?v=37",
+  "./field.js": "./field.js?v=37",
+  "./pair.js": "./pair.js?v=37",
+  "./globe-math.js": "./globe-math.js?v=37",
+  "./globe.js": "./globe.js?v=37",
+  "./horizon.js": "./horizon.js?v=37",
+  "./landing.js": "./landing.js?v=37",
+  "./mission.js": "./mission.js?v=37",
+  "./route.js": "./route.js?v=37",
+  "./litmap.js": "./litmap.js?v=37",
+  "./planner.js": "./planner.js?v=37",
+  "./shadow.js": "./shadow.js?v=37",
+  "./sky.js": "./sky.js?v=37",
+  "./suit.js": "./suit.js?v=37",
+  "./windows.js": "./windows.js?v=37"
+ }
+}
+</script>
+<script type="module" src="app.js?v=37"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+ "sphere_m": 1737400,
+ "scale_m_per_dn": 0.5,
+ "polar240": {
+  "file": "dem/polar240.i16",
+  "n": 3812,
+  "cellM": 240,
+  "maxLat": -75,
+  "source": "LOLA LDEM_75S_240M (PDS)"
+ },
+ "polarmap": {
+  "file": "dem/polarmap.i16",
+  "n": 762,
+  "cellM": 1200.6299212598426,
+  "maxLat": -75,
+  "source": "LOLA LDEM_75S_240M resampled"
+ },
+ "global4": {
+  "file": "dem/global4.i16",
+  "ppd": 4,
+  "source": "LOLA LDEM_16 (PDS) 4x4 block mean"
+ },
+ "tiles40": {
+  "dir": "dem/t40",
+  "n": 7584,
+  "cellM": 40,
+  "tile": 512,
+  "maxLat": -85,
+  "source": "LOLA LDEM_85S_40M (PDS)"
+ }
+}
