@@ -54,11 +54,18 @@ function longestOff(rows, key) {
 export function landingVerdict(rows, i, n, req, k = 0) {
   if (i + n >= rows.length) return null;
   const frac = (r) => (k && r.sunU ? diskFraction((r.sun.el - r.sunHorizon - k * r.sunU) / r.sun.radiusDeg) : r.sunFraction);
-  const power = (r) => r.sunMargin - k * (r.sunU || 0) > 0 && frac(r) >= req.minShare, earth = (r) => r.earthMargin - k * (r.earthU || 0) > 0;
+  const sunM = (r) => r.sunMargin - k * (r.sunU || 0), earthM = (r) => r.earthMargin - k * (r.earthU || 0);
+  const power = (r) => sunM(r) > 0 && frac(r) >= req.minShare, earth = (r) => earthM(r) > 0;
   if (!power(rows[i])) return { verdict: 'none', reason: req.minShare > 0 ? `less than ${Math.round(req.minShare * 100)}% of the Sun visible at landing` : 'Sun below the terrain at landing' };
   if (req.earth && !earth(rows[i])) return { verdict: 'none', reason: 'Earth hidden at landing' };
-  const t0 = rows[i].t, lost = (ok) => { for (let j = i + 1; j <= i + n; j++) if (!ok(rows[j])) return rows[j].t - t0; return null; };
-  const p = lost(power), e = req.earth ? lost(earth) : null;
+  // The loss time is interpolated to where the margin crosses zero between the last good sample and the first bad one
+  // (hourly samples alone ran a mean of 32 min late; interpolated, the median error is under a minute: tests/precision_sweep.mjs).
+  // A share-of-disk limit can fail with the margin still positive: then the sample time stands.
+  const t0 = rows[i].t, lost = (ok, m) => {
+    for (let j = i + 1; j <= i + n; j++) if (!ok(rows[j])) { const a = m(rows[j - 1]), b = m(rows[j]); return rows[j - 1].t + (rows[j].t - rows[j - 1].t) * (b <= 0 ? a / (a - b) : 1) - t0; }
+    return null;
+  };
+  const p = lost(power, sunM), e = req.earth ? lost(earth, earthM) : null;
   if (p === null && e === null) return { verdict: 'full' };
   const P = { reason: 'power', lostMs: p }, E = { reason: 'earth', lostMs: e };
   const [first, second] = e === null ? [P] : p === null ? [E] : p <= e ? [P, E] : [E, P];

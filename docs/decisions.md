@@ -147,3 +147,21 @@ D26 put the mission's needs first and treated the place as a result. It records 
 
 **D43. Licence: Apache-2.0.** (Aaron, 2026-11-14)
 Chosen over MIT for its patent grant. `LICENSE` is the unmodified text from apache.org. It covers the code; the data files stay under their sources' terms (README, "Data credits and terms").
+
+**D44. Speed, precision and usability were measured before anything was changed.** (2026-11-14)
+Benchmarks and sweeps on real data are kept as scripts (`tests/bench_suit.mjs`, `tests/bench_workers.mjs`, `tests/precision_sweep.mjs`); their results are in `docs/VALIDATION.md`. A profile showed 73% of the layer's time in the march and 22% in per-cell set-up. A scripted audit of the Plan tab at phone width found no control without a name, no text below 13 px, no contrast below WCAG AA and two targets under 44 px (an inline link, and a checkbox whose label is the target), so nothing was changed for usability. Human usability testing is still not done.
+
+**D45. The march's per-cell set-up uses algebra, not trigonometry.**
+On the polar stereographic grid a cell's latitude and longitude follow from its map position without `atan`, `sin` or `cos`, and the body's elevation is needed only as a tangent. Single-thread CPU time fell from 74.9 to 62.2 s (whole pole), 28.7 to 24.4 s (site view) and 38.6 to 35.3 s (close-up). Results can differ from the earlier code in the last floating-point digit; the comparisons against the horizon tracer are unchanged.
+
+**D46. Each worker runs every time step for its own share of the cells.** (supersedes the per-step hand-back of D30)
+Before, the page handed every time step to the workers and waited for all of them, in contiguous bands of the map. Three things were wrong with that: bands at the map's top and bottom had less to do, every step waited for the slowest worker, and the page did the bookkeeping. Cells are now dealt out one by one (every W-th cell), each worker keeps its own runs for all time steps, and the page only merges. On the whole-pole layer, four workers went from 23.9 s to 15.5 s and eight reach 8.8 s; one thread takes 62 s; twelve workers gain nothing over eight. The pool is therefore up to 8 where the device reports 8 GB or more, 2 where it reports 4 GB or less, and 4 where it does not say. A worker yields between steps through a message channel, not a timer, so a build is not slowed in a background tab and can be stopped. Modules the workers load import their dependencies with their own version query, because a worker has no import map.
+
+**D47. From a landing, settled cells are not marched again.**
+In the "where this landing holds the mission" layer a cell whose run from the landing has ended cannot change (proved in `formal/Layer.lean`, `runS_ignores_rest`), so it is skipped. The layer now takes under a second.
+
+**D48. The verdict's loss time is interpolated; durations round to the nearest hour.**
+The verdict reported the first failing hourly sample, a mean of 32 minutes late (worst 58) over 442 cut-short landings. It now interpolates the margin's zero crossing between the two hourly samples: median error 0.7 minutes, worst 7.2, against a one-minute search. Which verdict a landing gets is unchanged. Durations of a day or more used to drop their minutes, so a loss at 6 d 19 h 58 min read "6 d 19 h" in the mission clock and "6 d 20 h" in the verdict; they now round to the nearest hour and agree.
+
+**D49. Formal proofs in Lean 4, about a model of the layer.**
+`formal/Layer.lean` restates the layer's per-cell bookkeeping, the mission-length rule, the sharing between workers and the block skip, and proves the properties listed in the README, in core Lean with no Mathlib. Stated limit: the model is hand-written from the JavaScript, and no tool checks that the two agree; the tests do that job. Rejected: Mathlib, which would add a multi-gigabyte dependency for inequalities that can be stated without division; and claiming the JavaScript itself is verified.

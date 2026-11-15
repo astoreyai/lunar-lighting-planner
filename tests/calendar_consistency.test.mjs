@@ -26,7 +26,7 @@ for (const id of ['im2_athena', 'apollo11']) test(`calendar power loss matches d
     const next = sunsets.find((t) => t > tl);
     const err = Math.abs(tl + v.lostMs - next);
     worst = Math.max(worst, err); checked++;
-    assert.ok(err <= H, `${id} day ${d}: calendar ${v.lostMs / H} h vs detail ${(next - tl) / H} h`);
+    assert.ok(err <= 10 * 60e3, `${id} day ${d}: calendar ${v.lostMs / H} h vs detail ${(next - tl) / H} h`);
   }
   console.log(id, 'short landings checked', checked, 'worst min', (worst / 60e3).toFixed(0));
   assert.ok(checked > 10);

@@ -1,6 +1,6 @@
 # Validation
 
-What has been checked, against what, with what result, and what has not. Written 2026-11-14 at app version 38, data fingerprint `31d05df6b9be`. Every check runs on real data unless marked synthetic. Run them with `node --test tests/*.test.mjs` (50 tests, all passing on that date).
+What has been checked, against what, with what result, and what has not. Written 2026-11-14 at app version 40, data fingerprint `31d05df6b9be`. Every check runs on real data unless marked synthetic. Run them with `node --test tests/*.test.mjs` (53 tests, all passing on that date).
 
 ## What the tool claims
 
@@ -30,12 +30,46 @@ Whether the Sun (upper limb) and Earth (centre) clear the LOLA terrain horizon a
 | Technical review | One audit against the Space Apps brief (`audit/lunar-navigator/AUDIT.md`), by the same assistant that wrote the code. | No independent human or second-model review of this round. |
 | Use history, users | None. | No planner, educator, student or crew member has used it under observation. Protocols: AUDIT §4. |
 
+## Measured speed and precision (2026-11-14, real data)
+
+Speed, on the development machine (32 logical cores, lightly loaded). `node tests/bench_suit.mjs` and `node tests/bench_workers.mjs` reproduce the first two tables.
+
+| Layer, one thread | Before | After | Throughput after |
+|---|---|---|---|
+| Whole pole, 47 days | 74.9 CPU s | 62.2 CPU s | 2.07 million cell-samples per second |
+| Site view (240 m), 47 days | 28.7 CPU s | 24.4 CPU s | 1.86 million |
+| Close-up (40 m), 47 days | 38.6 CPU s | 35.3 CPU s | 1.28 million |
+| From a landing, 10 days (a case where nothing is usable at landing) | 5.9 and 5.6 CPU s | 0.1 CPU s | work is in proportion to the cells still usable |
+
+| Whole-pole layer, workers (page's worker code in Node threads) | Wall time | Speed-up over one thread |
+|---|---|---|
+| one thread, no workers | 62.2 s | 1 |
+| 2 workers | 29.3 s | 2.1 |
+| 4 workers, earlier design (contiguous bands, per-step hand-back) | 23.9 s | 2.6 |
+| 4 workers | 15.5 s | 4.0 |
+| 6 workers | 11.0 s | 5.7 |
+| 8 workers | 8.8 s | 7.1 |
+| 12 workers | 8.7 s | 7.1 |
+
+In a desktop browser on 8 workers: whole pole 9.7 s, site view 3.3 s, close-up 6.6 s, from-landing layers 0.2 to 0.9 s. Not measured: any phone, and any browser other than the app's built-in one.
+
+Precision (`node tests/precision_sweep.mjs`):
+
+| Question | Result |
+|---|---|
+| Does a 4-hour step give the classes a 1-hour step gives? | Same class for 99.5 to 99.7% of cells at three places; 99.8 to 100% of cells not flagged too close to call. Window length differs by a median of 3 h (90th percentile 5 h, worst 54 h); its opening by a median of 1 to 2 h. |
+| Does the 240 m view give the class the 40 m close-up gives? | 90.7% of points around IM-2, 95.0% on Shackleton's rim; 99.7% and 99.9% of points neither level flags too close to call. |
+| How close is the verdict's loss time to a one-minute search? | 442 cut-short landings at 17 polar sites: median 0.7 min, 90th percentile 1.1 min, worst 7.2 min. The first failing hourly sample, which the verdict used to report, is a mean of 32 min late. |
+
+Formal proofs: `formal/Layer.lean` (Lean 4, no `sorry`, standard axioms only) proves properties of a hand-written model of the layer's bookkeeping; see README, "Accuracy checks". It does not verify the JavaScript.
+
 ## Accessibility (inspection only)
 
 At 375 px and at desktop width, the three views show no horizontal page scroll and no console errors. Every control in the Plan view has a visible label or an accessible name (scripted check). Colour is never the only cue: verdict days carry an icon, close calls a "?" and a dashed edge, the stale state the word STALE. The field view announces a change of state to screen readers, not each tick of the countdown. Canvases carry text alternatives, and the side-by-side canvas has a full table beside it. Not done: a screen-reader pass, a contrast audit of the new elements, and a test on a physical phone.
 
 ## Not validated
 
+- That the JavaScript matches the Lean model line for line: no tool checks it.
 - Usability, for any audience. The tasks, links, correct answers and measures are ready in `docs/USABILITY_TESTS.md`; no participant has run them.
 - The landing-area map's speed and memory use on a phone. The page reports its own run time under the map, so this can be read off a device.
 - The 40 m close-up's terrain uncertainty: 1.6 m is the 240 m level scaled by cell size, not a measurement.

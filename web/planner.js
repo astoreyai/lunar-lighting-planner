@@ -65,8 +65,8 @@ export function createPlanner({ onChange }) {
     }
     if (v.verdict === 'short') {
       const what = (r, lead) => (r === 'power' ? (st.minShare > 0 ? (lead ? 'Usable sunlight ends' : 'usable sunlight ends') : (lead ? 'The Sun sets behind the terrain' : 'the Sun sets')) : (lead ? 'Earth drops behind the terrain' : 'Earth drops out of view'));
-      const then = v.then ? (v.then.lostMs === v.lostMs ? `, and ${what(v.then.reason, false)} in the same hour` : `; ${what(v.then.reason, false)} later, at ${fmtDur(v.then.lostMs)}`) : '';
-      return `${what(v.reason, true)} first, about ${fmtDur(v.lostMs)} after landing (to the hour)${then}. The mission needs ${st.durD} days.${v.range ? ` Allowing for the terrain's uncertainty, that first loss comes between ${fmtDur(v.range[0])} and ${fmtDur(v.range[1])} after landing.` : ''}`;
+      const then = v.then ? (Math.ceil(v.then.lostMs / HOUR) === Math.ceil(v.lostMs / HOUR) ? `, and ${what(v.then.reason, false)} in the same hour` : `; ${what(v.then.reason, false)} later, at ${fmtDur(v.then.lostMs)}`) : '';
+      return `${what(v.reason, true)} first, about ${fmtDur(v.lostMs)} after landing${then}. The mission needs ${st.durD} days.${v.range && fmtDur(v.range[0]) !== fmtDur(v.range[1]) ? ` Allowing for the terrain's uncertainty, that first loss comes between ${fmtDur(v.range[0])} and ${fmtDur(v.range[1])} after landing.` : ''}`;
     }
     const rows = series(eph, st.site, st.site.horizon, st.land, Math.min(st.land + 30 * DAY, T_MAX), 10 * 60e3), set = events(rows, 'sunMargin').find((e) => !e.rising);
     return `The Sun stays up${st.earth ? ' and Earth stays in view' : ''} for all ${st.durD} days. ${set ? `Sunset comes ${fmtDur(set.t - st.land)} after landing.` : 'No sunset in the next 30 days.'}`;

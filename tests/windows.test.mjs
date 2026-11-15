@@ -29,11 +29,13 @@ test('landing verdict: first closure is named, the later one follows (synthetic)
   assert.equal(landingVerdict(rows, 0, 2, any).verdict, 'none');                       // dark at landing
   assert.equal(landingVerdict(rows, 1, 2, withEarth).reason, 'Earth hidden at landing'); // Earth checked after Sun
   assert.deepEqual(landingVerdict(rows, 2, 1, withEarth), { verdict: 'full' });
-  assert.deepEqual(landingVerdict(rows, 2, 3, any), { verdict: 'short', reason: 'power', lostMs: 3 * H });
-  assert.deepEqual(landingVerdict(rows, 2, 3, withEarth), { verdict: 'short', reason: 'earth', lostMs: 2 * H, then: { reason: 'power', lostMs: 3 * H } }); // Earth closes first
+  assert.deepEqual(landingVerdict(rows, 2, 3, any), { verdict: 'short', reason: 'power', lostMs: 2.5 * H }); // margins of +1 then -1 an hour apart cross zero half-way
+  assert.deepEqual(landingVerdict(rows, 2, 3, withEarth), { verdict: 'short', reason: 'earth', lostMs: 1.5 * H, then: { reason: 'power', lostMs: 2.5 * H } }); // Earth closes first
   const tie = [row(0, 1, 1), row(1, -1, -1), row(2, 1, 1)];
-  assert.deepEqual(landingVerdict(tie, 0, 1, withEarth), { verdict: 'short', reason: 'power', lostMs: H, then: { reason: 'earth', lostMs: H } }); // same hour: power named first
-  assert.deepEqual(landingVerdict(rows, 2, 2, withEarth), { verdict: 'short', reason: 'earth', lostMs: 2 * H });
+  assert.deepEqual(landingVerdict(tie, 0, 1, withEarth), { verdict: 'short', reason: 'power', lostMs: 0.5 * H, then: { reason: 'earth', lostMs: 0.5 * H } }); // same moment: power named first
+  assert.deepEqual(landingVerdict(rows, 2, 2, withEarth), { verdict: 'short', reason: 'earth', lostMs: 1.5 * H });
+  const share = [row(0, 1, 1), row(1, 0.5, 1, 0.3), row(2, 1, 1)]; // the Sun's margin is still positive but too little of the disk shows: no crossing to interpolate to
+  assert.deepEqual(landingVerdict(share, 0, 1, { minShare: 0.5, earth: false }), { verdict: 'short', reason: 'power', lostMs: H });
   assert.equal(landingVerdict(rows, 5, 2, any), null);                                 // mission runs past the data
   assert.equal(landingVerdict(rows, 6, 0, { minShare: 0.5, earth: false }).verdict, 'none'); // 40% of disk < 50% needed
 });

@@ -6,7 +6,8 @@ import { raw } from './load_lola.mjs';
 import { polarGrid, globalGrid, stack, tileWindow, R_MOON_M } from '../web/dem.js';
 import { traceHorizon } from '../web/horizon.js';
 import { sample } from '../web/windows.js';
-import { createSuit, buildSuit, suitImage, mapCells } from '../web/suit.js';
+import { Worker } from 'node:worker_threads';
+import { createSuit, buildSuit, buildSuitShared, suitImage, mapCells, shareOf, putShare } from '../web/suit.js';
 import { shadowContext, visPass, visCells } from '../web/shadow.js';
 import { nodeEphemeris } from './load_ephem.mjs';
 
@@ -173,4 +174,39 @@ test('40 m close-up layer agrees with the horizon tracer at two places (real 40 
     assert.ok(firm >= 20 && same / firm >= 0.9, `${name}: ${same}/${firm}`);
     assert.equal(img.count.full + img.count.short + img.count.none, img.count.inside);
   }
+});
+
+test('sharing a list between workers and putting it back loses and moves nothing (synthetic)', () => {
+  for (const [N, W] of [[10, 3], [9, 3], [1, 4], [0, 2], [1000, 7]]) {
+    const a = Int32Array.from({ length: N }, (_, i) => i * 3 + 1), back = new Int32Array(N);
+    const parts = Array.from({ length: W }, (_, w) => shareOf(a, w, W));
+    assert.equal(parts.reduce((n, p) => n + p.length, 0), N);
+    parts.forEach((p, w) => putShare(back, p, w, W));
+    assert.deepEqual([...back], [...a], `${N} items, ${W} workers`);
+  }
+});
+
+// The page's own worker file, run in Node threads (tests/node_worker.mjs). Each worker runs every time step for its
+// share; the merged layer must be the serial one, cell for cell, on every terrain variant.
+test('layer computed by three workers equals the serial layer exactly, in both modes, and can be stopped (real 240 m LOLA)', async () => {
+  const meta = JSON.parse(readFileSync(new URL('../web/data/dem/meta.json', import.meta.url))).polar240, dhM = JSON.parse(readFileSync(new URL('../web/data/uncertainty.json', import.meta.url))).levels_m[240];
+  const b = readFileSync(new URL(`../web/data/${meta.file}`, import.meta.url)), grid = { z: new Int16Array(b.buffer, b.byteOffset, b.length / 2), n: meta.n, cellM: meta.cellM };
+  const eph = nodeEphemeris(), t0 = Date.UTC(2027, 9, 28), W = 70, cells = mapCells(grid, grid, 1846, 1846, W, W);
+  await eph.ensure(t0, t0 + 48 * 86400e3);
+  const pool = Array.from({ length: 3 }, () => new Worker(new URL('./node_worker.mjs', import.meta.url)));
+  const ports = pool.map((wk) => ({ post: (m) => wk.postMessage(m), on: (f) => { wk.removeAllListeners('message'); wk.on('message', f); } }));
+  try {
+    pool.forEach((wk) => wk.postMessage({ terrain: { grid, far: null } }));
+    for (const fromStart of [false, true]) {
+      const o = { grid, cells, w: W, h: W, t0: fromStart ? t0 + 12 * 86400e3 : t0, spanMs: (fromStart ? 10 : 47) * 86400e3, stepMs: 4 * 3600e3, durMs: 10 * 86400e3, needEarth: true, dhM, fromStart, bodies: (t) => ({ sun: eph.bodyVec('sun', t), earth: eph.bodyVec('earth', t) }) };
+      const serial = await buildSuit(o), steps = [], shared = await buildSuitShared(ports, { ...o, onStep: (done) => { steps.push(done); return true; } });
+      for (let v = 0; v < 3; v++) assert.deepEqual(shared.best[v], serial.best[v], `variant ${v}, fromStart ${fromStart}`);
+      assert.deepEqual(shared.start, serial.start);
+      let usable = 0; for (const x of serial.best[0]) if (x) usable++;
+      assert.ok(usable > 100, `${usable} usable cells: the comparison is not empty`);
+      if (!fromStart) assert.deepEqual(steps, steps.slice().sort((x, y) => x - y)), assert.ok(steps.length >= 10 && steps.every((x) => x % 12 === 0));
+    }
+    const stopped = await buildSuitShared(ports, { grid, cells, w: W, h: W, t0, spanMs: 47 * 86400e3, stepMs: 4 * 3600e3, durMs: 10 * 86400e3, needEarth: true, dhM, bodies: (t) => ({ sun: eph.bodyVec('sun', t), earth: eph.bodyVec('earth', t) }), onStep: () => false });
+    assert.equal(stopped, null);
+  } finally { await Promise.all(pool.map((wk) => wk.terminate())); }
 });

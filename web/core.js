@@ -5,7 +5,7 @@ import { traceHorizon, horizonUnc } from './horizon.js';
 
 export const $ = (id) => document.getElementById(id);
 export const HOUR = 3600e3, DAY = 24 * HOUR, EYE_M = 2;
-export const APP_VERSION = '38'; // the ?v= in index.html; tests/export.test.mjs keeps the two equal
+export const APP_VERSION = '40'; // the ?v= in index.html; tests/export.test.mjs keeps the two equal
 export const T_MIN = Date.UTC(FIRST_YEAR, 0, 1), T_MAX = Date.UTC(LAST_YEAR + 1, 0, 1) - HOUR;
 
 // Data files are requested with their own hash from the manifest, so a browser never pairs new code with a stale cached file.
@@ -82,8 +82,10 @@ export function siteOptions(selected) {
 
 // ---------- formatting ----------
 export const fmtDur = (ms) => {
-  const m = Math.round(ms / 60e3), d = Math.floor(m / 1440), h = Math.floor((m % 1440) / 60);
-  return d ? `${d} d ${h} h` : h ? `${h} h ${m % 60} min` : `${m % 60} min`;
+  const m = Math.round(ms / 60e3);
+  if (m >= 1440) { const h = Math.round(m / 60); return `${Math.floor(h / 24)} d ${h % 24} h`; } // days and the nearest hour (it used to drop the minutes, so 6 d 19 h 58 min read "6 d 19 h")
+  const h = Math.floor(m / 60);
+  return h ? `${h} h ${m % 60} min` : `${m} min`;
 };
 export const fmtUTC = (t) => new Date(t).toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
 export const fmtDay = (t) => new Date(t).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });

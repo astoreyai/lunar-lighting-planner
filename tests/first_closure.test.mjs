@@ -26,8 +26,9 @@ for (const [id, t0, jointH, powerH] of CASES) test(`first closure is Earth, then
   const s = site(id), v = landingVerdict(series(eph, s, s.horizon, t0, t0 + 11 * D, H), 0, 240, req);
   assert.equal(v.verdict, 'short');
   assert.equal(v.reason, 'earth');
-  assert.equal(v.lostMs / H, Math.ceil(jointH)); // hourly rows: the first failing hour
-  assert.deepEqual(v.then, { reason: 'power', lostMs: powerH * H });
+  assert.ok(Math.abs(v.lostMs / H - jointH) <= 0.1, `first loss ${(v.lostMs / H).toFixed(2)} h, audit ${jointH} h`); // interpolated between hourly rows; the audit's value is to 0.1 h
+  assert.equal(v.then.reason, 'power');
+  assert.equal(Math.ceil(v.then.lostMs / H), powerH); // the audit gives the Sun's loss as the first failing hour
 });
 
 test('every cut-short landing in 120 days names the earlier loss: IM-2', async () => {
@@ -40,7 +41,7 @@ test('every cut-short landing in 120 days names the earlier loss: IM-2', async (
     if (v.verdict !== 'short') continue;
     short++;
     const j = rows.findIndex((r, k) => k > i && !(r.sunMargin > 0 && r.earthMargin > 0)); // independent: first hour either is lost
-    assert.equal(v.lostMs, rows[j].t - rows[i].t, `day ${d}`);
+    assert.ok(v.lostMs <= rows[j].t - rows[i].t && v.lostMs > rows[j - 1].t - rows[i].t, `day ${d}`); // inside the hour before the first failing sample
     assert.equal(v.reason, rows[j].sunMargin > 0 ? 'earth' : 'power', `day ${d}`);
     if (v.reason === 'earth') earthFirst++;
   }
