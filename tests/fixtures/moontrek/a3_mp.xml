@@ -1,0 +1,1695 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<MPG><ltd>
+  <inputs>
+    <transmitter naif_id="301" lat="-84.334700" lon="30.592300" altKm="0.000">LTD002</transmitter>
+    <transponder  naif_id="10">Sun</transponder>
+    <t1utc>2027-11-05T00:00:00</t1utc>
+  </inputs>
+  <samples>
+    <sample>
+      <time>2027-309T00:00:00.000000</time>
+      <Az id="0">76.143987</Az>
+      <El id="0">2.917970</El>
+    </sample>
+    <sample>
+      <time>2027-309T01:00:00.000000</time>
+      <Az id="0">75.638233</Az>
+      <El id="0">2.966655</El>
+    </sample>
+    <sample>
+      <time>2027-309T02:00:00.000000</time>
+      <Az id="0">75.132458</Az>
+      <El id="0">3.015228</El>
+    </sample>
+    <sample>
+      <time>2027-309T03:00:00.000000</time>
+      <Az id="0">74.626660</Az>
+      <El id="0">3.063685</El>
+    </sample>
+    <sample>
+      <time>2027-309T04:00:00.000000</time>
+      <Az id="0">74.120838</Az>
+      <El id="0">3.112023</El>
+    </sample>
+    <sample>
+      <time>2027-309T05:00:00.000000</time>
+      <Az id="0">73.614993</Az>
+      <El id="0">3.160237</El>
+    </sample>
+    <sample>
+      <time>2027-309T06:00:00.000000</time>
+      <Az id="0">73.109123</Az>
+      <El id="0">3.208324</El>
+    </sample>
+    <sample>
+      <time>2027-309T07:00:00.000000</time>
+      <Az id="0">72.603228</Az>
+      <El id="0">3.256280</El>
+    </sample>
+    <sample>
+      <time>2027-309T08:00:00.000000</time>
+      <Az id="0">72.097308</Az>
+      <El id="0">3.304102</El>
+    </sample>
+    <sample>
+      <time>2027-309T09:00:00.000000</time>
+      <Az id="0">71.591361</Az>
+      <El id="0">3.351784</El>
+    </sample>
+    <sample>
+      <time>2027-309T10:00:00.000000</time>
+      <Az id="0">71.085387</Az>
+      <El id="0">3.399325</El>
+    </sample>
+    <sample>
+      <time>2027-309T11:00:00.000000</time>
+      <Az id="0">70.579386</Az>
+      <El id="0">3.446720</El>
+    </sample>
+    <sample>
+      <time>2027-309T12:00:00.000000</time>
+      <Az id="0">70.073357</Az>
+      <El id="0">3.493965</El>
+    </sample>
+    <sample>
+      <time>2027-309T13:00:00.000000</time>
+      <Az id="0">69.567300</Az>
+      <El id="0">3.541057</El>
+    </sample>
+    <sample>
+      <time>2027-309T14:00:00.000000</time>
+      <Az id="0">69.061213</Az>
+      <El id="0">3.587992</El>
+    </sample>
+    <sample>
+      <time>2027-309T15:00:00.000000</time>
+      <Az id="0">68.555097</Az>
+      <El id="0">3.634767</El>
+    </sample>
+    <sample>
+      <time>2027-309T16:00:00.000000</time>
+      <Az id="0">68.048950</Az>
+      <El id="0">3.681377</El>
+    </sample>
+    <sample>
+      <time>2027-309T17:00:00.000000</time>
+      <Az id="0">67.542773</Az>
+      <El id="0">3.727819</El>
+    </sample>
+    <sample>
+      <time>2027-309T18:00:00.000000</time>
+      <Az id="0">67.036565</Az>
+      <El id="0">3.774090</El>
+    </sample>
+    <sample>
+      <time>2027-309T19:00:00.000000</time>
+      <Az id="0">66.530325</Az>
+      <El id="0">3.820185</El>
+    </sample>
+    <sample>
+      <time>2027-309T20:00:00.000000</time>
+      <Az id="0">66.024053</Az>
+      <El id="0">3.866102</El>
+    </sample>
+    <sample>
+      <time>2027-309T21:00:00.000000</time>
+      <Az id="0">65.517748</Az>
+      <El id="0">3.911836</El>
+    </sample>
+    <sample>
+      <time>2027-309T22:00:00.000000</time>
+      <Az id="0">65.011410</Az>
+      <El id="0">3.957384</El>
+    </sample>
+    <sample>
+      <time>2027-309T23:00:00.000000</time>
+      <Az id="0">64.505039</Az>
+      <El id="0">4.002743</El>
+    </sample>
+    <sample>
+      <time>2027-310T00:00:00.000000</time>
+      <Az id="0">63.998634</Az>
+      <El id="0">4.047908</El>
+    </sample>
+    <sample>
+      <time>2027-310T01:00:00.000000</time>
+      <Az id="0">63.492194</Az>
+      <El id="0">4.092877</El>
+    </sample>
+    <sample>
+      <time>2027-310T02:00:00.000000</time>
+      <Az id="0">62.985719</Az>
+      <El id="0">4.137646</El>
+    </sample>
+    <sample>
+      <time>2027-310T03:00:00.000000</time>
+      <Az id="0">62.479209</Az>
+      <El id="0">4.182211</El>
+    </sample>
+    <sample>
+      <time>2027-310T04:00:00.000000</time>
+      <Az id="0">61.972664</Az>
+      <El id="0">4.226568</El>
+    </sample>
+    <sample>
+      <time>2027-310T05:00:00.000000</time>
+      <Az id="0">61.466082</Az>
+      <El id="0">4.270715</El>
+    </sample>
+    <sample>
+      <time>2027-310T06:00:00.000000</time>
+      <Az id="0">60.959464</Az>
+      <El id="0">4.314648</El>
+    </sample>
+    <sample>
+      <time>2027-310T07:00:00.000000</time>
+      <Az id="0">60.452809</Az>
+      <El id="0">4.358363</El>
+    </sample>
+    <sample>
+      <time>2027-310T08:00:00.000000</time>
+      <Az id="0">59.946117</Az>
+      <El id="0">4.401857</El>
+    </sample>
+    <sample>
+      <time>2027-310T09:00:00.000000</time>
+      <Az id="0">59.439387</Az>
+      <El id="0">4.445127</El>
+    </sample>
+    <sample>
+      <time>2027-310T10:00:00.000000</time>
+      <Az id="0">58.932620</Az>
+      <El id="0">4.488168</El>
+    </sample>
+    <sample>
+      <time>2027-310T11:00:00.000000</time>
+      <Az id="0">58.425814</Az>
+      <El id="0">4.530979</El>
+    </sample>
+    <sample>
+      <time>2027-310T12:00:00.000000</time>
+      <Az id="0">57.918970</Az>
+      <El id="0">4.573555</El>
+    </sample>
+    <sample>
+      <time>2027-310T13:00:00.000000</time>
+      <Az id="0">57.412087</Az>
+      <El id="0">4.615892</El>
+    </sample>
+    <sample>
+      <time>2027-310T14:00:00.000000</time>
+      <Az id="0">56.905165</Az>
+      <El id="0">4.657989</El>
+    </sample>
+    <sample>
+      <time>2027-310T15:00:00.000000</time>
+      <Az id="0">56.398204</Az>
+      <El id="0">4.699840</El>
+    </sample>
+    <sample>
+      <time>2027-310T16:00:00.000000</time>
+      <Az id="0">55.891204</Az>
+      <El id="0">4.741444</El>
+    </sample>
+    <sample>
+      <time>2027-310T17:00:00.000000</time>
+      <Az id="0">55.384163</Az>
+      <El id="0">4.782797</El>
+    </sample>
+    <sample>
+      <time>2027-310T18:00:00.000000</time>
+      <Az id="0">54.877083</Az>
+      <El id="0">4.823895</El>
+    </sample>
+    <sample>
+      <time>2027-310T19:00:00.000000</time>
+      <Az id="0">54.369962</Az>
+      <El id="0">4.864735</El>
+    </sample>
+    <sample>
+      <time>2027-310T20:00:00.000000</time>
+      <Az id="0">53.862801</Az>
+      <El id="0">4.905314</El>
+    </sample>
+    <sample>
+      <time>2027-310T21:00:00.000000</time>
+      <Az id="0">53.355599</Az>
+      <El id="0">4.945629</El>
+    </sample>
+    <sample>
+      <time>2027-310T22:00:00.000000</time>
+      <Az id="0">52.848357</Az>
+      <El id="0">4.985677</El>
+    </sample>
+    <sample>
+      <time>2027-310T23:00:00.000000</time>
+      <Az id="0">52.341073</Az>
+      <El id="0">5.025454</El>
+    </sample>
+    <sample>
+      <time>2027-311T00:00:00.000000</time>
+      <Az id="0">51.833749</Az>
+      <El id="0">5.064958</El>
+    </sample>
+    <sample>
+      <time>2027-311T01:00:00.000000</time>
+      <Az id="0">51.326383</Az>
+      <El id="0">5.104184</El>
+    </sample>
+    <sample>
+      <time>2027-311T02:00:00.000000</time>
+      <Az id="0">50.818976</Az>
+      <El id="0">5.143131</El>
+    </sample>
+    <sample>
+      <time>2027-311T03:00:00.000000</time>
+      <Az id="0">50.311528</Az>
+      <El id="0">5.181795</El>
+    </sample>
+    <sample>
+      <time>2027-311T04:00:00.000000</time>
+      <Az id="0">49.804038</Az>
+      <El id="0">5.220173</El>
+    </sample>
+    <sample>
+      <time>2027-311T05:00:00.000000</time>
+      <Az id="0">49.296506</Az>
+      <El id="0">5.258261</El>
+    </sample>
+    <sample>
+      <time>2027-311T06:00:00.000000</time>
+      <Az id="0">48.788933</Az>
+      <El id="0">5.296058</El>
+    </sample>
+    <sample>
+      <time>2027-311T07:00:00.000000</time>
+      <Az id="0">48.281318</Az>
+      <El id="0">5.333560</El>
+    </sample>
+    <sample>
+      <time>2027-311T08:00:00.000000</time>
+      <Az id="0">47.773661</Az>
+      <El id="0">5.370763</El>
+    </sample>
+    <sample>
+      <time>2027-311T09:00:00.000000</time>
+      <Az id="0">47.265962</Az>
+      <El id="0">5.407665</El>
+    </sample>
+    <sample>
+      <time>2027-311T10:00:00.000000</time>
+      <Az id="0">46.758222</Az>
+      <El id="0">5.444264</El>
+    </sample>
+    <sample>
+      <time>2027-311T11:00:00.000000</time>
+      <Az id="0">46.250440</Az>
+      <El id="0">5.480555</El>
+    </sample>
+    <sample>
+      <time>2027-311T12:00:00.000000</time>
+      <Az id="0">45.742616</Az>
+      <El id="0">5.516537</El>
+    </sample>
+    <sample>
+      <time>2027-311T13:00:00.000000</time>
+      <Az id="0">45.234750</Az>
+      <El id="0">5.552206</El>
+    </sample>
+    <sample>
+      <time>2027-311T14:00:00.000000</time>
+      <Az id="0">44.726843</Az>
+      <El id="0">5.587560</El>
+    </sample>
+    <sample>
+      <time>2027-311T15:00:00.000000</time>
+      <Az id="0">44.218894</Az>
+      <El id="0">5.622596</El>
+    </sample>
+    <sample>
+      <time>2027-311T16:00:00.000000</time>
+      <Az id="0">43.710903</Az>
+      <El id="0">5.657310</El>
+    </sample>
+    <sample>
+      <time>2027-311T17:00:00.000000</time>
+      <Az id="0">43.202872</Az>
+      <El id="0">5.691701</El>
+    </sample>
+    <sample>
+      <time>2027-311T18:00:00.000000</time>
+      <Az id="0">42.694798</Az>
+      <El id="0">5.725765</El>
+    </sample>
+    <sample>
+      <time>2027-311T19:00:00.000000</time>
+      <Az id="0">42.186684</Az>
+      <El id="0">5.759500</El>
+    </sample>
+    <sample>
+      <time>2027-311T20:00:00.000000</time>
+      <Az id="0">41.678528</Az>
+      <El id="0">5.792903</El>
+    </sample>
+    <sample>
+      <time>2027-311T21:00:00.000000</time>
+      <Az id="0">41.170332</Az>
+      <El id="0">5.825972</El>
+    </sample>
+    <sample>
+      <time>2027-311T22:00:00.000000</time>
+      <Az id="0">40.662094</Az>
+      <El id="0">5.858703</El>
+    </sample>
+    <sample>
+      <time>2027-311T23:00:00.000000</time>
+      <Az id="0">40.153816</Az>
+      <El id="0">5.891095</El>
+    </sample>
+    <sample>
+      <time>2027-312T00:00:00.000000</time>
+      <Az id="0">39.645498</Az>
+      <El id="0">5.923144</El>
+    </sample>
+    <sample>
+      <time>2027-312T01:00:00.000000</time>
+      <Az id="0">39.137140</Az>
+      <El id="0">5.954848</El>
+    </sample>
+    <sample>
+      <time>2027-312T02:00:00.000000</time>
+      <Az id="0">38.628741</Az>
+      <El id="0">5.986204</El>
+    </sample>
+    <sample>
+      <time>2027-312T03:00:00.000000</time>
+      <Az id="0">38.120303</Az>
+      <El id="0">6.017211</El>
+    </sample>
+    <sample>
+      <time>2027-312T04:00:00.000000</time>
+      <Az id="0">37.611825</Az>
+      <El id="0">6.047865</El>
+    </sample>
+    <sample>
+      <time>2027-312T05:00:00.000000</time>
+      <Az id="0">37.103308</Az>
+      <El id="0">6.078164</El>
+    </sample>
+    <sample>
+      <time>2027-312T06:00:00.000000</time>
+      <Az id="0">36.594752</Az>
+      <El id="0">6.108106</El>
+    </sample>
+    <sample>
+      <time>2027-312T07:00:00.000000</time>
+      <Az id="0">36.086157</Az>
+      <El id="0">6.137688</El>
+    </sample>
+    <sample>
+      <time>2027-312T08:00:00.000000</time>
+      <Az id="0">35.577524</Az>
+      <El id="0">6.166907</El>
+    </sample>
+    <sample>
+      <time>2027-312T09:00:00.000000</time>
+      <Az id="0">35.068853</Az>
+      <El id="0">6.195763</El>
+    </sample>
+    <sample>
+      <time>2027-312T10:00:00.000000</time>
+      <Az id="0">34.560144</Az>
+      <El id="0">6.224251</El>
+    </sample>
+    <sample>
+      <time>2027-312T11:00:00.000000</time>
+      <Az id="0">34.051398</Az>
+      <El id="0">6.252371</El>
+    </sample>
+    <sample>
+      <time>2027-312T12:00:00.000000</time>
+      <Az id="0">33.542614</Az>
+      <El id="0">6.280119</El>
+    </sample>
+    <sample>
+      <time>2027-312T13:00:00.000000</time>
+      <Az id="0">33.033794</Az>
+      <El id="0">6.307494</El>
+    </sample>
+    <sample>
+      <time>2027-312T14:00:00.000000</time>
+      <Az id="0">32.524938</Az>
+      <El id="0">6.334493</El>
+    </sample>
+    <sample>
+      <time>2027-312T15:00:00.000000</time>
+      <Az id="0">32.016045</Az>
+      <El id="0">6.361114</El>
+    </sample>
+    <sample>
+      <time>2027-312T16:00:00.000000</time>
+      <Az id="0">31.507117</Az>
+      <El id="0">6.387355</El>
+    </sample>
+    <sample>
+      <time>2027-312T17:00:00.000000</time>
+      <Az id="0">30.998154</Az>
+      <El id="0">6.413214</El>
+    </sample>
+    <sample>
+      <time>2027-312T18:00:00.000000</time>
+      <Az id="0">30.489157</Az>
+      <El id="0">6.438689</El>
+    </sample>
+    <sample>
+      <time>2027-312T19:00:00.000000</time>
+      <Az id="0">29.980125</Az>
+      <El id="0">6.463777</El>
+    </sample>
+    <sample>
+      <time>2027-312T20:00:00.000000</time>
+      <Az id="0">29.471059</Az>
+      <El id="0">6.488478</El>
+    </sample>
+    <sample>
+      <time>2027-312T21:00:00.000000</time>
+      <Az id="0">28.961960</Az>
+      <El id="0">6.512788</El>
+    </sample>
+    <sample>
+      <time>2027-312T22:00:00.000000</time>
+      <Az id="0">28.452829</Az>
+      <El id="0">6.536705</El>
+    </sample>
+    <sample>
+      <time>2027-312T23:00:00.000000</time>
+      <Az id="0">27.943665</Az>
+      <El id="0">6.560229</El>
+    </sample>
+    <sample>
+      <time>2027-313T00:00:00.000000</time>
+      <Az id="0">27.434469</Az>
+      <El id="0">6.583356</El>
+    </sample>
+    <sample>
+      <time>2027-313T01:00:00.000000</time>
+      <Az id="0">26.925241</Az>
+      <El id="0">6.606086</El>
+    </sample>
+    <sample>
+      <time>2027-313T02:00:00.000000</time>
+      <Az id="0">26.415983</Az>
+      <El id="0">6.628416</El>
+    </sample>
+    <sample>
+      <time>2027-313T03:00:00.000000</time>
+      <Az id="0">25.906695</Az>
+      <El id="0">6.650344</El>
+    </sample>
+    <sample>
+      <time>2027-313T04:00:00.000000</time>
+      <Az id="0">25.397377</Az>
+      <El id="0">6.671869</El>
+    </sample>
+    <sample>
+      <time>2027-313T05:00:00.000000</time>
+      <Az id="0">24.888030</Az>
+      <El id="0">6.692989</El>
+    </sample>
+    <sample>
+      <time>2027-313T06:00:00.000000</time>
+      <Az id="0">24.378654</Az>
+      <El id="0">6.713703</El>
+    </sample>
+    <sample>
+      <time>2027-313T07:00:00.000000</time>
+      <Az id="0">23.869251</Az>
+      <El id="0">6.734008</El>
+    </sample>
+    <sample>
+      <time>2027-313T08:00:00.000000</time>
+      <Az id="0">23.359820</Az>
+      <El id="0">6.753903</El>
+    </sample>
+    <sample>
+      <time>2027-313T09:00:00.000000</time>
+      <Az id="0">22.850362</Az>
+      <El id="0">6.773386</El>
+    </sample>
+    <sample>
+      <time>2027-313T10:00:00.000000</time>
+      <Az id="0">22.340878</Az>
+      <El id="0">6.792456</El>
+    </sample>
+    <sample>
+      <time>2027-313T11:00:00.000000</time>
+      <Az id="0">21.831368</Az>
+      <El id="0">6.811111</El>
+    </sample>
+    <sample>
+      <time>2027-313T12:00:00.000000</time>
+      <Az id="0">21.321834</Az>
+      <El id="0">6.829350</El>
+    </sample>
+    <sample>
+      <time>2027-313T13:00:00.000000</time>
+      <Az id="0">20.812275</Az>
+      <El id="0">6.847171</El>
+    </sample>
+    <sample>
+      <time>2027-313T14:00:00.000000</time>
+      <Az id="0">20.302692</Az>
+      <El id="0">6.864573</El>
+    </sample>
+    <sample>
+      <time>2027-313T15:00:00.000000</time>
+      <Az id="0">19.793087</Az>
+      <El id="0">6.881554</El>
+    </sample>
+    <sample>
+      <time>2027-313T16:00:00.000000</time>
+      <Az id="0">19.283459</Az>
+      <El id="0">6.898114</El>
+    </sample>
+    <sample>
+      <time>2027-313T17:00:00.000000</time>
+      <Az id="0">18.773810</Az>
+      <El id="0">6.914250</El>
+    </sample>
+    <sample>
+      <time>2027-313T18:00:00.000000</time>
+      <Az id="0">18.264139</Az>
+      <El id="0">6.929961</El>
+    </sample>
+    <sample>
+      <time>2027-313T19:00:00.000000</time>
+      <Az id="0">17.754449</Az>
+      <El id="0">6.945247</El>
+    </sample>
+    <sample>
+      <time>2027-313T20:00:00.000000</time>
+      <Az id="0">17.244739</Az>
+      <El id="0">6.960105</El>
+    </sample>
+    <sample>
+      <time>2027-313T21:00:00.000000</time>
+      <Az id="0">16.735010</Az>
+      <El id="0">6.974535</El>
+    </sample>
+    <sample>
+      <time>2027-313T22:00:00.000000</time>
+      <Az id="0">16.225263</Az>
+      <El id="0">6.988535</El>
+    </sample>
+    <sample>
+      <time>2027-313T23:00:00.000000</time>
+      <Az id="0">15.715498</Az>
+      <El id="0">7.002105</El>
+    </sample>
+    <sample>
+      <time>2027-314T00:00:00.000000</time>
+      <Az id="0">15.205717</Az>
+      <El id="0">7.015243</El>
+    </sample>
+    <sample>
+      <time>2027-314T01:00:00.000000</time>
+      <Az id="0">14.695920</Az>
+      <El id="0">7.027948</El>
+    </sample>
+    <sample>
+      <time>2027-314T02:00:00.000000</time>
+      <Az id="0">14.186108</Az>
+      <El id="0">7.040219</El>
+    </sample>
+    <sample>
+      <time>2027-314T03:00:00.000000</time>
+      <Az id="0">13.676281</Az>
+      <El id="0">7.052056</El>
+    </sample>
+    <sample>
+      <time>2027-314T04:00:00.000000</time>
+      <Az id="0">13.166441</Az>
+      <El id="0">7.063456</El>
+    </sample>
+    <sample>
+      <time>2027-314T05:00:00.000000</time>
+      <Az id="0">12.656588</Az>
+      <El id="0">7.074420</El>
+    </sample>
+    <sample>
+      <time>2027-314T06:00:00.000000</time>
+      <Az id="0">12.146722</Az>
+      <El id="0">7.084946</El>
+    </sample>
+    <sample>
+      <time>2027-314T07:00:00.000000</time>
+      <Az id="0">11.636846</Az>
+      <El id="0">7.095034</El>
+    </sample>
+    <sample>
+      <time>2027-314T08:00:00.000000</time>
+      <Az id="0">11.126959</Az>
+      <El id="0">7.104682</El>
+    </sample>
+    <sample>
+      <time>2027-314T09:00:00.000000</time>
+      <Az id="0">10.617062</Az>
+      <El id="0">7.113890</El>
+    </sample>
+    <sample>
+      <time>2027-314T10:00:00.000000</time>
+      <Az id="0">10.107156</Az>
+      <El id="0">7.122657</El>
+    </sample>
+    <sample>
+      <time>2027-314T11:00:00.000000</time>
+      <Az id="0">9.597242</Az>
+      <El id="0">7.130982</El>
+    </sample>
+    <sample>
+      <time>2027-314T12:00:00.000000</time>
+      <Az id="0">9.087320</Az>
+      <El id="0">7.138866</El>
+    </sample>
+    <sample>
+      <time>2027-314T13:00:00.000000</time>
+      <Az id="0">8.577392</Az>
+      <El id="0">7.146306</El>
+    </sample>
+    <sample>
+      <time>2027-314T14:00:00.000000</time>
+      <Az id="0">8.067458</Az>
+      <El id="0">7.153303</El>
+    </sample>
+    <sample>
+      <time>2027-314T15:00:00.000000</time>
+      <Az id="0">7.557519</Az>
+      <El id="0">7.159855</El>
+    </sample>
+    <sample>
+      <time>2027-314T16:00:00.000000</time>
+      <Az id="0">7.047577</Az>
+      <El id="0">7.165963</El>
+    </sample>
+    <sample>
+      <time>2027-314T17:00:00.000000</time>
+      <Az id="0">6.537630</Az>
+      <El id="0">7.171626</El>
+    </sample>
+    <sample>
+      <time>2027-314T18:00:00.000000</time>
+      <Az id="0">6.027682</Az>
+      <El id="0">7.176843</El>
+    </sample>
+    <sample>
+      <time>2027-314T19:00:00.000000</time>
+      <Az id="0">5.517731</Az>
+      <El id="0">7.181614</El>
+    </sample>
+    <sample>
+      <time>2027-314T20:00:00.000000</time>
+      <Az id="0">5.007780</Az>
+      <El id="0">7.185938</El>
+    </sample>
+    <sample>
+      <time>2027-314T21:00:00.000000</time>
+      <Az id="0">4.497829</Az>
+      <El id="0">7.189816</El>
+    </sample>
+    <sample>
+      <time>2027-314T22:00:00.000000</time>
+      <Az id="0">3.987879</Az>
+      <El id="0">7.193246</El>
+    </sample>
+    <sample>
+      <time>2027-314T23:00:00.000000</time>
+      <Az id="0">3.477930</Az>
+      <El id="0">7.196229</El>
+    </sample>
+    <sample>
+      <time>2027-315T00:00:00.000000</time>
+      <Az id="0">2.967984</Az>
+      <El id="0">7.198765</El>
+    </sample>
+    <sample>
+      <time>2027-315T01:00:00.000000</time>
+      <Az id="0">2.458041</Az>
+      <El id="0">7.200852</El>
+    </sample>
+    <sample>
+      <time>2027-315T02:00:00.000000</time>
+      <Az id="0">1.948102</Az>
+      <El id="0">7.202491</El>
+    </sample>
+    <sample>
+      <time>2027-315T03:00:00.000000</time>
+      <Az id="0">1.438168</Az>
+      <El id="0">7.203682</El>
+    </sample>
+    <sample>
+      <time>2027-315T04:00:00.000000</time>
+      <Az id="0">0.928240</Az>
+      <El id="0">7.204424</El>
+    </sample>
+    <sample>
+      <time>2027-315T05:00:00.000000</time>
+      <Az id="0">0.418319</Az>
+      <El id="0">7.204719</El>
+    </sample>
+    <sample>
+      <time>2027-315T06:00:00.000000</time>
+      <Az id="0">359.908406</Az>
+      <El id="0">7.204564</El>
+    </sample>
+    <sample>
+      <time>2027-315T07:00:00.000000</time>
+      <Az id="0">359.398500</Az>
+      <El id="0">7.203961</El>
+    </sample>
+    <sample>
+      <time>2027-315T08:00:00.000000</time>
+      <Az id="0">358.888604</Az>
+      <El id="0">7.202910</El>
+    </sample>
+    <sample>
+      <time>2027-315T09:00:00.000000</time>
+      <Az id="0">358.378718</Az>
+      <El id="0">7.201410</El>
+    </sample>
+    <sample>
+      <time>2027-315T10:00:00.000000</time>
+      <Az id="0">357.868843</Az>
+      <El id="0">7.199462</El>
+    </sample>
+    <sample>
+      <time>2027-315T11:00:00.000000</time>
+      <Az id="0">357.358979</Az>
+      <El id="0">7.197066</El>
+    </sample>
+    <sample>
+      <time>2027-315T12:00:00.000000</time>
+      <Az id="0">356.849128</Az>
+      <El id="0">7.194222</El>
+    </sample>
+    <sample>
+      <time>2027-315T13:00:00.000000</time>
+      <Az id="0">356.339290</Az>
+      <El id="0">7.190930</El>
+    </sample>
+    <sample>
+      <time>2027-315T14:00:00.000000</time>
+      <Az id="0">355.829467</Az>
+      <El id="0">7.187191</El>
+    </sample>
+    <sample>
+      <time>2027-315T15:00:00.000000</time>
+      <Az id="0">355.319658</Az>
+      <El id="0">7.183004</El>
+    </sample>
+    <sample>
+      <time>2027-315T16:00:00.000000</time>
+      <Az id="0">354.809865</Az>
+      <El id="0">7.178371</El>
+    </sample>
+    <sample>
+      <time>2027-315T17:00:00.000000</time>
+      <Az id="0">354.300089</Az>
+      <El id="0">7.173291</El>
+    </sample>
+    <sample>
+      <time>2027-315T18:00:00.000000</time>
+      <Az id="0">353.790330</Az>
+      <El id="0">7.167765</El>
+    </sample>
+    <sample>
+      <time>2027-315T19:00:00.000000</time>
+      <Az id="0">353.280590</Az>
+      <El id="0">7.161793</El>
+    </sample>
+    <sample>
+      <time>2027-315T20:00:00.000000</time>
+      <Az id="0">352.770868</Az>
+      <El id="0">7.155376</El>
+    </sample>
+    <sample>
+      <time>2027-315T21:00:00.000000</time>
+      <Az id="0">352.261166</Az>
+      <El id="0">7.148514</El>
+    </sample>
+    <sample>
+      <time>2027-315T22:00:00.000000</time>
+      <Az id="0">351.751485</Az>
+      <El id="0">7.141208</El>
+    </sample>
+    <sample>
+      <time>2027-315T23:00:00.000000</time>
+      <Az id="0">351.241826</Az>
+      <El id="0">7.133459</El>
+    </sample>
+    <sample>
+      <time>2027-316T00:00:00.000000</time>
+      <Az id="0">350.732188</Az>
+      <El id="0">7.125266</El>
+    </sample>
+    <sample>
+      <time>2027-316T01:00:00.000000</time>
+      <Az id="0">350.222574</Az>
+      <El id="0">7.116631</El>
+    </sample>
+    <sample>
+      <time>2027-316T02:00:00.000000</time>
+      <Az id="0">349.712983</Az>
+      <El id="0">7.107555</El>
+    </sample>
+    <sample>
+      <time>2027-316T03:00:00.000000</time>
+      <Az id="0">349.203417</Az>
+      <El id="0">7.098037</El>
+    </sample>
+    <sample>
+      <time>2027-316T04:00:00.000000</time>
+      <Az id="0">348.693876</Az>
+      <El id="0">7.088079</El>
+    </sample>
+    <sample>
+      <time>2027-316T05:00:00.000000</time>
+      <Az id="0">348.184361</Az>
+      <El id="0">7.077682</El>
+    </sample>
+    <sample>
+      <time>2027-316T06:00:00.000000</time>
+      <Az id="0">347.674873</Az>
+      <El id="0">7.066846</El>
+    </sample>
+    <sample>
+      <time>2027-316T07:00:00.000000</time>
+      <Az id="0">347.165413</Az>
+      <El id="0">7.055573</El>
+    </sample>
+    <sample>
+      <time>2027-316T08:00:00.000000</time>
+      <Az id="0">346.655980</Az>
+      <El id="0">7.043862</El>
+    </sample>
+    <sample>
+      <time>2027-316T09:00:00.000000</time>
+      <Az id="0">346.146577</Az>
+      <El id="0">7.031716</El>
+    </sample>
+    <sample>
+      <time>2027-316T10:00:00.000000</time>
+      <Az id="0">345.637203</Az>
+      <El id="0">7.019134</El>
+    </sample>
+    <sample>
+      <time>2027-316T11:00:00.000000</time>
+      <Az id="0">345.127860</Az>
+      <El id="0">7.006119</El>
+    </sample>
+    <sample>
+      <time>2027-316T12:00:00.000000</time>
+      <Az id="0">344.618548</Az>
+      <El id="0">6.992671</El>
+    </sample>
+    <sample>
+      <time>2027-316T13:00:00.000000</time>
+      <Az id="0">344.109268</Az>
+      <El id="0">6.978791</El>
+    </sample>
+    <sample>
+      <time>2027-316T14:00:00.000000</time>
+      <Az id="0">343.600020</Az>
+      <El id="0">6.964480</El>
+    </sample>
+    <sample>
+      <time>2027-316T15:00:00.000000</time>
+      <Az id="0">343.090806</Az>
+      <El id="0">6.949739</El>
+    </sample>
+    <sample>
+      <time>2027-316T16:00:00.000000</time>
+      <Az id="0">342.581625</Az>
+      <El id="0">6.934570</El>
+    </sample>
+    <sample>
+      <time>2027-316T17:00:00.000000</time>
+      <Az id="0">342.072479</Az>
+      <El id="0">6.918973</El>
+    </sample>
+    <sample>
+      <time>2027-316T18:00:00.000000</time>
+      <Az id="0">341.563368</Az>
+      <El id="0">6.902951</El>
+    </sample>
+    <sample>
+      <time>2027-316T19:00:00.000000</time>
+      <Az id="0">341.054293</Az>
+      <El id="0">6.886504</El>
+    </sample>
+    <sample>
+      <time>2027-316T20:00:00.000000</time>
+      <Az id="0">340.545254</Az>
+      <El id="0">6.869633</El>
+    </sample>
+    <sample>
+      <time>2027-316T21:00:00.000000</time>
+      <Az id="0">340.036253</Az>
+      <El id="0">6.852340</El>
+    </sample>
+    <sample>
+      <time>2027-316T22:00:00.000000</time>
+      <Az id="0">339.527289</Az>
+      <El id="0">6.834626</El>
+    </sample>
+    <sample>
+      <time>2027-316T23:00:00.000000</time>
+      <Az id="0">339.018363</Az>
+      <El id="0">6.816493</El>
+    </sample>
+    <sample>
+      <time>2027-317T00:00:00.000000</time>
+      <Az id="0">338.509476</Az>
+      <El id="0">6.797942</El>
+    </sample>
+    <sample>
+      <time>2027-317T01:00:00.000000</time>
+      <Az id="0">338.000629</Az>
+      <El id="0">6.778975</El>
+    </sample>
+    <sample>
+      <time>2027-317T02:00:00.000000</time>
+      <Az id="0">337.491822</Az>
+      <El id="0">6.759593</El>
+    </sample>
+    <sample>
+      <time>2027-317T03:00:00.000000</time>
+      <Az id="0">336.983055</Az>
+      <El id="0">6.739797</El>
+    </sample>
+    <sample>
+      <time>2027-317T04:00:00.000000</time>
+      <Az id="0">336.474330</Az>
+      <El id="0">6.719589</El>
+    </sample>
+    <sample>
+      <time>2027-317T05:00:00.000000</time>
+      <Az id="0">335.965646</Az>
+      <El id="0">6.698971</El>
+    </sample>
+    <sample>
+      <time>2027-317T06:00:00.000000</time>
+      <Az id="0">335.457004</Az>
+      <El id="0">6.677945</El>
+    </sample>
+    <sample>
+      <time>2027-317T07:00:00.000000</time>
+      <Az id="0">334.948405</Az>
+      <El id="0">6.656511</El>
+    </sample>
+    <sample>
+      <time>2027-317T08:00:00.000000</time>
+      <Az id="0">334.439849</Az>
+      <El id="0">6.634673</El>
+    </sample>
+    <sample>
+      <time>2027-317T09:00:00.000000</time>
+      <Az id="0">333.931337</Az>
+      <El id="0">6.612430</El>
+    </sample>
+    <sample>
+      <time>2027-317T10:00:00.000000</time>
+      <Az id="0">333.422869</Az>
+      <El id="0">6.589786</El>
+    </sample>
+    <sample>
+      <time>2027-317T11:00:00.000000</time>
+      <Az id="0">332.914446</Az>
+      <El id="0">6.566742</El>
+    </sample>
+    <sample>
+      <time>2027-317T12:00:00.000000</time>
+      <Az id="0">332.406068</Az>
+      <El id="0">6.543300</El>
+    </sample>
+    <sample>
+      <time>2027-317T13:00:00.000000</time>
+      <Az id="0">331.897735</Az>
+      <El id="0">6.519462</El>
+    </sample>
+    <sample>
+      <time>2027-317T14:00:00.000000</time>
+      <Az id="0">331.389449</Az>
+      <El id="0">6.495229</El>
+    </sample>
+    <sample>
+      <time>2027-317T15:00:00.000000</time>
+      <Az id="0">330.881208</Az>
+      <El id="0">6.470603</El>
+    </sample>
+    <sample>
+      <time>2027-317T16:00:00.000000</time>
+      <Az id="0">330.373015</Az>
+      <El id="0">6.445587</El>
+    </sample>
+    <sample>
+      <time>2027-317T17:00:00.000000</time>
+      <Az id="0">329.864869</Az>
+      <El id="0">6.420183</El>
+    </sample>
+    <sample>
+      <time>2027-317T18:00:00.000000</time>
+      <Az id="0">329.356770</Az>
+      <El id="0">6.394392</El>
+    </sample>
+    <sample>
+      <time>2027-317T19:00:00.000000</time>
+      <Az id="0">328.848719</Az>
+      <El id="0">6.368216</El>
+    </sample>
+    <sample>
+      <time>2027-317T20:00:00.000000</time>
+      <Az id="0">328.340716</Az>
+      <El id="0">6.341658</El>
+    </sample>
+    <sample>
+      <time>2027-317T21:00:00.000000</time>
+      <Az id="0">327.832762</Az>
+      <El id="0">6.314719</El>
+    </sample>
+    <sample>
+      <time>2027-317T22:00:00.000000</time>
+      <Az id="0">327.324857</Az>
+      <El id="0">6.287403</El>
+    </sample>
+    <sample>
+      <time>2027-317T23:00:00.000000</time>
+      <Az id="0">326.817001</Az>
+      <El id="0">6.259710</El>
+    </sample>
+    <sample>
+      <time>2027-318T00:00:00.000000</time>
+      <Az id="0">326.309194</Az>
+      <El id="0">6.231643</El>
+    </sample>
+    <sample>
+      <time>2027-318T01:00:00.000000</time>
+      <Az id="0">325.801438</Az>
+      <El id="0">6.203205</El>
+    </sample>
+    <sample>
+      <time>2027-318T02:00:00.000000</time>
+      <Az id="0">325.293731</Az>
+      <El id="0">6.174397</El>
+    </sample>
+    <sample>
+      <time>2027-318T03:00:00.000000</time>
+      <Az id="0">324.786075</Az>
+      <El id="0">6.145222</El>
+    </sample>
+    <sample>
+      <time>2027-318T04:00:00.000000</time>
+      <Az id="0">324.278469</Az>
+      <El id="0">6.115682</El>
+    </sample>
+    <sample>
+      <time>2027-318T05:00:00.000000</time>
+      <Az id="0">323.770914</Az>
+      <El id="0">6.085780</El>
+    </sample>
+    <sample>
+      <time>2027-318T06:00:00.000000</time>
+      <Az id="0">323.263410</Az>
+      <El id="0">6.055518</El>
+    </sample>
+    <sample>
+      <time>2027-318T07:00:00.000000</time>
+      <Az id="0">322.755957</Az>
+      <El id="0">6.024897</El>
+    </sample>
+    <sample>
+      <time>2027-318T08:00:00.000000</time>
+      <Az id="0">322.248555</Az>
+      <El id="0">5.993922</El>
+    </sample>
+    <sample>
+      <time>2027-318T09:00:00.000000</time>
+      <Az id="0">321.741205</Az>
+      <El id="0">5.962593</El>
+    </sample>
+    <sample>
+      <time>2027-318T10:00:00.000000</time>
+      <Az id="0">321.233906</Az>
+      <El id="0">5.930914</El>
+    </sample>
+    <sample>
+      <time>2027-318T11:00:00.000000</time>
+      <Az id="0">320.726659</Az>
+      <El id="0">5.898887</El>
+    </sample>
+    <sample>
+      <time>2027-318T12:00:00.000000</time>
+      <Az id="0">320.219464</Az>
+      <El id="0">5.866514</El>
+    </sample>
+    <sample>
+      <time>2027-318T13:00:00.000000</time>
+      <Az id="0">319.712321</Az>
+      <El id="0">5.833798</El>
+    </sample>
+    <sample>
+      <time>2027-318T14:00:00.000000</time>
+      <Az id="0">319.205231</Az>
+      <El id="0">5.800743</El>
+    </sample>
+    <sample>
+      <time>2027-318T15:00:00.000000</time>
+      <Az id="0">318.698192</Az>
+      <El id="0">5.767349</El>
+    </sample>
+    <sample>
+      <time>2027-318T16:00:00.000000</time>
+      <Az id="0">318.191205</Az>
+      <El id="0">5.733620</El>
+    </sample>
+    <sample>
+      <time>2027-318T17:00:00.000000</time>
+      <Az id="0">317.684271</Az>
+      <El id="0">5.699559</El>
+    </sample>
+    <sample>
+      <time>2027-318T18:00:00.000000</time>
+      <Az id="0">317.177389</Az>
+      <El id="0">5.665168</El>
+    </sample>
+    <sample>
+      <time>2027-318T19:00:00.000000</time>
+      <Az id="0">316.670560</Az>
+      <El id="0">5.630450</El>
+    </sample>
+    <sample>
+      <time>2027-318T20:00:00.000000</time>
+      <Az id="0">316.163782</Az>
+      <El id="0">5.595407</El>
+    </sample>
+    <sample>
+      <time>2027-318T21:00:00.000000</time>
+      <Az id="0">315.657057</Az>
+      <El id="0">5.560043</El>
+    </sample>
+    <sample>
+      <time>2027-318T22:00:00.000000</time>
+      <Az id="0">315.150384</Az>
+      <El id="0">5.524360</El>
+    </sample>
+    <sample>
+      <time>2027-318T23:00:00.000000</time>
+      <Az id="0">314.643764</Az>
+      <El id="0">5.488361</El>
+    </sample>
+    <sample>
+      <time>2027-319T00:00:00.000000</time>
+      <Az id="0">314.137195</Az>
+      <El id="0">5.452049</El>
+    </sample>
+    <sample>
+      <time>2027-319T01:00:00.000000</time>
+      <Az id="0">313.630679</Az>
+      <El id="0">5.415426</El>
+    </sample>
+    <sample>
+      <time>2027-319T02:00:00.000000</time>
+      <Az id="0">313.124215</Az>
+      <El id="0">5.378496</El>
+    </sample>
+    <sample>
+      <time>2027-319T03:00:00.000000</time>
+      <Az id="0">312.617802</Az>
+      <El id="0">5.341261</El>
+    </sample>
+    <sample>
+      <time>2027-319T04:00:00.000000</time>
+      <Az id="0">312.111442</Az>
+      <El id="0">5.303724</El>
+    </sample>
+    <sample>
+      <time>2027-319T05:00:00.000000</time>
+      <Az id="0">311.605133</Az>
+      <El id="0">5.265889</El>
+    </sample>
+    <sample>
+      <time>2027-319T06:00:00.000000</time>
+      <Az id="0">311.098875</Az>
+      <El id="0">5.227757</El>
+    </sample>
+    <sample>
+      <time>2027-319T07:00:00.000000</time>
+      <Az id="0">310.592669</Az>
+      <El id="0">5.189333</El>
+    </sample>
+    <sample>
+      <time>2027-319T08:00:00.000000</time>
+      <Az id="0">310.086514</Az>
+      <El id="0">5.150619</El>
+    </sample>
+    <sample>
+      <time>2027-319T09:00:00.000000</time>
+      <Az id="0">309.580410</Az>
+      <El id="0">5.111618</El>
+    </sample>
+    <sample>
+      <time>2027-319T10:00:00.000000</time>
+      <Az id="0">309.074357</Az>
+      <El id="0">5.072334</El>
+    </sample>
+    <sample>
+      <time>2027-319T11:00:00.000000</time>
+      <Az id="0">308.568354</Az>
+      <El id="0">5.032769</El>
+    </sample>
+    <sample>
+      <time>2027-319T12:00:00.000000</time>
+      <Az id="0">308.062402</Az>
+      <El id="0">4.992926</El>
+    </sample>
+    <sample>
+      <time>2027-319T13:00:00.000000</time>
+      <Az id="0">307.556500</Az>
+      <El id="0">4.952808</El>
+    </sample>
+    <sample>
+      <time>2027-319T14:00:00.000000</time>
+      <Az id="0">307.050647</Az>
+      <El id="0">4.912420</El>
+    </sample>
+    <sample>
+      <time>2027-319T15:00:00.000000</time>
+      <Az id="0">306.544844</Az>
+      <El id="0">4.871763</El>
+    </sample>
+    <sample>
+      <time>2027-319T16:00:00.000000</time>
+      <Az id="0">306.039090</Az>
+      <El id="0">4.830841</El>
+    </sample>
+    <sample>
+      <time>2027-319T17:00:00.000000</time>
+      <Az id="0">305.533386</Az>
+      <El id="0">4.789657</El>
+    </sample>
+    <sample>
+      <time>2027-319T18:00:00.000000</time>
+      <Az id="0">305.027729</Az>
+      <El id="0">4.748214</El>
+    </sample>
+    <sample>
+      <time>2027-319T19:00:00.000000</time>
+      <Az id="0">304.522121</Az>
+      <El id="0">4.706516</El>
+    </sample>
+    <sample>
+      <time>2027-319T20:00:00.000000</time>
+      <Az id="0">304.016561</Az>
+      <El id="0">4.664566</El>
+    </sample>
+    <sample>
+      <time>2027-319T21:00:00.000000</time>
+      <Az id="0">303.511049</Az>
+      <El id="0">4.622367</El>
+    </sample>
+    <sample>
+      <time>2027-319T22:00:00.000000</time>
+      <Az id="0">303.005584</Az>
+      <El id="0">4.579922</El>
+    </sample>
+    <sample>
+      <time>2027-319T23:00:00.000000</time>
+      <Az id="0">302.500166</Az>
+      <El id="0">4.537235</El>
+    </sample>
+    <sample>
+      <time>2027-320T00:00:00.000000</time>
+      <Az id="0">301.994794</Az>
+      <El id="0">4.494309</El>
+    </sample>
+    <sample>
+      <time>2027-320T01:00:00.000000</time>
+      <Az id="0">301.489468</Az>
+      <El id="0">4.451147</El>
+    </sample>
+    <sample>
+      <time>2027-320T02:00:00.000000</time>
+      <Az id="0">300.984187</Az>
+      <El id="0">4.407753</El>
+    </sample>
+    <sample>
+      <time>2027-320T03:00:00.000000</time>
+      <Az id="0">300.478952</Az>
+      <El id="0">4.364129</El>
+    </sample>
+    <sample>
+      <time>2027-320T04:00:00.000000</time>
+      <Az id="0">299.973762</Az>
+      <El id="0">4.320281</El>
+    </sample>
+    <sample>
+      <time>2027-320T05:00:00.000000</time>
+      <Az id="0">299.468615</Az>
+      <El id="0">4.276210</El>
+    </sample>
+    <sample>
+      <time>2027-320T06:00:00.000000</time>
+      <Az id="0">298.963513</Az>
+      <El id="0">4.231920</El>
+    </sample>
+    <sample>
+      <time>2027-320T07:00:00.000000</time>
+      <Az id="0">298.458454</Az>
+      <El id="0">4.187415</El>
+    </sample>
+    <sample>
+      <time>2027-320T08:00:00.000000</time>
+      <Az id="0">297.953437</Az>
+      <El id="0">4.142699</El>
+    </sample>
+    <sample>
+      <time>2027-320T09:00:00.000000</time>
+      <Az id="0">297.448463</Az>
+      <El id="0">4.097774</El>
+    </sample>
+    <sample>
+      <time>2027-320T10:00:00.000000</time>
+      <Az id="0">296.943531</Az>
+      <El id="0">4.052644</El>
+    </sample>
+    <sample>
+      <time>2027-320T11:00:00.000000</time>
+      <Az id="0">296.438640</Az>
+      <El id="0">4.007312</El>
+    </sample>
+    <sample>
+      <time>2027-320T12:00:00.000000</time>
+      <Az id="0">295.933789</Az>
+      <El id="0">3.961783</El>
+    </sample>
+    <sample>
+      <time>2027-320T13:00:00.000000</time>
+      <Az id="0">295.428979</Az>
+      <El id="0">3.916059</El>
+    </sample>
+    <sample>
+      <time>2027-320T14:00:00.000000</time>
+      <Az id="0">294.924208</Az>
+      <El id="0">3.870144</El>
+    </sample>
+    <sample>
+      <time>2027-320T15:00:00.000000</time>
+      <Az id="0">294.419476</Az>
+      <El id="0">3.824043</El>
+    </sample>
+    <sample>
+      <time>2027-320T16:00:00.000000</time>
+      <Az id="0">293.914783</Az>
+      <El id="0">3.777757</El>
+    </sample>
+    <sample>
+      <time>2027-320T17:00:00.000000</time>
+      <Az id="0">293.410127</Az>
+      <El id="0">3.731291</El>
+    </sample>
+    <sample>
+      <time>2027-320T18:00:00.000000</time>
+      <Az id="0">292.905509</Az>
+      <El id="0">3.684649</El>
+    </sample>
+    <sample>
+      <time>2027-320T19:00:00.000000</time>
+      <Az id="0">292.400927</Az>
+      <El id="0">3.637834</El>
+    </sample>
+    <sample>
+      <time>2027-320T20:00:00.000000</time>
+      <Az id="0">291.896381</Az>
+      <El id="0">3.590850</El>
+    </sample>
+    <sample>
+      <time>2027-320T21:00:00.000000</time>
+      <Az id="0">291.391870</Az>
+      <El id="0">3.543700</El>
+    </sample>
+    <sample>
+      <time>2027-320T22:00:00.000000</time>
+      <Az id="0">290.887394</Az>
+      <El id="0">3.496388</El>
+    </sample>
+    <sample>
+      <time>2027-320T23:00:00.000000</time>
+      <Az id="0">290.382952</Az>
+      <El id="0">3.448917</El>
+    </sample>
+    <sample>
+      <time>2027-321T00:00:00.000000</time>
+      <Az id="0">289.878543</Az>
+      <El id="0">3.401292</El>
+    </sample>
+    <sample>
+      <time>2027-321T01:00:00.000000</time>
+      <Az id="0">289.374167</Az>
+      <El id="0">3.353516</El>
+    </sample>
+    <sample>
+      <time>2027-321T02:00:00.000000</time>
+      <Az id="0">288.869823</Az>
+      <El id="0">3.305592</El>
+    </sample>
+    <sample>
+      <time>2027-321T03:00:00.000000</time>
+      <Az id="0">288.365510</Az>
+      <El id="0">3.257525</El>
+    </sample>
+    <sample>
+      <time>2027-321T04:00:00.000000</time>
+      <Az id="0">287.861228</Az>
+      <El id="0">3.209318</El>
+    </sample>
+    <sample>
+      <time>2027-321T05:00:00.000000</time>
+      <Az id="0">287.356975</Az>
+      <El id="0">3.160975</El>
+    </sample>
+    <sample>
+      <time>2027-321T06:00:00.000000</time>
+      <Az id="0">286.852752</Az>
+      <El id="0">3.112499</El>
+    </sample>
+    <sample>
+      <time>2027-321T07:00:00.000000</time>
+      <Az id="0">286.348557</Az>
+      <El id="0">3.063895</El>
+    </sample>
+    <sample>
+      <time>2027-321T08:00:00.000000</time>
+      <Az id="0">285.844389</Az>
+      <El id="0">3.015165</El>
+    </sample>
+    <sample>
+      <time>2027-321T09:00:00.000000</time>
+      <Az id="0">285.340249</Az>
+      <El id="0">2.966314</El>
+    </sample>
+    <sample>
+      <time>2027-321T10:00:00.000000</time>
+      <Az id="0">284.836135</Az>
+      <El id="0">2.917346</El>
+    </sample>
+    <sample>
+      <time>2027-321T11:00:00.000000</time>
+      <Az id="0">284.332046</Az>
+      <El id="0">2.868264</El>
+    </sample>
+    <sample>
+      <time>2027-321T12:00:00.000000</time>
+      <Az id="0">283.827981</Az>
+      <El id="0">2.819073</El>
+    </sample>
+    <sample>
+      <time>2027-321T13:00:00.000000</time>
+      <Az id="0">283.323941</Az>
+      <El id="0">2.769775</El>
+    </sample>
+    <sample>
+      <time>2027-321T14:00:00.000000</time>
+      <Az id="0">282.819924</Az>
+      <El id="0">2.720374</El>
+    </sample>
+    <sample>
+      <time>2027-321T15:00:00.000000</time>
+      <Az id="0">282.315929</Az>
+      <El id="0">2.670876</El>
+    </sample>
+    <sample>
+      <time>2027-321T16:00:00.000000</time>
+      <Az id="0">281.811955</Az>
+      <El id="0">2.621282</El>
+    </sample>
+    <sample>
+      <time>2027-321T17:00:00.000000</time>
+      <Az id="0">281.308002</Az>
+      <El id="0">2.571598</El>
+    </sample>
+    <sample>
+      <time>2027-321T18:00:00.000000</time>
+      <Az id="0">280.804070</Az>
+      <El id="0">2.521826</El>
+    </sample>
+    <sample>
+      <time>2027-321T19:00:00.000000</time>
+      <Az id="0">280.300156</Az>
+      <El id="0">2.471972</El>
+    </sample>
+    <sample>
+      <time>2027-321T20:00:00.000000</time>
+      <Az id="0">279.796261</Az>
+      <El id="0">2.422038</El>
+    </sample>
+    <sample>
+      <time>2027-321T21:00:00.000000</time>
+      <Az id="0">279.292383</Az>
+      <El id="0">2.372028</El>
+    </sample>
+    <sample>
+      <time>2027-321T22:00:00.000000</time>
+      <Az id="0">278.788522</Az>
+      <El id="0">2.321947</El>
+    </sample>
+    <sample>
+      <time>2027-321T23:00:00.000000</time>
+      <Az id="0">278.284676</Az>
+      <El id="0">2.271798</El>
+    </sample>
+    <sample>
+      <time>2027-322T00:00:00.000000</time>
+      <Az id="0">277.780846</Az>
+      <El id="0">2.221584</El>
+    </sample>
+    <sample>
+      <time>2027-322T01:00:00.000000</time>
+      <Az id="0">277.277030</Az>
+      <El id="0">2.171311</El>
+    </sample>
+    <sample>
+      <time>2027-322T02:00:00.000000</time>
+      <Az id="0">276.773228</Az>
+      <El id="0">2.120981</El>
+    </sample>
+    <sample>
+      <time>2027-322T03:00:00.000000</time>
+      <Az id="0">276.269438</Az>
+      <El id="0">2.070599</El>
+    </sample>
+    <sample>
+      <time>2027-322T04:00:00.000000</time>
+      <Az id="0">275.765659</Az>
+      <El id="0">2.020169</El>
+    </sample>
+    <sample>
+      <time>2027-322T05:00:00.000000</time>
+      <Az id="0">275.261892</Az>
+      <El id="0">1.969694</El>
+    </sample>
+    <sample>
+      <time>2027-322T06:00:00.000000</time>
+      <Az id="0">274.758134</Az>
+      <El id="0">1.919178</El>
+    </sample>
+    <sample>
+      <time>2027-322T07:00:00.000000</time>
+      <Az id="0">274.254386</Az>
+      <El id="0">1.868625</El>
+    </sample>
+    <sample>
+      <time>2027-322T08:00:00.000000</time>
+      <Az id="0">273.750646</Az>
+      <El id="0">1.818039</El>
+    </sample>
+    <sample>
+      <time>2027-322T09:00:00.000000</time>
+      <Az id="0">273.246913</Az>
+      <El id="0">1.767424</El>
+    </sample>
+    <sample>
+      <time>2027-322T10:00:00.000000</time>
+      <Az id="0">272.743187</Az>
+      <El id="0">1.716784</El>
+    </sample>
+    <sample>
+      <time>2027-322T11:00:00.000000</time>
+      <Az id="0">272.239467</Az>
+      <El id="0">1.666123</El>
+    </sample>
+    <sample>
+      <time>2027-322T12:00:00.000000</time>
+      <Az id="0">271.735752</Az>
+      <El id="0">1.615444</El>
+    </sample>
+    <sample>
+      <time>2027-322T13:00:00.000000</time>
+      <Az id="0">271.232040</Az>
+      <El id="0">1.564751</El>
+    </sample>
+    <sample>
+      <time>2027-322T14:00:00.000000</time>
+      <Az id="0">270.728332</Az>
+      <El id="0">1.514049</El>
+    </sample>
+    <sample>
+      <time>2027-322T15:00:00.000000</time>
+      <Az id="0">270.224627</Az>
+      <El id="0">1.463341</El>
+    </sample>
+    <sample>
+      <time>2027-322T16:00:00.000000</time>
+      <Az id="0">269.720923</Az>
+      <El id="0">1.412631</El>
+    </sample>
+    <sample>
+      <time>2027-322T17:00:00.000000</time>
+      <Az id="0">269.217219</Az>
+      <El id="0">1.361924</El>
+    </sample>
+    <sample>
+      <time>2027-322T18:00:00.000000</time>
+      <Az id="0">268.713515</Az>
+      <El id="0">1.311222</El>
+    </sample>
+    <sample>
+      <time>2027-322T19:00:00.000000</time>
+      <Az id="0">268.209810</Az>
+      <El id="0">1.260530</El>
+    </sample>
+    <sample>
+      <time>2027-322T20:00:00.000000</time>
+      <Az id="0">267.706103</Az>
+      <El id="0">1.209852</El>
+    </sample>
+    <sample>
+      <time>2027-322T21:00:00.000000</time>
+      <Az id="0">267.202394</Az>
+      <El id="0">1.159191</El>
+    </sample>
+    <sample>
+      <time>2027-322T22:00:00.000000</time>
+      <Az id="0">266.698680</Az>
+      <El id="0">1.108552</El>
+    </sample>
+    <sample>
+      <time>2027-322T23:00:00.000000</time>
+      <Az id="0">266.194963</Az>
+      <El id="0">1.057938</El>
+    </sample>
+    <sample>
+      <time>2027-323T00:00:00.000000</time>
+      <Az id="0">265.691239</Az>
+      <El id="0">1.007354</El>
+    </sample>
+  </samples>
+</ltd></MPG>

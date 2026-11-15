@@ -1,0 +1,30 @@
+ref Earth visibility on a 60 m ring: min 0.010 max 0.326
+ref Earth visibility on a 120 m ring: min 0.089 max 0.325
+ref Earth visibility on a 240 m ring: min 0.125 max 0.324
+ref Earth visibility on a 480 m ring: min 0.066 max 0.326
+ref at point 0.122
+ours 0.324 Earth az 216.8 233.3 el -9.87 4.45
+ az 216 horizon 2.416 dist m 160 cell 40 unc 0.573
+ az 218 horizon 2.265 dist m 18520 cell 40 unc 0.005
+ az 220 horizon 2.126 dist m 18640 cell 40 unc 0.005
+ az 222 horizon 1.974 dist m 19080 cell 40 unc 0.005
+ az 224 horizon 1.854 dist m 19680 cell 40 unc 0.005
+ az 226 horizon 1.646 dist m 19880 cell 40 unc 0.005
+ az 228 horizon 1.388 dist m 19640 cell 40 unc 0.005
+ az 230 horizon 1.249 dist m 19200 cell 40 unc 0.005
+ az 232 horizon 1.003 dist m 19040 cell 40 unc 0.005
+ az 234 horizon 0.669 dist m 18880 cell 40 unc 0.005
+horizon shift -0.5 -> 0.351
+horizon shift -0.2 -> 0.335
+horizon shift 0.2 -> 0.313
+horizon shift 0.5 -> 0.295
+horizon shift 1 -> 0.263
+with terrain +u 0.324 -u 0.324
+ours 120 m toward 0: 0.269
+ours 120 m toward 90: 0.298
+ours 120 m toward 180: 0.324
+ours 120 m toward 270: 0.244
+ours 240 m toward 0: 0.269
+ours 240 m toward 90: 0.302
+ours 240 m toward 180: 0.325
+ours 240 m toward 270: 0.255

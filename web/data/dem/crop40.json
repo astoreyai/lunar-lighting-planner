@@ -1,0 +1,73 @@
+{
+ "n": 7584,
+ "cellM": 40,
+ "m": 301,
+ "source": "LOLA LDEM_85S_40M (PDS), 12 km window per site",
+ "sites": {
+  "im2_athena": {
+   "file": "dem/crop40/im2_athena.i16",
+   "r0": 192,
+   "c0": 5569
+  },
+  "ce7_degerlache_bl": {
+   "file": "dem/crop40/ce7_degerlache_bl.i16",
+   "r0": 3825,
+   "c0": 2087
+  },
+  "ce7_12_tr": {
+   "file": "dem/crop40/ce7_12_tr.i16",
+   "r0": 4312,
+   "c0": 4274
+  },
+  "ce7_degerlache_tr": {
+   "file": "dem/crop40/ce7_degerlache_tr.i16",
+   "r0": 3237,
+   "c0": 2637
+  },
+  "ce7_degerlache_tl": {
+   "file": "dem/crop40/ce7_degerlache_tl.i16",
+   "r0": 3262,
+   "c0": 2174
+  },
+  "ce7_faustini_br": {
+   "file": "dem/crop40/ce7_faustini_br.i16",
+   "r0": 3712,
+   "c0": 6249
+  },
+  "ce7_shackleton_l": {
+   "file": "dem/crop40/ce7_shackleton_l.i16",
+   "r0": 3750,
+   "c0": 3587
+  },
+  "a3_mm": {
+   "file": "dem/crop40/a3_mm.i16",
+   "r0": 692,
+   "c0": 5466
+  },
+  "a3_ma": {
+   "file": "dem/crop40/a3_ma.i16",
+   "r0": 604,
+   "c0": 3629
+  },
+  "a3_g2": {
+   "file": "dem/crop40/a3_g2.i16",
+   "r0": 3067,
+   "c0": 2429
+  },
+  "a3_sp": {
+   "file": "dem/crop40/a3_sp.i16",
+   "r0": 4892,
+   "c0": 5392
+  },
+  "a3_n1": {
+   "file": "dem/crop40/a3_n1.i16",
+   "r0": 890,
+   "c0": 5741
+  },
+  "a3_hw": {
+   "file": "dem/crop40/a3_hw.i16",
+   "r0": 1379,
+   "c0": 2691
+  }
+ }
+}

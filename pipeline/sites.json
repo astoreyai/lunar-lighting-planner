@@ -1,0 +1,551 @@
+{
+ "generated_utc": "2026-11-13T19:39:53Z",
+ "sites": [
+  {
+   "id": "apollo11",
+   "name": "Apollo 11 (Tranquility Base)",
+   "group": "Apollo",
+   "lat_deg": 0.67416,
+   "lon_deg": 23.47314,
+   "landing_utc": "1969-07-20T20:17:40Z",
+   "source": "Coordinates of Lunar Anthropogenic Targets (LROC Science Operations Team, Arizona State University, 28 July 2016)",
+   "source_url": "https://lroc.im-ldi.com/data/support/downloads/2016_LROC_Coordinates_of_Human_Features.pdf",
+   "note": "LM coordinates, LROC NAC-derived, mean Earth/polar axis (ME) frame. Landing UTC from NSSDCA mission page https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059C (\"Landed on Moon\" / LM landing UT). NSSDCA LM page gives the same coordinates (DE421 mean Earth/polar axis) and 20:17:40 UT."
+  },
+  {
+   "id": "apollo12",
+   "name": "Apollo 12 (Oceanus Procellarum)",
+   "group": "Apollo",
+   "lat_deg": -3.0128,
+   "lon_deg": -23.4219,
+   "landing_utc": "1969-11-19T06:54:35Z",
+   "source": "Coordinates of Lunar Anthropogenic Targets (LROC Science Operations Team, Arizona State University, 28 July 2016)",
+   "source_url": "https://lroc.im-ldi.com/data/support/downloads/2016_LROC_Coordinates_of_Human_Features.pdf",
+   "note": "LM coordinates, LROC NAC-derived, mean Earth/polar axis (ME) frame. Landing UTC from NSSDCA mission page https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo12info.html (\"Landed on Moon\" / LM landing UT). Longitude converted from 336.5781 E. NSSDCA table gives 3.013 S, 23.422 W."
+  },
+  {
+   "id": "apollo14",
+   "name": "Apollo 14 (Fra Mauro)",
+   "group": "Apollo",
+   "lat_deg": -3.64589,
+   "lon_deg": -17.47194,
+   "landing_utc": "1971-02-05T09:18:11Z",
+   "source": "Coordinates of Lunar Anthropogenic Targets (LROC Science Operations Team, Arizona State University, 28 July 2016)",
+   "source_url": "https://lroc.im-ldi.com/data/support/downloads/2016_LROC_Coordinates_of_Human_Features.pdf",
+   "note": "LM coordinates, LROC NAC-derived, mean Earth/polar axis (ME) frame. Landing UTC from NSSDCA mission page https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo14info.html (\"Landed on Moon\" / LM landing UT). Longitude converted from 342.52806 E. NSSDCA table gives 3.646 S, 17.472 W."
+  },
+  {
+   "id": "apollo15",
+   "name": "Apollo 15 (Hadley-Apennine)",
+   "group": "Apollo",
+   "lat_deg": 26.13239,
+   "lon_deg": 3.6333,
+   "landing_utc": "1971-07-30T22:16:29Z",
+   "source": "Coordinates of Lunar Anthropogenic Targets (LROC Science Operations Team, Arizona State University, 28 July 2016)",
+   "source_url": "https://lroc.im-ldi.com/data/support/downloads/2016_LROC_Coordinates_of_Human_Features.pdf",
+   "note": "LM coordinates, LROC NAC-derived, mean Earth/polar axis (ME) frame. Landing UTC from NSSDCA mission page https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo15info.html (\"Landed on Moon\" / LM landing UT). NSSDCA table gives 26.132 N, 3.633 E."
+  },
+  {
+   "id": "apollo16",
+   "name": "Apollo 16 (Descartes)",
+   "group": "Apollo",
+   "lat_deg": -8.9734,
+   "lon_deg": 15.5011,
+   "landing_utc": "1972-04-21T02:23:35Z",
+   "source": "Coordinates of Lunar Anthropogenic Targets (LROC Science Operations Team, Arizona State University, 28 July 2016)",
+   "source_url": "https://lroc.im-ldi.com/data/support/downloads/2016_LROC_Coordinates_of_Human_Features.pdf",
+   "note": "LM coordinates, LROC NAC-derived, mean Earth/polar axis (ME) frame. Landing UTC from NSSDCA mission page https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo16info.html (\"Landed on Moon\" / LM landing UT). NSSDCA table gives 8.973 S, 15.501 E."
+  },
+  {
+   "id": "apollo17",
+   "name": "Apollo 17 (Taurus-Littrow)",
+   "group": "Apollo",
+   "lat_deg": 20.1911,
+   "lon_deg": 30.7723,
+   "landing_utc": "1972-12-11T19:54:57Z",
+   "source": "Coordinates of Lunar Anthropogenic Targets (LROC Science Operations Team, Arizona State University, 28 July 2016)",
+   "source_url": "https://lroc.im-ldi.com/data/support/downloads/2016_LROC_Coordinates_of_Human_Features.pdf",
+   "note": "LM coordinates, LROC NAC-derived, mean Earth/polar axis (ME) frame. Landing UTC from NSSDCA mission page https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo17info.html (\"Landed on Moon\" / LM landing UT). NSSDCA table gives 20.191 N, 30.772 E."
+  },
+  {
+   "id": "im1_odysseus",
+   "name": "Intuitive Machines IM-1 Odysseus (Malapert A area)",
+   "group": "CLPS / commercial",
+   "lat_deg": -80.13,
+   "lon_deg": 1.44,
+   "landing_utc": "2024-02-22T23:23:53Z",
+   "source": "Intuitive Machines IM-1 Nova-C Odysseus landing site (LROC featured image, NAC M1463440322L)",
+   "source_url": "https://lroc.im-ldi.com/images/1360",
+   "note": "LROC gives 80.13 S, 1.44 E, 2579 m, to two decimals only (about 1 km precision). Touchdown time 23:23:53 UTC from the same LROC page."
+  },
+  {
+   "id": "im2_athena",
+   "name": "Intuitive Machines IM-2 Athena (Mons Mouton)",
+   "group": "CLPS / commercial",
+   "lat_deg": -84.7906,
+   "lon_deg": 29.1957,
+   "landing_utc": "2025-03-06T17:30:00Z",
+   "source": "IM-2 Athena lander, LROC featured image 'IM-2 Athena Seen Obliquely' (NAC M1495922531LR)",
+   "source_url": "https://lroc.im-ldi.com/images/1408",
+   "note": "Rest position in a 20 m crater, 84.7906 S, 29.1957 E per LROC (LROC 1408). UTC is INFERRED, minute precision: 11:30 a.m. CST from an IM release as reported secondhand. Both curl and WebFetch of the IM release returned HTTP 403, so it was not read. Wikipedia gives 17:28:50 UTC; LROC 1408 (image 23.5 h after touchdown) is consistent with about 17:30."
+  },
+  {
+   "id": "blue_ghost_m1",
+   "name": "Firefly Blue Ghost Mission 1 (Mare Crisium, near Mons Latreille)",
+   "group": "CLPS / commercial",
+   "lat_deg": 18.5623,
+   "lon_deg": 61.8103,
+   "landing_utc": "2025-03-02T08:34:00Z",
+   "source": "Blue Ghost Lunar Lander Seen From Above (LROC featured image 1407, NAC M1495619099LR)",
+   "source_url": "https://lroc.im-ldi.com/images/1407",
+   "note": "LROC measured lander position 18.5623 N, 61.8103 E, -3650 m (LROC 1407; LROC 1406 gives 18.562 N, 61.810 E). The region-box centre from LROC 1400 is 18.56 N, 61.81 E. UTC minute precision: Firefly mission page gives 2:34 a.m. CST (UTC-6) = 08:34 UTC, no seconds."
+  },
+  {
+   "id": "hakuto_r_m2_resilience",
+   "name": "ispace HAKUTO-R Mission 2 Resilience (impact site, Mare Frigoris)",
+   "group": "CLPS / commercial",
+   "lat_deg": 60.4445,
+   "lon_deg": -4.588,
+   "landing_utc": "2025-06-05T18:13:00Z",
+   "source": "ispace Mission 2 SMBC x HAKUTO-R Venture Moon Impact Site (LROC featured image, NAC M1504323448R)",
+   "source_url": "https://lroc.im-ldi.com/images/1456",
+   "note": "Impact (crash) site, not a landing: the dark smudge centre, 60.4445 N, 355.4120 E, -2431.6 m, converted to -4.5880. The time is the LROC-stated hard-landing/impact time, 5 June 2025 18:13 UTC, minute precision (no seconds given)."
+  },
+  {
+   "id": "chandrayaan3",
+   "name": "Chandrayaan-3 Vikram (Shiv Shakti Point)",
+   "group": "Other nations",
+   "lat_deg": -69.3741,
+   "lon_deg": 32.32,
+   "landing_utc": "2023-08-23T12:34:00Z",
+   "source": "Chandrayaan-3 Landing Site (LROC featured image, NAC M1447750764LR)",
+   "source_url": "https://lroc.im-ldi.com/images/1314",
+   "note": "LROC gives 69.3741 S, 32.32 E, 532 m. UTC is minute precision from news reports (18:04 IST); the ISRO primary release was not retrieved, so the minute is unconfirmed."
+  },
+  {
+   "id": "change3",
+   "name": "Chang'e-3 (Yutu, Mare Imbrium near Sinus Iridum)",
+   "group": "Other nations",
+   "lat_deg": 44.1214,
+   "lon_deg": -19.5117,
+   "landing_utc": "2013-12-14T13:11:00Z",
+   "source": "Coordinates of Lunar Anthropogenic Targets (LROC Science Operations Team, Arizona State University, 28 July 2016)",
+   "source_url": "https://lroc.im-ldi.com/data/support/downloads/2016_LROC_Coordinates_of_Human_Features.pdf",
+   "note": "LROC table, ME frame: 44.1214 N, 340.4883 E, converted to -19.5117. UTC minute precision from a state-media copy (descent after 1300 GMT, touchdown 11 minutes later), not a CNSA primary."
+  },
+  {
+   "id": "change4",
+   "name": "Chang'e-4 (Von Karman crater, farside)",
+   "group": "Other nations",
+   "lat_deg": -45.457,
+   "lon_deg": 177.589,
+   "landing_utc": "2019-01-03T02:26:00Z",
+   "source": "Chang'e 4 Lander Coordinates (LROC post 1087)",
+   "source_url": "https://lroc.im-ldi.com/posts/1087",
+   "note": "LROC: 45.457 S, 177.589 E, plus or minus 20 m. CNSA (via Xinhua) gives 45.5 S, 177.6 E at one-decimal precision. Disagreement above 0.01 deg: latitude gap 0.043 deg and longitude gap 0.011 deg, both attributed to CNSA one-decimal rounding. UTC minute precision from Xinhua: 10:26 a.m. Beijing time = 02:26 UTC."
+  },
+  {
+   "id": "change5",
+   "name": "Chang'e-5 (Oceanus Procellarum, Mons Rumker region)",
+   "group": "Other nations",
+   "lat_deg": 43.0576,
+   "lon_deg": -51.9161,
+   "landing_utc": "2020-12-01T15:11:00Z",
+   "source": "Chang'e 5 First Look (LROC post 1172)",
+   "source_url": "https://lroc.im-ldi.com/images/1172",
+   "note": "LROC: 43.0576 N, 308.0839 E, -2570 m, +/- 20 m, converted to -51.9161. Touchdown 10:11 EST (15:11 UTC) 1 Dec 2020 from the same LROC page, minute precision."
+  },
+  {
+   "id": "change6",
+   "name": "Chang'e-6 (Apollo basin, farside)",
+   "group": "Other nations",
+   "lat_deg": -41.6385,
+   "lon_deg": -153.9852,
+   "landing_utc": "2024-06-01T22:23:00Z",
+   "source": "First Look: Chang'e 6 (LROC featured image, NAC M1472410644L)",
+   "source_url": "https://lroc.im-ldi.com/images/1374",
+   "note": "LROC: 41.6385 S, 206.0148 E, -5256 m, +/- 30 m, converted to -153.9852. UTC is INFERRED and minute precision: CNSA announcement reported secondhand as 06:23 Beijing time 2 June 2024 = 22:23 UTC 1 June. The Xinhua/CNSA original was not retrieved; the CNSA English page (english.spacechina.com) confirms the landing but gives no time."
+  },
+  {
+   "id": "slim",
+   "name": "JAXA SLIM (Shioli crater rim target)",
+   "group": "Other nations",
+   "lat_deg": -13.31549,
+   "lon_deg": 25.24889,
+   "landing_utc": "2024-01-19T15:19:52Z",
+   "source": "JAXA, Outcome for the Smart Lander for Investigating Moon (SLIM)'s Moon Landing (25 Jan 2024), with attached technical document jaxa_doc01_20240125_e.pdf",
+   "source_url": "https://global.jaxa.jp/press/2024/01/file/jaxa_doc01_20240125_e.pdf",
+   "note": "Target landing site, ME frame, from JAXA. JAXA says touchdown was about 55 m east of target, so this is the target, not the measured rest point. UTC from JAXA report: landed about 00:19:52 JST 20 Jan 2024 = 15:19:52 UTC 19 Jan."
+  },
+  {
+   "id": "luna25_impact",
+   "name": "Luna 25 (likely impact site, Pontécoulant G rim)",
+   "group": "Other nations",
+   "lat_deg": -57.865,
+   "lon_deg": 61.36,
+   "landing_utc": "2023-08-19T11:58:00Z",
+   "source": "NASA, \"NASA's LRO Observes Crater Likely from Luna 25 Impact\"",
+   "source_url": "https://www.nasa.gov/humans-in-space/nasas-lro-observes-crater-likely-from-luna-25-impact/",
+   "note": "Crash, not a landing: NASA calls the new ~10 m crater likely from Luna 25; time is NASA's estimated impact time (11:58 UTC)."
+  },
+  {
+   "id": "ce7_degerlache_bl",
+   "name": "Chang'e-7 candidate: de Gerlache-BL",
+   "group": "Chang'e-7 candidate sites (planned)",
+   "lat_deg": -87.935,
+   "lon_deg": -96.714,
+   "landing_utc": null,
+   "source": "Selection of Landing Sites for the Chang'E-7 Mission Using Multi-Source Remote Sensing Data, Remote Sensing 17(7):1121 (2025), table of landing-region characteristics",
+   "source_url": "https://doi.org/10.3390/rs17071121",
+   "note": "One of six candidate landing sites proposed by this peer-reviewed study; CNSA has not announced a final site. The paper reports 44.7% average illumination here.",
+   "published_illumination_pct": 44.7
+  },
+  {
+   "id": "ce7_12_tr",
+   "name": "Chang'e-7 candidate: #12-TR",
+   "group": "Chang'e-7 candidate sites (planned)",
+   "lat_deg": -88.784,
+   "lon_deg": 136.648,
+   "landing_utc": null,
+   "source": "Selection of Landing Sites for the Chang'E-7 Mission Using Multi-Source Remote Sensing Data, Remote Sensing 17(7):1121 (2025), table of landing-region characteristics",
+   "source_url": "https://doi.org/10.3390/rs17071121",
+   "note": "One of six candidate landing sites proposed by this peer-reviewed study; CNSA has not announced a final site. The paper reports 42.5% average illumination here.",
+   "published_illumination_pct": 42.5
+  },
+  {
+   "id": "ce7_degerlache_tr",
+   "name": "Chang'e-7 candidate: de Gerlache-TR",
+   "group": "Chang'e-7 candidate sites (planned)",
+   "lat_deg": -88.572,
+   "lon_deg": -68.066,
+   "landing_utc": null,
+   "source": "Selection of Landing Sites for the Chang'E-7 Mission Using Multi-Source Remote Sensing Data, Remote Sensing 17(7):1121 (2025), table of landing-region characteristics",
+   "source_url": "https://doi.org/10.3390/rs17071121",
+   "note": "One of six candidate landing sites proposed by this peer-reviewed study; CNSA has not announced a final site. The paper reports 41.4% average illumination here.",
+   "published_illumination_pct": 41.4
+  },
+  {
+   "id": "ce7_degerlache_tl",
+   "name": "Chang'e-7 candidate: de Gerlache-TL",
+   "group": "Chang'e-7 candidate sites (planned)",
+   "lat_deg": -88.001,
+   "lon_deg": -75.496,
+   "landing_utc": null,
+   "source": "Selection of Landing Sites for the Chang'E-7 Mission Using Multi-Source Remote Sensing Data, Remote Sensing 17(7):1121 (2025), table of landing-region characteristics",
+   "source_url": "https://doi.org/10.3390/rs17071121",
+   "note": "One of six candidate landing sites proposed by this peer-reviewed study; CNSA has not announced a final site. The paper reports 42.9% average illumination here.",
+   "published_illumination_pct": 42.9
+  },
+  {
+   "id": "ce7_faustini_br",
+   "name": "Chang'e-7 candidate: Faustini-BR",
+   "group": "Chang'e-7 candidate sites (planned)",
+   "lat_deg": -86.56,
+   "lon_deg": 91.548,
+   "landing_utc": null,
+   "source": "Selection of Landing Sites for the Chang'E-7 Mission Using Multi-Source Remote Sensing Data, Remote Sensing 17(7):1121 (2025), table of landing-region characteristics",
+   "source_url": "https://doi.org/10.3390/rs17071121",
+   "note": "One of six candidate landing sites proposed by this peer-reviewed study; CNSA has not announced a final site. The paper reports 42.1% average illumination here.",
+   "published_illumination_pct": 42.1
+  },
+  {
+   "id": "ce7_shackleton_l",
+   "name": "Chang'e-7 candidate: Shackleton-L",
+   "group": "Chang'e-7 candidate sites (planned)",
+   "lat_deg": -89.84,
+   "lon_deg": -153.223,
+   "landing_utc": null,
+   "source": "Selection of Landing Sites for the Chang'E-7 Mission Using Multi-Source Remote Sensing Data, Remote Sensing 17(7):1121 (2025), table of landing-region characteristics",
+   "source_url": "https://doi.org/10.3390/rs17071121",
+   "note": "One of six candidate landing sites proposed by this peer-reviewed study; CNSA has not announced a final site. The paper reports 36.4% average illumination here.",
+   "published_illumination_pct": 36.4
+  },
+  {
+   "id": "a3_n2",
+   "name": "Artemis III candidate region: Nobile Rim 2",
+   "group": "Artemis III candidate regions",
+   "lat_deg": -83.9541,
+   "lon_deg": 58.8215,
+   "landing_utc": null,
+   "source": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids: U.S. Geological Survey data release, file A3_9regions-lonlat-simplified (GCS_Moon_2000, 1737.4 km sphere)",
+   "source_url": "https://doi.org/10.5066/P1MEQ6UK",
+   "note": "Region centre computed here as the mean of the outline's 4 corners in south-polar stereographic coordinates (the outline is a box in a projected frame). Region area 400 km2; a landing could be anywhere inside it.",
+   "outline": [
+    [
+     -84.04797,
+     54.46178
+    ],
+    [
+     -84.40465,
+     59.96161
+    ],
+    [
+     -83.82638,
+     63.02425
+    ],
+    [
+     -83.50158,
+     57.8402
+    ]
+   ]
+  },
+  {
+   "id": "a3_mm",
+   "name": "Artemis III candidate region: Mons Mouton",
+   "group": "Artemis III candidate regions",
+   "lat_deg": -85.4266,
+   "lon_deg": 31.7428,
+   "landing_utc": null,
+   "source": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids: U.S. Geological Survey data release, file A3_9regions-lonlat-simplified (GCS_Moon_2000, 1737.4 km sphere)",
+   "source_url": "https://doi.org/10.5066/P1MEQ6UK",
+   "note": "Region centre computed here as the mean of the outline's 4 corners in south-polar stereographic coordinates (the outline is a box in a projected frame). Region area 256 km2; a landing could be anywhere inside it.",
+   "outline": [
+    [
+     -85.32705,
+     27.28799
+    ],
+    [
+     -85.78834,
+     30.57923
+    ],
+    [
+     -85.49737,
+     36.36658
+    ],
+    [
+     -85.0633,
+     32.73523
+    ]
+   ]
+  },
+  {
+   "id": "a3_ma",
+   "name": "Artemis III candidate region: Malapert Massif",
+   "group": "Artemis III candidate regions",
+   "lat_deg": -85.9948,
+   "lon_deg": -0.2358,
+   "landing_utc": null,
+   "source": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids: U.S. Geological Survey data release, file A3_9regions-lonlat-simplified (GCS_Moon_2000, 1737.4 km sphere)",
+   "source_url": "https://doi.org/10.5066/P1MEQ6UK",
+   "note": "Region centre computed here as the mean of the outline's 4 corners in south-polar stereographic coordinates (the outline is a box in a projected frame). Region area 441 km2; a landing could be anywhere inside it.",
+   "outline": [
+    [
+     -85.63394,
+     -4.76364
+    ],
+    [
+     -86.32279,
+     -5.65948
+    ],
+    [
+     -86.32589,
+     5.14788
+    ],
+    [
+     -85.63656,
+     4.33231
+    ]
+   ]
+  },
+  {
+   "id": "a3_g2",
+   "name": "Artemis III candidate region: de Gerlache Rim 2",
+   "group": "Artemis III candidate regions",
+   "lat_deg": -88.23,
+   "lon_deg": -64.6284,
+   "landing_utc": null,
+   "source": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids: U.S. Geological Survey data release, file A3_9regions-lonlat-simplified (GCS_Moon_2000, 1737.4 km sphere)",
+   "source_url": "https://doi.org/10.5066/P1MEQ6UK",
+   "note": "Region centre computed here as the mean of the outline's 4 corners in south-polar stereographic coordinates (the outline is a box in a projected frame). Region area 400 km2; a landing could be anywhere inside it.",
+   "outline": [
+    [
+     -87.78529,
+     -60.57254
+    ],
+    [
+     -88.02393,
+     -77.47119
+    ],
+    [
+     -88.65999,
+     -71.34211
+    ],
+    [
+     -88.32789,
+     -49.39871
+    ]
+   ]
+  },
+  {
+   "id": "a3_mp",
+   "name": "Artemis III candidate region: Mons Mouton Plateau",
+   "group": "Artemis III candidate regions",
+   "lat_deg": -84.3347,
+   "lon_deg": 30.5923,
+   "landing_utc": null,
+   "source": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids: U.S. Geological Survey data release, file A3_9regions-lonlat-simplified (GCS_Moon_2000, 1737.4 km sphere)",
+   "source_url": "https://doi.org/10.5066/P1MEQ6UK",
+   "note": "Region centre computed here as the mean of the outline's 4 corners in south-polar stereographic coordinates (the outline is a box in a projected frame). Region area 4452 km2; a landing could be anywhere inside it.",
+   "outline": [
+    [
+     -83.9502,
+     15.49417
+    ],
+    [
+     -85.75564,
+     22.39284
+    ],
+    [
+     -84.28934,
+     46.61204
+    ],
+    [
+     -82.84671,
+     35.44246
+    ]
+   ]
+  },
+  {
+   "id": "a3_sp",
+   "name": "Artemis III candidate region: Slater Plain",
+   "group": "Artemis III candidate regions",
+   "lat_deg": -87.1637,
+   "lon_deg": 125.5377,
+   "landing_utc": null,
+   "source": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids: U.S. Geological Survey data release, file A3_9regions-lonlat-simplified (GCS_Moon_2000, 1737.4 km sphere)",
+   "source_url": "https://doi.org/10.5066/P1MEQ6UK",
+   "note": "Region centre computed here as the mean of the outline's 4 corners in south-polar stereographic coordinates (the outline is a box in a projected frame). Region area 400 km2; a landing could be anywhere inside it.",
+   "outline": [
+    [
+     -87.62216,
+     123.69062
+    ],
+    [
+     -87.20229,
+     134.99761
+    ],
+    [
+     -86.70324,
+     126.86961
+    ],
+    [
+     -87.05106,
+     116.5672
+    ]
+   ]
+  },
+  {
+   "id": "a3_cb",
+   "name": "Artemis III candidate region: Peak Near Cabeus B",
+   "group": "Artemis III candidate regions",
+   "lat_deg": -83.6375,
+   "lon_deg": -68.7495,
+   "landing_utc": null,
+   "source": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids: U.S. Geological Survey data release, file A3_9regions-lonlat-simplified (GCS_Moon_2000, 1737.4 km sphere)",
+   "source_url": "https://doi.org/10.5066/P1MEQ6UK",
+   "note": "Region centre computed here as the mean of the outline's 4 corners in south-polar stereographic coordinates (the outline is a box in a projected frame). Region area 400 km2; a landing could be anywhere inside it.",
+   "outline": [
+    [
+     -83.2095,
+     -67.16672
+    ],
+    [
+     -83.43644,
+     -72.47353
+    ],
+    [
+     -84.06005,
+     -70.55948
+    ],
+    [
+     -83.81001,
+     -64.79989
+    ]
+   ]
+  },
+  {
+   "id": "a3_n1",
+   "name": "Artemis III candidate region: Nobile Rim 1",
+   "group": "Artemis III candidate regions",
+   "lat_deg": -85.4364,
+   "lon_deg": 37.347,
+   "landing_utc": null,
+   "source": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids: U.S. Geological Survey data release, file A3_9regions-lonlat-simplified (GCS_Moon_2000, 1737.4 km sphere)",
+   "source_url": "https://doi.org/10.5066/P1MEQ6UK",
+   "note": "Region centre computed here as the mean of the outline's 4 corners in south-polar stereographic coordinates (the outline is a box in a projected frame). Region area 400 km2; a landing could be anywhere inside it.",
+   "outline": [
+    [
+     -85.3514,
+     31.64367
+    ],
+    [
+     -85.89749,
+     36.47997
+    ],
+    [
+     -85.47479,
+     43.20664
+    ],
+    [
+     -84.9746,
+     38.05472
+    ]
+   ]
+  },
+  {
+   "id": "a3_hw",
+   "name": "Artemis III candidate region: Haworth",
+   "group": "Artemis III candidate regions",
+   "lat_deg": -86.7639,
+   "lon_deg": -22.777,
+   "landing_utc": null,
+   "source": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids: U.S. Geological Survey data release, file A3_9regions-lonlat-simplified (GCS_Moon_2000, 1737.4 km sphere)",
+   "source_url": "https://doi.org/10.5066/P1MEQ6UK",
+   "note": "Region centre computed here as the mean of the outline's 4 corners in south-polar stereographic coordinates (the outline is a box in a projected frame). Region area 888 km2; a landing could be anywhere inside it.",
+   "outline": [
+    [
+     -86.1124,
+     -26.65196
+    ],
+    [
+     -86.95784,
+     -34.98185
+    ],
+    [
+     -87.39353,
+     -16.99082
+    ],
+    [
+     -86.44277,
+     -12.36178
+    ]
+   ]
+  }
+ ],
+ "omitted": [
+  {
+   "name": "Malapert massif (illumination reference point)",
+   "reason": "Checked: LROC 991 (Speyerer and Robinson illumination maps page, no point values), EPSC2012-756 and EPSC2017-693-3 abstracts, NTRS 20120012926 (McClanahan et al.), PGDA product 69 (method only). None gives a coordinate plus a percentage for this point."
+  },
+  {
+   "name": "Shackleton crater rim / de Gerlache-Shackleton connecting ridge (Mazarico et al. 2011 Icarus; Glaser et al. 2014 Icarus; Glaser et al. 2018 Planetary and Space Science)",
+   "reason": "Checked: NTRS 20120010094 (Mazarico 2011) abstract page, no PDF; DLR elib records for Glaser 2018 and 2014 (abstract only); NTRS 20140000992 (Icarus 2012 paper, not this point); PGDA product 69. Full texts are paywalled and no table with point coordinates and illumination percentages was retrieved, so no published_illumination_pct is recorded."
+  },
+  {
+   "name": "Nobile crater rim (VIPER planned area)",
+   "reason": "Checked: LROC 991, EPSC2012-756 and EPSC2017-693-3 abstracts, PGDA product 69. No point coordinate with an illumination value was found."
+  },
+  {
+   "name": "Chandrayaan-4 (ISRO site MM-4, Mons Mouton)",
+   "reason": "ISRO's choice of MM-4 is reported in the news (Feb 2026), but no official ISRO or SAC publication with coordinates was found; a Wikipedia table is the only coordinate source."
+  },
+  {
+   "name": "Chang'e-7 final landing site",
+   "reason": "CNSA has not announced a final site; the six candidates from the 2025 Remote Sensing site-selection study are included instead."
+  },
+  {
+   "name": "Future CLPS landers (IM-3 Reiner Gamma, Blue Ghost Mission 2, Griffin Mission 1, APEX 1.0)",
+   "reason": "No published landing coordinates found on NASA or operator pages (checked 2026-11-13)."
+  }
+ ]
+}

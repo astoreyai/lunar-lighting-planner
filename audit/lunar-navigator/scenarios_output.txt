@@ -1,0 +1,42 @@
+## A. Site fixed, date slips: Intuitive Machines IM-2 Athena (Mons Mouton) (-84.7906°, 29.1957°E), eye 2 m, horizon = shipped 720-ray profile (LOLA 40 m → 240 m → 16 px/°)
+Planned landing (opens the longest joint Sun+Earth interval that starts in March 2027): 2027-03-14 16:00 UT
+| Slip | Landing (same time of day) | Sun up | Earth up | Joint interval | Closed first by | 10-day verdict (Earth required) |
+|---|---|---|---|---|---|---|
+| +0 d | 2027-03-14 16:00 UT | yes | yes | 212.0 h | Earth (direct-to-Earth line of sight) | cut short after 212 h (earth) |
+| +1 d | 2027-03-15 16:00 UT | yes | yes | 188.0 h | Earth (direct-to-Earth line of sight) | cut short after 188 h (earth) |
+| +2 d | 2027-03-16 16:00 UT | yes | yes | 164.0 h | Earth (direct-to-Earth line of sight) | cut short after 230 h (power) |
+| +5 d | 2027-03-19 16:00 UT | yes | yes | 92.0 h | Earth (direct-to-Earth line of sight) | cut short after 158 h (power) |
+| +10 d | 2027-03-24 16:00 UT | yes | no | not open | — | can't start (Earth hidden at landing) |
+| +14 d | 2027-03-28 16:00 UT | no | yes | not open | — | can't start (Sun below the terrain at landing) |
+| +28 d | 2027-04-11 16:00 UT | no | yes | not open | — | can't start (Sun below the terrain at landing) |
+After a 14-day slip, the first landing hour with a full 10-day mission (Earth required) is not found within 120 d.
+
+## B. Date fixed (2027-03-14 16:00 UT), nearby south-polar sites compared
+| Site | Lat, lon | Sun margin ° | Earth margin ° | Joint interval | Closed first by | 10-day verdict | 30-d sunlit / Earth / both |
+|---|---|---|---|---|---|---|---|
+| Intuitive Machines IM-2 Athena (Mons Mouton) | -84.79, 29.20 | 0.08 | 11.79 | 212.0 h | Earth (direct-to-Earth line of sight) | cut short after 212 h (earth) | 43% / 83% / 31% |
+| A3: Mons Mouton | -85.43, 31.74 | -3.65 | 3.71 | not open | Sun already down | can't start (Sun below the terrain at landing) | 0% / 42% / 0% |
+| A3: Mons Mouton Plateau | -84.33, 30.59 | -4.30 | 8.87 | not open | Sun already down | can't start (Sun below the terrain at landing) | 22% / 69% / 11% |
+| A3: Nobile Rim 1 | -85.44, 37.35 | 5.91 | 3.38 | 64.8 h | Earth (direct-to-Earth line of sight) | cut short after 89 h (power) | 28% / 38% / 24% |
+| A3: Nobile Rim 2 | -83.95, 58.82 | 2.07 | 8.74 | 160.1 h | Earth (direct-to-Earth line of sight) | cut short after 236 h (power) | 39% / 67% / 29% |
+| A3: Malapert Massif | -85.99, -0.24 | -5.07 | 5.61 | not open | Sun already down | can't start (Sun below the terrain at landing) | 0% / 51% / 0% |
+| A3: Haworth | -86.76, -22.78 | -7.43 | 3.96 | not open | Sun already down | can't start (Sun below the terrain at landing) | 0% / 44% / 0% |
+| A3: de Gerlache Rim 2 | -88.23, -64.63 | -14.41 | 6.54 | not open | Sun already down | can't start (Sun below the terrain at landing) | 30% / 55% / 0% |
+| A3: Slater Plain | -87.16, 125.54 | -5.27 | 3.59 | not open | Sun already down | can't start (Sun below the terrain at landing) | 0% / 42% / 0% |
+| A3: Peak Near Cabeus B | -83.64, -68.75 | -2.37 | 4.31 | not open | Sun already down | can't start (Sun below the terrain at landing) | 28% / 45% / 9% |
+
+## C. Grazing Sun (centre within 0.1° of a terrain horizon at least 0.5° high), 10-min steps, March 2027
+Site Intuitive Machines IM-2 Athena (Mons Mouton) (-84.7906°, 29.1957°E, ground 5321 m, eye 2 m), 2027-03-14 16:50 UT
+App: Sun centre el 1.007°, az 69.20°, angular radius 0.268°
+Terrain horizon at that azimuth: shipped profile (40 m → 240 m → 16 px/°) 1.096°; live 240 m → 4 px/° trace 1.094° (difference -0.003°)
+Upper-limb margin 0.179° → counted as Sun up; visible disk 29% (power input scales with this fraction, not with up/down)
+HORIZONS_CHECK 29.1957 -84.7906 5.3227 2027-03-14 16:50
+
+## D. Outside data coverage
+2041-01-05 (after the 1969–2040 ephemeris span): ensure() throws "ephemeris covers 1969-2040 only"
+Landing 2040-12-25 with a 10-day mission: rows end at 2040-12-31 23:00 UT; landingVerdict returns null (null = past the data)
+Custom point -74.5°, 30°E (north of the 240 m grid's 75°S edge): horizon traced on ["LOLA 4 px/deg global"]; the result has no per-ray completeness field (keys: nAz, elev, groundM, eyeM, grids)
+a3_mp (-84.3347°) has a 40 m window: false (LDEM_85S_40M stops at 85°S equivalent edge; ellipse falls back to 240 m)
+
+## E. Move-the-lander point "5 km northeast" of IM-2 Athena, landing 2027-03-16 16:00 UT
+Point -84.6727°, 30.4516°E (grids ["LOLA 240 m (75S)","LOLA 4 px/deg global"]): joint interval 138.5 h, closed first by Earth (direct-to-Earth line of sight); app verdict: cut short after 234 h (power)

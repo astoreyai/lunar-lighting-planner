@@ -1,0 +1,305 @@
+API VERSION: 1.2
+API SOURCE: NASA/JPL Horizons API
+
+*******************************************************************************
+ Revised: April 12, 2021                 Earth                              399
+ 
+ GEOPHYSICAL PROPERTIES (revised May 9, 2022):
+  Vol. Mean Radius (km)    = 6371.01+-0.02   Mass x10^24 (kg)= 5.97219+-0.0006
+  Equ. radius, km          = 6378.137        Mass layers:
+  Polar axis, km           = 6356.752          Atmos         = 5.1   x 10^18 kg
+  Flattening               = 1/298.257223563   oceans        = 1.4   x 10^21 kg
+  Density, g/cm^3          = 5.51              crust         = 2.6   x 10^22 kg
+  J2 (IERS 2010)           = 0.00108262545     mantle        = 4.043 x 10^24 kg
+  g_p, m/s^2  (polar)      = 9.8321863685      outer core    = 1.835 x 10^24 kg
+  g_e, m/s^2  (equatorial) = 9.7803267715      inner core    = 9.675 x 10^22 kg
+  g_o, m/s^2               = 9.82022         Fluid core rad  = 3480 km
+  GM, km^3/s^2             = 398600.435436   Inner core rad  = 1215 km
+  GM 1-sigma, km^3/s^2     =      0.0014     Escape velocity = 11.186 km/s
+  Rot. Rate (rad/s)        = 0.00007292115   Surface area:
+  Mean sidereal day, hr    = 23.9344695944     land          = 1.48 x 10^8 km
+  Mean solar day 2000.0, s = 86400.002         sea           = 3.62 x 10^8 km
+  Mean solar day 1820.0, s = 86400.0         Love no., k2    = 0.299
+  Moment of inertia        = 0.3308          Atm. pressure   = 1.0 bar
+  Mean surface temp (Ts), K= 287.6           Volume, km^3    = 1.08321 x 10^12
+  Mean effect. temp (Te), K= 255             Magnetic moment = 0.61 gauss Rp^3
+  Geometric albedo         = 0.367           Vis. mag. V(1,0)= -3.86
+  Solar Constant (W/m^2)   = 1367.6 (mean), 1414 (perihelion), 1322 (aphelion)
+ HELIOCENTRIC ORBIT CHARACTERISTICS:
+  Obliquity to orbit, deg  = 23.4392911  Sidereal orb period  = 1.0000174 y
+  Orbital speed, km/s      = 29.79       Sidereal orb period  = 365.25636 d
+  Mean daily motion, deg/d = 0.9856474   Hill's sphere radius = 234.9       
+*******************************************************************************
+
+
+*******************************************************************************
+Ephemeris / API_USER Fri Nov 13 11:45:47 2026 Pasadena, USA      / Horizons    
+*******************************************************************************
+Target body name: Earth (399)                     {source: DE441}
+Center body name: Moon (301)                      {source: DE441}
+Center-site name: (user defined site below)
+*******************************************************************************
+Start time      : A.D. 1969-Jan-02 03:30:00.0000 UT      
+Stop  time      : A.D. 2040-Dec-30 00:00:00.0000 UT      
+Step-size       : 249120 minutes
+*******************************************************************************
+Target pole/equ : ITRF93 (high precision)         {East-longitude positive}
+Target radii    : 6378.137, 6378.137, 6356.752 km {Equator_a, b, pole_c}       
+Center geodetic : 180.0, 0.0, 2.1277E-13          {E-lon(deg),Lat(deg),Alt(km)}
+Center cylindric: 180.0, 1737.4, 0.0              {E-lon(deg),Dxy(km),Dz(km)}
+Center pole/equ : MEAN_ME (high precision)        {East-longitude positive}
+Center radii    : 1737.4, 1737.4, 1737.4 km       {Equator_a, b, pole_c}       
+Target primary  : Sun
+Vis. interferer : EARTH (R_eq= 6378.137) km       {source: DE441}
+Rel. light bend : Sun, EARTH                      {source: DE441}
+Rel. lght bnd GM: 1.3271E+11, 3.9860E+05 km^3/s^2                              
+Atmos refraction: NO (AIRLESS)
+RA format       : DEG
+Time format     : CAL 
+Calendar mode   : Mixed Julian/Gregorian
+EOP file        : eop.261112.p270208                                           
+EOP coverage    : DATA-BASED 1962-JAN-20 TO 2026-NOV-12. PREDICTS-> 2027-FEB-07
+Units conversion: 1 au= 149597870.700 km, c= 299792.458 km/s, 1 day= 86400.0 s 
+Table cut-offs 1: Elevation (-90.0deg=NO ),Airmass     n.a.    , Daylight (NO )
+Table cut-offs 2: Solar elongation (  0.0,180.0=NO ),Local Hour Angle( 0.0=NO )
+Table cut-offs 3: RA/DEC angular rate (     0.0=NO )                           
+Table format    : Comma Separated Values (spreadsheet)
+*******************************************************************************
+ Date__(UT)__HR:MN, , ,Azimuth_(a-app), Elevation_(a-app),
+**********************************************************
+$$SOE
+ 1969-Jan-02 03:30, , ,  181.455425258,     -83.564506289,
+ 1969-Jun-24 03:30, , ,   73.971870523,     -81.851664009,
+ 1969-Dec-14 03:30,*, ,  293.793418456,     -84.875425252,
+ 1970-Jun-05 03:30,*, ,  214.062176101,     -82.564467425,
+ 1970-Nov-25 03:30,*, ,   36.042684589,     -83.779975027,
+ 1971-May-17 03:30, , ,   87.210830492,     -85.336649857,
+ 1971-Nov-06 03:30, , ,  238.643911315,     -81.690285055,
+ 1972-Apr-27 03:30, , ,  346.879247532,     -83.348621892,
+ 1972-Oct-17 03:30, , ,  107.918007016,     -82.348408099,
+ 1973-Apr-08 03:30,*, ,  221.483174106,     -86.979867724,
+ 1973-Sep-28 03:30,*, ,  318.655418431,     -81.890673686,
+ 1974-Mar-20 03:30,*, ,  157.833682502,     -84.370575224,
+ 1974-Sep-09 03:30,*, ,   93.431055612,     -83.789641577,
+ 1975-Mar-01 03:30, , ,  305.724828957,     -82.598084675,
+ 1975-Aug-21 03:30, , ,  204.924619166,     -82.830425790,
+ 1976-Feb-10 03:30, , ,   68.703224236,     -82.987888735,
+ 1976-Aug-01 03:30,*, ,    7.084934824,     -87.496033840,
+ 1977-Jan-21 03:30,*, ,  222.681708126,     -81.801484199,
+ 1977-Jul-13 03:30,*, ,    1.356991542,     -84.617633795,
+ 1978-Jan-02 03:30,*, ,   86.787497340,     -82.557156287,
+ 1978-Jun-24 03:30, , ,  228.152258919,     -83.445760087,
+ 1978-Dec-14 03:30, , ,  328.728703690,     -82.376220498,
+ 1979-Jun-05 03:30, , ,  120.099967205,     -84.424991659,
+ 1979-Nov-25 03:30,*, ,  134.648295427,     -86.182759718,
+ 1980-May-16 03:30,*, ,  317.412515259,     -81.857453785,
+ 1980-Nov-05 03:30,*, ,  196.643435680,     -84.235464190,
+ 1981-Apr-27 03:30,*, ,   92.551287950,     -82.364076465,
+ 1981-Oct-17 03:30, , ,  321.660249525,     -84.316719243,
+ 1982-Apr-08 03:30, , ,  214.063127248,     -82.120890210,
+ 1982-Sep-28 03:30, , ,   40.454946820,     -85.979182503,
+ 1983-Mar-20 03:30,*, ,   60.753125771,     -84.185868886,
+ 1983-Sep-09 03:30,*, ,  223.482475617,     -81.775825518,
+ 1984-Feb-29 03:30,*, ,  333.090219210,     -83.653239845,
+ 1984-Aug-20 03:30,*, ,   88.336959374,     -83.345281621,
+ 1985-Feb-09 03:30, , ,  191.581721682,     -85.312903797,
+ 1985-Aug-01 03:30, , ,  322.244493509,     -81.735203765,
+ 1986-Jan-21 03:30, , ,  167.012399918,     -86.577067938,
+ 1986-Jul-13 03:30,*, ,  114.894752405,     -83.015849548,
+ 1987-Jan-02 03:30,*, ,  322.919524864,     -82.516906937,
+ 1987-Jun-24 03:30,*, ,  214.965971826,     -82.972288599,
+ 1987-Dec-14 03:30,*, ,   89.617628400,     -84.583930418,
+ 1988-Jun-04 03:30, , ,   16.828298503,     -85.038163146,
+ 1988-Nov-24 03:30, , ,  217.419556571,     -81.790371437,
+ 1989-May-16 03:30, , ,  342.489348993,     -86.223844828,
+ 1989-Nov-05 03:30,*, ,   66.859887216,     -82.484133296,
+ 1990-Apr-27 03:30,*, ,  204.112746620,     -83.419250838,
+ 1990-Oct-17 03:30,*, ,  320.474877339,     -82.449670450,
+ 1991-Apr-08 03:30,*, ,   95.268594937,     -86.253344881,
+ 1991-Sep-28 03:30, , ,  146.721230070,     -84.170564692,
+ 1992-Mar-19 03:30, , ,  328.725439779,     -82.386276744,
+ 1992-Sep-08 03:30, , ,  218.808021986,     -85.096872414,
+ 1993-Feb-28 03:30,*, ,  112.302844000,     -82.492362541,
+ 1993-Aug-20 03:30,*, ,  346.431107550,     -83.770773588,
+ 1994-Feb-09 03:30,*, ,  218.580371519,     -82.504379581,
+ 1994-Aug-01 03:30,*, ,   63.320262099,     -88.513312435,
+ 1995-Jan-21 03:30, , ,   45.481776131,     -82.933419298,
+ 1995-Jul-13 03:30, , ,  208.015864049,     -82.631917104,
+ 1996-Jan-02 03:30, , ,  313.117152130,     -84.127903360,
+ 1996-Jun-23 03:30,*, ,   65.374467791,     -83.567911928,
+ 1996-Dec-13 03:30,*, ,  175.783724000,     -83.875270384,
+ 1997-Jun-04 03:30,*, ,  323.082411337,     -82.638859446,
+ 1997-Nov-24 03:30,*, ,  221.858573065,     -88.666124795,
+ 1998-May-16 03:30, , ,  129.292487862,     -82.112880379,
+ 1998-Nov-05 03:30, , ,  338.686867155,     -83.022740561,
+ 1999-Apr-27 03:30, , ,  229.983623859,     -83.531825181,
+ 1999-Oct-17 03:30,*, ,  120.768711131,     -85.205169190,
+ 2000-Apr-07 03:30,*, ,   24.061525661,     -83.234302411,
+ 2000-Sep-27 03:30,*, ,  214.305653721,     -82.883169916,
+ 2001-Mar-19 03:30,*, ,  295.991585809,     -86.996507967,
+ 2001-Sep-08 03:30, , ,   50.809721471,     -82.107172710,
+ 2002-Feb-28 03:30, , ,  183.396972490,     -83.503890501,
+ 2002-Aug-20 03:30, , ,  308.143466112,     -83.138147578,
+ 2003-Feb-09 03:30,*, ,   47.447592704,     -86.821499565,
+ 2003-Aug-01 03:30,*, ,  147.067953719,     -82.566447543,
+ 2004-Jan-21 03:30,*, ,  337.517261252,     -83.695100484,
+ 2004-Jul-12 03:30,*, ,  250.663977582,     -85.241513296,
+ 2005-Jan-01 03:30, , ,  130.400415143,     -82.443079044,
+ 2005-Jun-23 03:30, , ,    8.784249727,     -83.430930214,
+ 2005-Dec-13 03:30, , ,  229.084832968,     -83.509793747,
+ 2006-Jun-04 03:30, , ,  177.886233109,     -88.171683219,
+ 2006-Nov-24 03:30,*, ,   38.667545885,     -81.973872746,
+ 2007-May-16 03:30,*, ,  189.101562685,     -84.145903853,
+ 2007-Nov-05 03:30,*, ,  287.184377781,     -83.990126173,
+ 2008-Apr-26 03:30, , ,   44.511551696,     -83.351246078,
+ 2008-Oct-16 03:30, , ,  162.438225249,     -83.179403808,
+ 2009-Apr-07 03:30, , ,  318.846359076,     -84.393651400,
+ 2009-Sep-27 03:30, , ,  302.135890273,     -87.164952049,
+ 2010-Mar-19 03:30,*, ,  137.494838533,     -81.498843328,
+ 2010-Sep-08 03:30,*, ,  359.635903984,     -84.245340003,
+ 2011-Feb-28 03:30,*, ,  252.311438325,     -83.669507150,
+ 2011-Aug-20 03:30, , ,  149.303421266,     -84.696671606,
+ 2012-Feb-09 03:30, , ,   30.361749435,     -82.464042813,
+ 2012-Jul-31 03:30, , ,  212.643993538,     -85.048629107,
+ 2013-Jan-20 03:30, , ,  254.310725797,     -85.590414450,
+ 2013-Jul-12 03:30,*, ,   40.919336276,     -81.717053807,
+ 2014-Jan-01 03:30,*, ,  162.651010110,     -84.032590005,
+ 2014-Jun-23 03:30,*, ,  288.599227561,     -83.788713243,
+ 2014-Dec-13 03:30, , ,    9.158381471,     -85.621231480,
+ 2015-Jun-04 03:30, , ,  143.726242854,     -81.901391433,
+ 2015-Nov-24 03:30, , ,  347.133986691,     -85.836839489,
+ 2016-May-15 03:30, , ,  279.339950463,     -84.251862958,
+ 2016-Nov-04 03:30,*, ,  143.900615307,     -82.302125946,
+ 2017-Apr-26 03:30,*, ,   31.430979457,     -83.368238474,
+ 2017-Oct-16 03:30,*, ,  249.162413718,     -84.521008738,
+ 2018-Apr-07 03:30, , ,  198.321910033,     -85.727346289,
+ 2018-Sep-27 03:30, , ,   36.818437918,     -81.804419382,
+ 2019-Mar-19 03:30, , ,  160.527137545,     -85.836976385,
+ 2019-Sep-08 03:30, , ,  263.677360741,     -83.130809380,
+ 2020-Feb-28 03:30,*, ,   28.895922122,     -83.003911977,
+ 2020-Aug-19 03:30,*, ,  145.295621459,     -83.090447190,
+ 2021-Feb-08 03:30,*, ,  299.484108384,     -86.261905217,
+ 2021-Jul-31 03:30, , ,  315.525412046,     -84.671522654,
+ 2022-Jan-20 03:30, , ,  142.526093478,     -81.711459612,
+ 2022-Jul-12 03:30, , ,   33.805827498,     -85.354648650,
+ 2023-Jan-01 03:30, , ,  275.329448773,     -83.041869796,
+ 2023-Jun-23 03:30,*, ,  165.929464607,     -83.785784345,
+ 2023-Dec-13 03:30,*, ,   39.266094838,     -82.649913386,
+ 2024-Jun-03 03:30,*, ,  219.034939374,     -87.805769530,
+ 2024-Nov-23 03:30, , ,  238.012448380,     -83.280659803,
+ 2025-May-15 03:30, , ,   34.510389670,     -81.990583309,
+ 2025-Nov-04 03:30, , ,  135.674436140,     -84.680781821,
+ 2026-Apr-26 03:30, , ,  264.087181015,     -83.855650103,
+ 2026-Oct-16 03:30,*, ,  353.166431612,     -84.055388661,
+ 2027-Apr-07 03:30,*, ,  137.164838766,     -82.196796994,
+ 2027-Sep-27 03:30,*, ,   16.424020668,     -88.396934990,
+ 2028-Mar-18 03:30, , ,  296.229068206,     -82.432538780,
+ 2028-Sep-07 03:30, , ,  153.864808091,     -82.609482157,
+ 2029-Feb-27 03:30, , ,   54.782414356,     -83.504334316,
+ 2029-Aug-19 03:30, , ,  278.207830447,     -84.999548380,
+ 2030-Feb-08 03:30,*, ,  204.360026525,     -83.698177040,
+ 2030-Jul-31 03:30,*, ,   39.943488135,     -82.431541674,
+ 2031-Jan-20 03:30,*, ,  114.092512008,     -86.719263807,
+ 2031-Jul-12 03:30,*, ,  246.982021272,     -81.779638642,
+ 2032-Jan-01 03:30, , ,   16.004325976,     -83.093758903,
+ 2032-Jun-22 03:30, , ,  124.320358665,     -83.260323378,
+ 2032-Dec-12 03:30, , ,  252.672878566,     -87.049457423,
+ 2033-Jun-03 03:30,*, ,  320.740866727,     -82.784441066,
+ 2033-Nov-23 03:30,*, ,  144.470940172,     -82.759182014,
+ 2034-May-15 03:30,*, ,   75.456311139,     -85.113257489,
+ 2034-Nov-04 03:30,*, ,  292.576440368,     -81.783707540,
+ 2035-Apr-26 03:30, , ,  177.595109882,     -83.356036687,
+ 2035-Oct-16 03:30, , ,   53.308372167,     -83.476381756,
+ 2036-Apr-06 03:30, , ,  351.130618973,     -88.906582941,
+ 2036-Sep-26 03:30,*, ,  230.152026492,     -81.492550544,
+ 2037-Mar-18 03:30,*, ,   30.190893083,     -83.077076524,
+ 2037-Sep-07 03:30,*, ,  102.529290443,     -84.470116552,
+ 2038-Feb-27 03:30,*, ,  243.314141693,     -82.931656813,
+ 2038-Aug-19 03:30, , ,  344.145576454,     -83.094117765,
+ 2039-Feb-08 03:30, , ,  127.196801089,     -83.396539453,
+ 2039-Jul-31 03:30, , ,  123.524643373,     -87.684543250,
+ 2040-Jan-20 03:30,*, ,  305.500133729,     -80.834816392,
+ 2040-Jul-11 03:30,*, ,  161.143915006,     -83.549931534,
+$$EOE
+*******************************************************************************
+Column meaning:
+ 
+TIME
+
+  Times PRIOR to 1962 are UT1, a mean-solar time closely related to the
+prior but now-deprecated GMT. Times AFTER 1962 are in UTC, the current
+civil or "wall-clock" time-scale. UTC is kept within 0.9 seconds of UT1
+using integer leap-seconds for 1972 and later years.
+
+  Conversion from the internal Barycentric Dynamical Time (TDB) of solar
+system dynamics to the non-uniform civil UT time-scale requested for output
+has not been determined for UTC times after the next July or January 1st.
+Therefore, the last known leap-second is used as a constant over future
+intervals.
+
+  Time tags refer to the UT time-scale conversion from TDB on Earth
+regardless of observer location within the solar system, although clock
+rates may differ due to the local gravity field and no analog to "UT"
+may be defined for that location.
+
+  Any 'b' symbol in the 1st-column denotes a B.C. date. First-column blank
+(" ") denotes an A.D. date.
+ 
+CALENDAR SYSTEM
+
+  Mixed calendar mode was active such that calendar dates after AD 1582-Oct-15
+(if any) are in the modern Gregorian system. Dates prior to 1582-Oct-5 (if any)
+are in the Julian calendar system, which is automatically extended for dates
+prior to its adoption on 45-Jan-1 BC.  The Julian calendar is useful for
+matching historical dates. The Gregorian calendar more accurately corresponds
+to the Earth's orbital motion and seasons. A "Gregorian-only" calendar mode is
+available if such physical events are the primary interest.
+
+  NOTE: "n.a." in output means quantity "not available" at the print-time.
+ 
+SOLAR PRESENCE (OBSERVING SITE)
+  Time tag is followed by a blank, then a solar-presence symbol:
+
+       '*'  Daylight (solar upper-limb on or above apparent horizon)
+       ' '  Night OR body-centered ephemeris
+
+INTERFERING BODY PRESENCE (OBSERVING SITE)
+  The solar-presence symbol is immediately followed by an "interfering body"
+presence symbol.
+
+       'i'  Upper-limb of interfering body on or above apparent horizon
+       ' '  Upper-limb of interfering body below apparent horizon OR body
+              centered ephemeris.
+
+  An "interfering body" is the largest other body in the immediate
+planet/satellite system, potentially compromising visual observations due to
+its brightness. Any such body is identified in the print-out header.
+ 
+ 'Azimuth_(a-app), Elevation_(a-app),' =
+  Airless apparent azimuth and elevation of target center. Compensated
+for light-time, the gravitational deflection of light, stellar aberration,
+precession and nutation. Azimuth is measured clockwise from north:
+
+  North(0) -> East(90) -> South(180) -> West(270) -> North (360)
+
+Elevation angle is with respect to a plane perpendicular to the reference
+surface local zenith direction. TOPOCENTRIC ONLY.  Units: DEGREES
+
+Computations by ...
+
+    Solar System Dynamics Group, Horizons On-Line Ephemeris System
+    4800 Oak Grove Drive, Jet Propulsion Laboratory
+    Pasadena, CA  91109   USA
+
+    General site: https://ssd.jpl.nasa.gov/
+    Mailing list: https://ssd.jpl.nasa.gov/email_list.html
+    System news : https://ssd.jpl.nasa.gov/horizons/news.html
+    User Guide  : https://ssd.jpl.nasa.gov/horizons/manual.html
+    Connect     : browser        https://ssd.jpl.nasa.gov/horizons/app.html#/x
+                  API            https://ssd-api.jpl.nasa.gov/doc/horizons.html
+                  command-line   telnet ssd.jpl.nasa.gov 6775
+                  e-mail/batch   https://ssd.jpl.nasa.gov/ftp/ssd/horizons_batch.txt
+                  scripts        https://ssd.jpl.nasa.gov/ftp/ssd/SCRIPTS
+    Inquiries   : Jon.D.Giorgini@jpl.nasa.gov
+
+*******************************************************************************
