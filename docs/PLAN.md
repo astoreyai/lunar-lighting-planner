@@ -125,5 +125,5 @@ That the terrain error budget (N5) yields a threshold small enough to be useful.
 | Whole-pole map on 240 m terrain at 4 hours, window chart for all sites, lighter workers, run-time note (2026-11-14) | done | `tests/suit.test.mjs`; seen in the browser |
 | Answer-first Plan tab with sub-tabs, mission clock, from-landing layer, 40 m close-up (2026-11-14, after a navigation review Aaron asked for) | done | `tests/suit.test.mjs`; seen in the browser at desktop and phone width |
 | T7 usability tests | blocked | needs recruited planners, educators and analog participants; `docs/USABILITY_TESTS.md` is ready to run |
-| T9 licence and credits | credits done | licence is Aaron's choice |
+| T9 licence and credits | done | Apache-2.0, chosen by Aaron on 2026-11-14; `LICENSE` is the text from apache.org |
 | T10 deploy | done at version 37 | pushed and redeployed 2026-11-14 with Aaron's yes each time (versions 33, 36, 37); the public history was squashed to one commit that day (D41). Later versions wait for the next yes |

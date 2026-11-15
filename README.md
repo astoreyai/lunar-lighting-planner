@@ -227,7 +227,7 @@ Then open http://127.0.0.1:8765/. Any static host (for example GitHub Pages) can
 | Artemis III region outlines | McClernan 2024, USGS, doi:10.5066/P1MEQ6UK | CC0 1.0. |
 | Site coordinates | one citation per site in `pipeline/sites.json` | as cited |
 
-The code has **no licence yet**: that is the author's choice to make, and until it is made the code is not licensed for reuse.
+The code is licensed under the **Apache License 2.0** (see `LICENSE`). Copyright 2026 Aaron Storey. The data files under `web/data` and `tests/fixtures` derive from the sources above and stay under those sources' terms.
 
 ## Repository layout
 
