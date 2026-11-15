@@ -3,7 +3,7 @@
 // 16 km window of the 40 m grid there (85-90 S only), with the 240 m grid supplying the terrain farther away.
 import { R_MOON_M } from './dem.js';
 import { shadowContext, litImage } from './shadow.js';
-import { buildSuit, suitImage, mapCells } from './suit.js';
+import { buildSuit, buildSuitShared, suitImage, mapCells } from './suit.js';
 import { eph, data, loadGrid, loadWindow40, css, fmtUTC, setStatus } from './core.js';
 
 const D2R = Math.PI / 180, ZOOM_CELLS = 400, CLOSE_MARGIN = 200; // close-up: 40 m terrain for 8 km around the view, 240 m terrain beyond
@@ -69,25 +69,25 @@ export function createLitMap(canvas, { onPick, describe }) {
     }
   }
 
-  // Workers for the landing layers: each takes a share of the map's cells. Up to 4, leaving a core for the page; 2 on
-  // a device that reports 4 GB of memory or less, because each holds its own copy of the 240 m terrain (29 MB, plus
-  // 10 MB of block maxima). Returns null where module workers are missing, and the page computes instead.
+  // Workers for the landing layers: each takes a share of the map's cells and holds its own copy of the 240 m terrain
+  // (29 MB, plus 10 MB of block maxima). Up to 8 where the device reports 8 GB or more, 2 where it reports 4 GB or
+  // less, 4 where it does not say (Safari, Firefox); always leaving a core for the page. In a benchmark of the
+  // whole-pole layer, 4 workers took 18 s and 8 took 13 s; more gained nothing (tests/bench_workers.mjs).
+  // Returns null where module workers are missing, and the page computes instead.
   let pool = null;
-  function workerPass(grid, far, cells, dhM, needEarth) {
+  function workerRun(grid, far, opts) {
     if (pool === false) return null;
     try {
-      pool ||= Array.from({ length: Math.min((navigator.deviceMemory ?? 8) <= 4 ? 2 : 4, Math.max(1, (navigator.hardwareConcurrency || 2) - 1)) }, () => new Worker(new URL(`./suit-worker.js${new URL(import.meta.url).search}`, import.meta.url), { type: 'module' }));
+      pool ||= Array.from({ length: Math.min(navigator.deviceMemory === undefined ? 4 : navigator.deviceMemory <= 4 ? 2 : 8, Math.max(1, (navigator.hardwareConcurrency || 2) - 1)) }, () => new Worker(new URL(`./suit-worker.js${new URL(import.meta.url).search}`, import.meta.url), { type: 'module' }));
     } catch { pool = false; return null; }
-    const N = cells.length, sun = new Uint8Array(N), earth = new Uint8Array(N);
-    // Each worker keeps its copies of the terrain until they change. far: undefined = keep, null = none.
-    const terrain = { ...(pool.z === grid.z ? {} : { grid }), far: !far ? null : pool.farZ === far.grid.z ? undefined : far };
+    // Each worker keeps its copies of the terrain until they change.
+    const t = { ...(pool.z === grid.z ? {} : { grid }), ...(far ? (pool.farZ === far.grid.z ? {} : { far }) : pool.farZ ? { far: null } : {}) };
     pool.z = grid.z; pool.farZ = far ? far.grid.z : null;
-    pool.forEach((wk, i) => { const i0 = Math.floor((i * N) / pool.length); wk.postMessage({ ...terrain, cells: cells.slice(i0, Math.floor(((i + 1) * N) / pool.length)), i0, dhM, needEarth }); });
-    return (b) => Promise.all(pool.map((wk) => new Promise((done, fail) => {
-      wk.onmessage = ({ data: d }) => { sun.set(d.sun, d.i0); if (d.earth) earth.set(d.earth, d.i0); done(); };
-      wk.onerror = (e) => fail(new Error(`Landing-area worker failed: ${e.message || 'could not start'}`));
-      wk.postMessage({ sun: b.sun, earth: b.earth });
-    }))).then(() => ({ sun, earth }));
+    if (t.grid || 'far' in t) pool.forEach((wk) => wk.postMessage({ terrain: t }));
+    return new Promise((resolve, reject) => {
+      pool.forEach((wk) => { wk.onerror = (e) => reject(new Error(`Landing-area worker failed: ${e.message || 'could not start'}`)); });
+      buildSuitShared(pool.map((wk) => ({ post: (m) => wk.postMessage(m), on: (f) => { wk.onmessage = (e) => f(e.data); } })), opts).then(resolve, reject);
+    });
   }
 
   // The landing layers, built a time sample at a time: 'land' over the whole search span (the best window at each
@@ -117,19 +117,19 @@ export function createLitMap(canvas, { onPick, describe }) {
     await eph.ensure(t0, t0 + spanMs + HOUR_MS);
     setStatus('');
     building = key;
-    const dhM = data.unc[Math.round(grid.cellM)] ?? 0, started = performance.now(), run = (pass) => buildSuit({
-      grid, far, cells, w: size, h: size, t0, spanMs, durMs: m.durMs, stepMs: LAND_STEP, needEarth: m.needEarth, dhM, fromStart: left, pass,
+    const dhM = data.unc[Math.round(grid.cellM)] ?? 0, started = performance.now(), opts = {
+      grid, far, cells, w: size, h: size, t0, spanMs, durMs: m.durMs, stepMs: LAND_STEP, needEarth: m.needEarth, dhM, fromStart: left,
       bodies: (t) => ({ sun: eph.bodyVec('sun', t), earth: eph.bodyVec('earth', t) }),
       onStep: (done, total, suit) => { if (pending) return false; if (done % 12 === 0 && done < total) show({ suit, grid, cells }, done, total); return true; },
-      pause: () => new Promise((r) => setTimeout(r)),
-    });
+    }, onPage = () => buildSuit({ ...opts, pause: () => new Promise((r) => setTimeout(r)) }); // no workers: the page computes, and breathes between steps
     let suit;
     try {
-      suit = await run(workerPass(grid, far, cells, dhM, m.needEarth)).catch((e) => {
+      const shared = workerRun(grid, far, opts);
+      suit = shared ? await shared.catch((e) => {
         if (!pool) throw e;
         pool.forEach((wk) => wk.terminate()); pool = false; // workers failed: compute on the page from here on
-        return run(null);
-      });
+        return onPage();
+      }) : await onPage();
     } finally { building = ''; }
     if (suit) { lands[layer] = { key, suit, grid, cells, tookS: (performance.now() - started) / 1000, workers: pool ? pool.length : 0 }; show(lands[layer], 1, 1); }
   }

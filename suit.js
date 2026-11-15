@@ -2,8 +2,8 @@
 // span during which the ground is usable (sunlight, and Earth in view if the mission needs it), whether that
 // stretch holds the mission, whether the ground is flat enough over a whole landing footprint, and whether the
 // answer changes inside the terrain's uncertainty. It then groups the good ground into candidate landing areas.
-import { shadowContext, visCells, slopeDeg } from './shadow.js';
-import { R_MOON_M } from './dem.js';
+// Imported with this module's own ?v= query, as in shadow.js: the workers load this file too.
+const v = new URL(import.meta.url).search, { shadowContext, visCells, slopeDeg } = await import(`./shadow.js${v}`), { R_MOON_M } = await import(`./dem.js${v}`);
 
 // Per cell and terrain variant (0 as mapped, 1 raised by its uncertainty, 2 lowered): the current and the longest
 // run of usable samples, in samples. `start` is the sample at which the longest run on the terrain as mapped began.
@@ -11,17 +11,21 @@ import { R_MOON_M } from './dem.js';
 // first sample counts, so the layer answers for a landing at that moment instead of the best window in the span.
 export function createSuit(w, h, need, fromStart = false) {
   const cur = [0, 1, 2].map(() => new Uint16Array(w * h)), best = [0, 1, 2].map(() => new Uint16Array(w * h));
-  const start = new Uint16Array(w * h), BIT = [1, 2, 4];
+  const start = new Uint16Array(w * h);
   return {
     w, h, need, best, start,
     add(k, sun, earth) { // sun, earth: visPass outputs for sample k; earth null when the mission does not need it
-      for (let i = 0; i < w * h; i++) {
-        const u = sun[i] & (earth ? earth[i] : 7);
-        for (let v = 0; v < 3; v++) {
-          if (u & BIT[v] && (!fromStart || cur[v][i] === k)) { if (++cur[v][i] > best[v][i]) { best[v][i] = cur[v][i]; if (v === 0) start[i] = k - cur[0][i] + 1; } } else if (!fromStart) cur[v][i] = 0;
-        }
+      const [c0, c1, c2] = cur, [b0, b1, b2] = best, N = w * h;
+      for (let i = 0; i < N; i++) {
+        const u = earth ? sun[i] & earth[i] : sun[i];
+        if (u === 0) { if (!fromStart) { c0[i] = 0; c1[i] = 0; c2[i] = 0; } continue; } // most cells at most samples: dark on every variant
+        if (u & 1 && (!fromStart || c0[i] === k)) { if (++c0[i] > b0[i]) { b0[i] = c0[i]; start[i] = k - c0[i] + 1; } } else if (!fromStart) c0[i] = 0;
+        if (u & 2 && (!fromStart || c1[i] === k)) { if (++c1[i] > b1[i]) b1[i] = c1[i]; } else if (!fromStart) c1[i] = 0;
+        if (u & 4 && (!fromStart || c2[i] === k)) { if (++c2[i] > b2[i]) b2[i] = c2[i]; } else if (!fromStart) c2[i] = 0;
       }
     },
+    // After add(k) in fromStart mode: which cells still have a run going on any terrain variant (the rest are settled).
+    alive(k, out) { let any = 0; for (let i = 0; i < w * h; i++) any |= out[i] = cur[0][i] > k || cur[1][i] > k || cur[2][i] > k ? 1 : 0; return any; },
     // 0 never usable, 1 usable but for less than the mission, 2 holds the mission
     cls(i, v = 0) { const b = best[v][i]; return b === 0 ? 0 : b >= need ? 2 : 1; },
     close(i) { return this.cls(i, 1) !== this.cls(i, 2); },
@@ -39,6 +43,12 @@ export function mapCells(map, fine, r0, c0, w, h) {
   }
   return cells;
 }
+
+// Sharing a list between W workers: worker w takes every W-th item from w on, so each gets the same mix of cheap and
+// costly ground (contiguous bands left the workers at the map's top and bottom with much less to do, and every
+// time step waits for the slowest). putShare puts a worker's results back in place.
+export const shareOf = (a, w, W) => { const out = new a.constructor(Math.ceil((a.length - w) / W)); for (let j = 0, i = w; i < a.length; i += W) out[j++] = a[i]; return out; };
+export const putShare = (out, part, w, W) => { for (let j = 0, i = w; j < part.length; i += W) out[i] = part[j++]; };
 
 // RGBA image, statistics and candidate landing areas. grid: the terrain { z, n, cellM } (or a window of it, as in
 // shadow.js); cells: mapCells() for the
@@ -104,22 +114,50 @@ export function suitImage(suit, grid, cells, { spacingM, slopeMax, padM, centre,
 
 // Run the layer over [t0, t0 + spanMs] in time order, for the cells of mapCells(). `bodies(t)` -> { sun, earth } km vectors.
 // `onStep(done, total, suit)` may return false to stop early; `pause` yields between samples so a page stays responsive.
-// `pass(bodies)`, if given, resolves to one sample's { sun, earth } visibility arrays computed elsewhere (the page's
-// workers); otherwise they are computed here. `far`: { grid, dhM }, the coarser terrain beyond a window (shadow.js).
+// `pass(bodies, only)`, if given, resolves to one sample's { sun, earth } visibility arrays computed elsewhere (the
+// page's workers), skipping cells where `only` is 0; otherwise they are computed here. `far`: { grid, dhM }, the coarser terrain beyond a window (shadow.js).
 // `fromStart`: as in createSuit, with t0 the landing.
 export async function buildSuit({ grid, cells, w, h, t0, spanMs, stepMs, durMs, needEarth, dhM, far = null, fromStart = false, bodies, onStep, pause = () => Promise.resolve(), pass }) {
   const n = Math.max(1, Math.round(spanMs / stepMs)), suit = createSuit(w, h, Math.ceil(durMs / stepMs) + 1, fromStart);
   const sun = new Uint8Array(w * h), earth = new Uint8Array(w * h);
-  pass ||= async (b) => {
-    visCells(shadowContext(grid, b.sun, { dhM, far }), cells, sun);
+  const alive = fromStart ? new Uint8Array(w * h).fill(1) : null; // from a landing, a cell that has lost the Sun or Earth needs no more marching
+  pass ||= async (b, only) => {
+    visCells(shadowContext(grid, b.sun, { dhM, far }), cells, sun, only);
     if (needEarth) visCells(shadowContext(grid, b.earth, { radiusKm: 0, near: true, dhM, far }), cells, earth, sun); // only where the Sun is or might be up
     return { sun, earth };
   };
   for (let k = 0; k <= n; k++) {
-    const v = await pass(bodies(t0 + k * stepMs));
+    const v = await pass(bodies(t0 + k * stepMs), alive);
     suit.add(k, v.sun, needEarth ? v.earth : null);
     if (onStep && onStep(k + 1, n + 1, suit) === false) return null;
+    if (alive && !suit.alive(k, alive)) break; // every cell is settled
     await pause();
   }
   return suit;
+}
+
+// The same layer from W workers, each running every time step for its own share of the cells (shareOf) and keeping
+// its own runs: nothing waits on the page between steps, which with per-step hand-back cost about a third of the
+// time on 8 workers. `ports`: one { post(message), on(handler) } per worker running web/suit-worker.js, each already
+// holding the terrain. `onStep(done, total, suit)` is called as the shares report (every `every` steps), with the
+// slowest share's step and the layer merged so far; returning false stops the workers. Resolves to the merged
+// suit, or null if stopped.
+let runSeq = 0;
+export function buildSuitShared(ports, { cells, w, h, t0, spanMs, stepMs, durMs, needEarth, dhM, fromStart = false, bodies, onStep, every = 12 }) {
+  const W = ports.length, n = Math.max(1, Math.round(spanMs / stepMs)), suit = createSuit(w, h, Math.ceil(durMs / stepMs) + 1, fromStart);
+  const id = ++runSeq, done = new Array(W).fill(0), list = Array.from({ length: n + 1 }, (_, k) => bodies(t0 + k * stepMs));
+  return new Promise((resolve) => {
+    let finals = 0, shown = 0;
+    ports.forEach((p, i) => {
+      p.on((d) => {
+        if (d.id !== id) return; // a report from an earlier run
+        for (let k = 0; k < 3; k++) putShare(suit.best[k], d.best[k], i, W);
+        putShare(suit.start, d.start, i, W); done[i] = d.done;
+        if (d.final) { if (++finals === W) resolve(suit); return; }
+        const m = Math.min(...done);
+        if (onStep && m > shown) { shown = m; if (onStep(m, n + 1, suit) === false) { ports.forEach((x) => x.post({ stop: true })); resolve(null); } }
+      });
+      p.post({ id, cells: shareOf(cells, i, W), run: { t0, spanMs, stepMs, durMs, needEarth, dhM, fromStart }, bodies: list, every });
+    });
+  });
 }
