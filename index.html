@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lunar Lighting Planner</title>
 <meta name="description" content="Plan a Moon landing around sunlight and Earth contact, or explore how light moves across the lunar south pole. Real JPL Horizons and LRO LOLA data, 1969-2040.">
-<link rel="stylesheet" href="style.css?v=40">
+<link rel="stylesheet" href="style.css?v=42">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -99,7 +99,7 @@
         <h2 id="hMap">Map</h2>
         <div class="row tight">
           <label class="sr-only" for="pLayer">What the map shows</label>
-          <select id="pLayer"><option value="sun">Sunlight at the chosen moment</option><option value="land">Landing areas for this mission</option><option value="left">Where this landing holds the mission</option></select>
+          <select id="pLayer"><option value="sun">Sunlight at the chosen moment</option><option value="land">Landing areas for this mission</option><option value="left">Where this landing holds the mission</option><option value="share">Sunlight: share of the period</option><option value="contact">Earth contact: share of the period</option><option value="sunel">Sun elevation while lit</option></select>
           <label class="sr-only" for="pZoom">Map view</label>
           <select id="pZoom"><option value="pole">Whole south pole</option><option value="site">Around the site (240 m)</option><option value="close">Close-up (40 m)</option></select>
         </div>
@@ -110,9 +110,14 @@
         <canvas id="pMap" class="map" role="img" aria-label="Lit-terrain map of the lunar south pole at the chosen time"></canvas>
         <p class="legend" id="pLegSun"><span class="li"><span class="key lit"></span>Sunlit</span><span class="li"><span class="key shade"></span>Shadow</span><span class="li"><span class="key box"></span>Artemis III regions</span><span class="li"><output id="pMapWhen"></output>&nbsp;·&nbsp;<span id="pMapRes">1.2 km</span>/px</span></p>
         <p class="legend" id="pLegLand" hidden><span class="li"><span class="key pad"></span>Landing area</span><span class="li"><span class="key full"></span><span id="pLegFull">Window holds the mission</span></span><span class="li"><span class="key short"></span><span id="pLegShort">Usable, too short</span></span><span class="li"><span class="key cant"></span><span id="pLegNone">Never usable</span></span><span class="li"><span class="key stripes"></span>Too steep</span><span class="li"><span class="key dots"></span>Too close to call</span><span class="li">Dots: catalogue places</span></p>
+        <p class="legend" id="pLegStat" hidden><span class="li"><span id="pLegLo"></span><span class="ramp" id="pRamp"></span><span id="pLegHi"></span></span><span class="li" id="pLegWhat"></span><span class="li">Letters: landing areas</span></p>
         <div id="pBest" hidden>
           <p id="pBestText" class="lead" aria-live="polite"></p>
-          <ol id="pAreas" class="rows" aria-label="Landing areas found, largest first"></ol>
+          <div class="row tight">
+            <label class="inline" for="pPeriod">Period <select id="pPeriod"><option value="span">The search span, every 4 hours</option><option value="year">A year from the search start, every 12 hours</option></select></label>
+            <label class="inline" for="pSort">List areas by <select id="pSort"><option value="size">size</option><option value="window">longest window</option><option value="sun">sunlight</option><option value="earth">Earth contact</option></select></label>
+          </div>
+          <ol id="pAreas" class="rows" aria-label="Landing areas found"></ol>
           <p id="pBestNote" class="hint"></p>
         </div>
         <p id="pZoomNote" class="hint" hidden>The 40 m terrain covers 85–90°S; this place is outside it, so the map shows the 240 m view.</p>
@@ -138,6 +143,10 @@
       <h2 id="hOthers">Other places for this mission</h2>
       <p id="pOthersLead" class="lead"></p>
       <button id="pFind" type="button" class="btn primary">Find landing areas on the map</button>
+      <h3>Planned CLPS deliveries to the south pole</h3>
+      <p id="pClpsNote" class="hint"></p>
+      <ul id="pClps" class="rows"></ul>
+      <details><summary>How each search place was chosen</summary><ul id="pClpsBasis" class="basis"></ul></details>
       <h3>Candidate sites and regions</h3>
       <ul id="pOthers" class="rows"></ul>
       <details><summary id="pPastSum">Past landing sites, for reference</summary><ul id="pOthersMore" class="rows"></ul></details>
@@ -161,6 +170,12 @@
       <canvas id="pCmp" role="img" aria-label="Sun, Earth and usable time at several sites on one time axis"></canvas>
       <p class="legend"><span class="li"><span class="key sunk"></span>Sun</span><span class="li"><span class="key earthk"></span>Earth</span><span class="li"><span class="key full"></span><span id="pCmpNeed"></span></span><span class="li">Outline: best window</span><span class="li">Tick: mission length</span><span class="li">Dashed: selected landing</span></p>
       <div class="tablewrap"><table id="pCmpTable" class="cmp"><thead><tr><th scope="col">Site</th><th scope="col">Best window</th><th scope="col">Lasts</th><th scope="col">Closed by</th><th scope="col">Holds the mission</th></tr></thead><tbody></tbody></table></div>
+    </section>
+    <section class="panel" aria-labelledby="hClps">
+      <h2 id="hClps">CLPS regions compared</h2>
+      <p class="hint" id="pClpsLead"></p>
+      <div class="row"><button id="pClpsRun" type="button" class="btn primary">Compare the regions</button><span id="pClpsStatus" class="hint" role="status"></span></div>
+      <div class="tablewrap"><table id="pClpsTable" class="cmp"><caption class="sr-only">The largest landing area in each region NASA names for a planned south-pole delivery</caption><thead><tr><th scope="col">Region searched</th><th scope="col">Deliveries</th><th scope="col">Landing areas</th><th scope="col">Largest area</th><th scope="col">Its window</th><th scope="col">Sunlight there</th><th scope="col">Earth contact there</th><th scope="col">Longest night there</th></tr></thead><tbody></tbody></table></div>
     </section>
     <details class="panel fold" id="pAll">
       <summary><h2>All sites, all windows</h2></summary>
@@ -353,28 +368,28 @@
 <script type="importmap">
 {
  "imports": {
-  "./core.js": "./core.js?v=40",
-  "./dem.js": "./dem.js?v=40",
-  "./ephem.js": "./ephem.js?v=40",
-  "./explore.js": "./explore.js?v=40",
-  "./export.js": "./export.js?v=40",
-  "./field.js": "./field.js?v=40",
-  "./pair.js": "./pair.js?v=40",
-  "./globe-math.js": "./globe-math.js?v=40",
-  "./globe.js": "./globe.js?v=40",
-  "./horizon.js": "./horizon.js?v=40",
-  "./landing.js": "./landing.js?v=40",
-  "./mission.js": "./mission.js?v=40",
-  "./route.js": "./route.js?v=40",
-  "./litmap.js": "./litmap.js?v=40",
-  "./planner.js": "./planner.js?v=40",
-  "./shadow.js": "./shadow.js?v=40",
-  "./sky.js": "./sky.js?v=40",
-  "./suit.js": "./suit.js?v=40",
-  "./windows.js": "./windows.js?v=40"
+  "./core.js": "./core.js?v=42",
+  "./dem.js": "./dem.js?v=42",
+  "./ephem.js": "./ephem.js?v=42",
+  "./explore.js": "./explore.js?v=42",
+  "./export.js": "./export.js?v=42",
+  "./field.js": "./field.js?v=42",
+  "./pair.js": "./pair.js?v=42",
+  "./globe-math.js": "./globe-math.js?v=42",
+  "./globe.js": "./globe.js?v=42",
+  "./horizon.js": "./horizon.js?v=42",
+  "./landing.js": "./landing.js?v=42",
+  "./mission.js": "./mission.js?v=42",
+  "./route.js": "./route.js?v=42",
+  "./litmap.js": "./litmap.js?v=42",
+  "./planner.js": "./planner.js?v=42",
+  "./shadow.js": "./shadow.js?v=42",
+  "./sky.js": "./sky.js?v=42",
+  "./suit.js": "./suit.js?v=42",
+  "./windows.js": "./windows.js?v=42"
  }
 }
 </script>
-<script type="module" src="app.js?v=40"></script>
+<script type="module" src="app.js?v=42"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@ import { traceHorizon, horizonUnc } from './horizon.js';
 
 export const $ = (id) => document.getElementById(id);
 export const HOUR = 3600e3, DAY = 24 * HOUR, EYE_M = 2;
-export const APP_VERSION = '40'; // the ?v= in index.html; tests/export.test.mjs keeps the two equal
+export const APP_VERSION = '42'; // the ?v= in index.html; tests/export.test.mjs keeps the two equal
 export const T_MIN = Date.UTC(FIRST_YEAR, 0, 1), T_MAX = Date.UTC(LAST_YEAR + 1, 0, 1) - HOUR;
 
 // Data files are requested with their own hash from the manifest, so a browser never pairs new code with a stale cached file.
@@ -18,12 +18,12 @@ const get = async (u, kind) => {
 };
 export const getJSON = (u) => get(u, 'json'), getBin = (u) => get(u, 'arrayBuffer');
 export const eph = createEphemeris((y) => getBin(`data/ephem/${y}.bin`));
-export const data = { catalogue: [], sites: new Map(), meta: null, grids: {}, unc: {}, dataId: '' };
+export const data = { catalogue: [], sites: new Map(), meta: null, grids: {}, unc: {}, dataId: '', clps: null };
 
 export async function loadCore() {
   manifest = await getJSON('data/manifest.json');
-  const [cat, meta, unc] = await Promise.all([getJSON('data/sites.json'), getJSON('data/dem/meta.json'), getJSON('data/uncertainty.json')]);
-  data.catalogue = cat.sites; data.meta = meta; data.unc = unc.levels_m; data.dataId = manifest.data_id;
+  const [cat, meta, unc, clps] = await Promise.all([getJSON('data/sites.json'), getJSON('data/dem/meta.json'), getJSON('data/uncertainty.json'), getJSON('data/clps.json')]);
+  data.clps = clps; data.catalogue = cat.sites; data.meta = meta; data.unc = unc.levels_m; data.dataId = manifest.data_id;
   const loaded = await Promise.all(cat.sites.map(async (s) => {
     const horizon = await getJSON(`data/${s.horizon}`);
     horizon.unc = horizonUnc(horizon, data.unc);

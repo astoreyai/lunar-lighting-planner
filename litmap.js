@@ -15,16 +15,17 @@ const toGrid = (g, lat, lon) => {
 export const hasClose = (lat, lon) => { const T = data.meta.tiles40, [r, c] = toGrid(T, lat, lon); return r >= 0 && c >= 0 && r <= T.n - 1 && c <= T.n - 1; };
 
 export function createLitMap(canvas, { onPick, describe }) {
-  const view = { zoom: 'pole', center: null, t: 0, markers: [], outlines: [], paths: [], frame: null, layer: 'sun', mission: null, onLand: null };
+  const view = { zoom: 'pole', center: null, t: 0, markers: [], outlines: [], paths: [], frame: null, layer: 'sun', paint: 'class', sort: 'size', mission: null, onLand: null };
   let pending = false, busy = false, building = '', near = null; // near: the last close-up window of 40 m terrain { key, grid }
-  const lands = {}; // per layer ('land', 'left'): { key, suit, ... } once that landing layer is complete
-  const LAND_STEP = 4 * 3600e3; // time between samples of the landing layers, in every view
+  const lands = new Map(); // finished landing layers by key (the last four): { key, suit, grid, cells, ... }
   // 'land' (the best window in the search span) does not depend on the landing time; 'left' (from this landing) only on it.
-  // The whole-pole view does not depend on the selected place; the others are windows around it.
-  const landKey = () => {
-    const m = view.mission, left = view.layer === 'left';
-    return view.layer !== 'sun' && m ? JSON.stringify([view.layer, view.zoom, view.zoom !== 'pole' && view.center ? [view.center.lat.toFixed(3), view.center.lon.toFixed(3)] : 0, { ...m, padM: 0, slopeMax: 0, ...(left ? { t0: 0, spanMs: 0 } : { landT: 0 }) }]) : '';
+  // The whole-pole view does not depend on the selected place; the others are windows around it. What is painted
+  // (classes or a statistic) and how the areas are sorted do not change the layer, so they are not in the key.
+  const keyFor = (layer, zoom, center, m) => {
+    const left = layer === 'left';
+    return layer !== 'sun' && m ? JSON.stringify([layer, zoom, zoom !== 'pole' && center ? [center.lat.toFixed(3), center.lon.toFixed(3)] : 0, { ...m, padM: 0, slopeMax: 0, ...(left ? { t0: 0, spanMs: 0 } : { landT: 0 }) }]) : '';
   };
+  const landKey = () => keyFor(view.layer, view.zoom, view.center, view.mission);
 
   const toLatLon = (g, r, c) => {
     const off = (g.n - 1) / 2, x = (c - off) * g.cellM, y = (off - r) * g.cellM;
@@ -32,30 +33,36 @@ export function createLitMap(canvas, { onPick, describe }) {
   };
   const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
 
+  // A view's geometry and terrain. g: the grid the view's rows and columns belong to; grid: the terrain analysed,
+  // with `far` beyond it; (vr, vc): the view's corner in `grid`; whole: the whole-pole view.
+  async function sceneFor(zoom, center) {
+    const polar = center && center.lat <= -75, close = polar && zoom === 'close' && hasClose(center.lat, center.lon);
+    const zoomed = polar && zoom !== 'pole' && !close; // 'close' where the 40 m terrain does not reach falls back to the 240 m view
+    if ((zoomed || close) && !data.grids.polar240) setStatus('Loading 240 m south-polar terrain (29 MB, first time only)…');
+    const g = close ? { n: data.meta.tiles40.n, cellM: data.meta.tiles40.cellM } : await loadGrid(zoomed ? 'polar240' : 'polarmap');
+    let r0 = 0, c0 = 0, size = g.n, grid = { z: g.z, n: g.n, cellM: g.cellM }, far = null, vr = 0, vc = 0;
+    if (zoomed || close) {
+      const [r, c] = toGrid(g, center.lat, center.lon);
+      size = ZOOM_CELLS;
+      vr = r0 = clamp(Math.round(r - size / 2), 1, g.n - size - 1);
+      vc = c0 = clamp(Math.round(c - size / 2), 1, g.n - size - 1);
+    }
+    if (close) {
+      const m = size + 2 * CLOSE_MARGIN, R0 = clamp(r0 - CLOSE_MARGIN, 0, g.n - m), C0 = clamp(c0 - CLOSE_MARGIN, 0, g.n - m), key = `${R0},${C0}`;
+      if (near?.key !== key) { setStatus('Loading 40 m terrain around this place…'); near = { key, grid: await loadWindow40(R0, C0, m) }; }
+      const f = await loadGrid('polar240');
+      grid = near.grid; far = { grid: { z: f.z, n: f.n, cellM: f.cellM }, dhM: 0 }; vr = r0 - R0; vc = c0 - C0;
+    }
+    return { g, r0, c0, size, grid, far, vr, vc, whole: !zoomed && !close, center };
+  }
+
   async function draw() {
     if (busy) { pending = true; return; }
     busy = true;
     try {
-      const polar = view.center && view.center.lat <= -75, close = polar && view.zoom === 'close' && hasClose(view.center.lat, view.center.lon);
-      const zoomed = polar && view.zoom !== 'pole' && !close; // 'close' where the 40 m terrain does not reach falls back to the 240 m view
-      if ((zoomed || close) && !data.grids.polar240) setStatus('Loading 240 m south-polar terrain (29 MB, first time only)…');
-      // g: the grid the view's rows and columns belong to; grid: the terrain analysed, with `far` beyond it; (vr, vc): the view's corner in `grid`.
-      const g = close ? { n: data.meta.tiles40.n, cellM: data.meta.tiles40.cellM } : await loadGrid(zoomed ? 'polar240' : 'polarmap');
-      let r0 = 0, c0 = 0, size = g.n, grid = { z: g.z, n: g.n, cellM: g.cellM }, far = null, vr = 0, vc = 0;
-      if (zoomed || close) {
-        const [r, c] = toGrid(g, view.center.lat, view.center.lon);
-        size = ZOOM_CELLS;
-        vr = r0 = clamp(Math.round(r - size / 2), 1, g.n - size - 1);
-        vc = c0 = clamp(Math.round(c - size / 2), 1, g.n - size - 1);
-      }
-      if (close) {
-        const m = size + 2 * CLOSE_MARGIN, R0 = clamp(r0 - CLOSE_MARGIN, 0, g.n - m), C0 = clamp(c0 - CLOSE_MARGIN, 0, g.n - m), key = `${R0},${C0}`;
-        if (near?.key !== key) { setStatus('Loading 40 m terrain around this place…'); near = { key, grid: await loadWindow40(R0, C0, m) }; }
-        const f = await loadGrid('polar240');
-        grid = near.grid; far = { grid: { z: f.z, n: f.n, cellM: f.cellM }, dhM: 0 }; vr = r0 - R0; vc = c0 - C0;
-      }
-      const scene = { g, r0, c0, size, grid, far, vr, vc };
+      const scene = await sceneFor(view.zoom, view.center);
       if (view.layer !== 'sun' && view.mission) { await drawLand(scene); return; }
+      const { g, r0, c0, size, grid, far, vr, vc } = scene;
       await eph.ensure(view.t, view.t + HOUR_MS);
       const img = litImage(shadowContext(grid, eph.bodyVec('sun', view.t), { far }), vr, vc, size, size);
       view.frame = { g, r0, c0, size, litFraction: img.litFraction };
@@ -90,26 +97,17 @@ export function createLitMap(canvas, { onPick, describe }) {
     });
   }
 
-  // The landing layers, built a time sample at a time: 'land' over the whole search span (the best window at each
-  // cell), 'left' from the chosen landing to the mission's end (whether that landing holds). The site view analyses
-  // every 240 m cell of its window, the whole-pole view the 240 m cell nearest each 1.2 km map cell, the close-up every
-  // 40 m cell of its window with the 240 m terrain beyond.
-  async function drawLand({ g, r0, c0, size, grid: gridIn, far: farIn, vr, vc }) {
-    const m = view.mission, key = landKey(), layer = view.layer, left = layer === 'left', t0 = left ? m.landT : m.t0, spanMs = left ? m.durMs : m.spanMs;
-    const show = (L, done, total) => {
-      const m2 = view.mission, [cr, cc] = toGrid(g, view.center.lat, view.center.lon);
-      const img = suitImage(L.suit, L.grid, L.cells, { spacingM: g.cellM, slopeMax: m2.slopeMax, padM: m2.padM, centre: [cr - r0, cc - c0] });
-      const areas = img.areas.map((a) => { const [lat, lon] = toLatLon(g, r0 + a.y, c0 + a.x); return { ...a, lat, lon }; });
-      view.frame = { g, r0, c0, size, litFraction: 0, land: { count: img.count, areas, areasTotal: img.areasTotal, done, total, cellM: g.cellM, terrainM: L.grid.cellM, left, t0, stepMs: LAND_STEP, tookS: L.tookS, workers: L.workers } };
-      const off = new OffscreenCanvasOr(img.w, img.h);
-      off.ctx.putImageData(new ImageData(img.px, img.w, img.h), 0, 0);
-      paint(off.canvas);
-      view.onLand?.(view.frame.land);
-    };
-    if (lands[layer]?.key === key) { show(lands[layer], 1, 1); setStatus(''); return; }
+  // A landing layer for a view, built a time sample at a time or taken from the last few built: 'land' over the
+  // whole search span (the best window at each cell, with the sunlight and Earth statistics), 'left' from the chosen
+  // landing to the mission's end (whether that landing holds). The site view analyses every 240 m cell of its window,
+  // the whole-pole view the 240 m cell nearest each 1.2 km map cell, the close-up every 40 m cell of its window with
+  // the 240 m terrain beyond. `preview(L, done, total)` is called as it builds. Resolves to null if stopped.
+  async function landFor(scene, m, layer, key, preview) {
+    if (lands.has(key)) return lands.get(key);
+    const { g, r0, c0, size, vr, vc } = scene, left = layer === 'left', stepMs = m.stepMs, t0 = left ? m.landT : m.t0, spanMs = left ? m.durMs : m.spanMs;
     // The whole-pole view arrives with the 1.2 km map grid: its analysis runs on the 240 m terrain instead.
-    let grid = gridIn, far = farIn && { ...farIn, dhM: data.unc[Math.round(farIn.grid.cellM)] ?? 0 }, cells;
-    if (view.zoom === 'pole' || !view.center || view.center.lat > -75) {
+    let grid = scene.grid, far = scene.far && { ...scene.far, dhM: data.unc[Math.round(scene.far.grid.cellM)] ?? 0 }, cells;
+    if (scene.whole) {
       if (!data.grids.polar240) setStatus('Loading 240 m south-polar terrain (29 MB, first time only)…');
       const f = await loadGrid('polar240');
       grid = { z: f.z, n: f.n, cellM: f.cellM }; cells = mapCells(g, grid, r0, c0, size, size);
@@ -118,9 +116,9 @@ export function createLitMap(canvas, { onPick, describe }) {
     setStatus('');
     building = key;
     const dhM = data.unc[Math.round(grid.cellM)] ?? 0, started = performance.now(), opts = {
-      grid, far, cells, w: size, h: size, t0, spanMs, durMs: m.durMs, stepMs: LAND_STEP, needEarth: m.needEarth, dhM, fromStart: left,
+      grid, far, cells, w: size, h: size, t0, spanMs, durMs: m.durMs, stepMs, needEarth: m.needEarth, dhM, fromStart: left, stats: !left,
       bodies: (t) => ({ sun: eph.bodyVec('sun', t), earth: eph.bodyVec('earth', t) }),
-      onStep: (done, total, suit) => { if (pending) return false; if (done % 12 === 0 && done < total) show({ suit, grid, cells }, done, total); return true; },
+      onStep: (done, total, suit) => { if (pending) return false; if (preview && done % 12 === 0 && done < total) preview({ suit, grid, cells, t0, spanMs, stepMs, left }, done, total); return true; },
     }, onPage = () => buildSuit({ ...opts, pause: () => new Promise((r) => setTimeout(r)) }); // no workers: the page computes, and breathes between steps
     let suit;
     try {
@@ -131,7 +129,32 @@ export function createLitMap(canvas, { onPick, describe }) {
         return onPage();
       }) : await onPage();
     } finally { building = ''; }
-    if (suit) { lands[layer] = { key, suit, grid, cells, tookS: (performance.now() - started) / 1000, workers: pool ? pool.length : 0 }; show(lands[layer], 1, 1); }
+    if (!suit) return null;
+    const L = { key, suit, grid, cells, t0, spanMs, stepMs, left, tookS: (performance.now() - started) / 1000, workers: pool ? pool.length : 0 };
+    lands.set(key, L);
+    if (lands.size > 4) lands.delete(lands.keys().next().value);
+    return L;
+  }
+
+  // What a layer says about a view: its image, counts and listed areas.
+  function landInfo(L, scene, m, done, total, paint = 'class', sort = 'size') {
+    const { g, r0, c0 } = scene, [cr, cc] = toGrid(g, scene.center.lat, scene.center.lon);
+    const img = suitImage(L.suit, L.grid, L.cells, { spacingM: g.cellM, slopeMax: m.slopeMax, padM: m.padM, centre: [cr - r0, cc - c0], paint, sort });
+    const areas = img.areas.map((a) => { const [lat, lon] = toLatLon(g, r0 + a.y, c0 + a.x); return { ...a, lat, lon }; });
+    return { img, land: { count: img.count, areas, areasTotal: img.areasTotal, done, total, cellM: g.cellM, terrainM: L.grid.cellM, left: L.left, t0: L.t0, spanMs: L.spanMs, stepMs: L.stepMs, tookS: L.tookS, workers: L.workers, stats: !!L.suit.stats, paint: L.suit.stats ? paint : 'class' } };
+  }
+
+  async function drawLand(scene) {
+    const show = (L, done, total) => {
+      const { img, land } = landInfo(L, scene, view.mission, done, total, view.paint, view.sort);
+      view.frame = { g: scene.g, r0: scene.r0, c0: scene.c0, size: scene.size, litFraction: 0, land };
+      const off = new OffscreenCanvasOr(img.w, img.h);
+      off.ctx.putImageData(new ImageData(img.px, img.w, img.h), 0, 0);
+      paint(off.canvas);
+      view.onLand?.(land);
+    };
+    const L = await landFor(scene, view.mission, view.layer, landKey(), show);
+    if (L) { show(L, 1, 1); setStatus(''); }
   }
 
   function paint(src) {
@@ -207,6 +230,16 @@ export function createLitMap(canvas, { onPick, describe }) {
     view,
     // While the landing layer is building, a change that does not alter it (the moment slider, markers) must not restart it.
     set(opts) { Object.assign(view, opts); if (busy && building && building === landKey()) return Promise.resolve(); return draw(); },
+    // The landing layer of another view, without drawing it (the CLPS regions table). Waits for a build in progress;
+    // resolves to null if the map is asked to draw something else meanwhile.
+    async analyse({ zoom, center, mission }) {
+      while (busy) await new Promise((r) => setTimeout(r, 100));
+      busy = true;
+      try {
+        const scene = await sceneFor(zoom, center), L = await landFor(scene, mission, 'land', keyFor('land', zoom, center, mission));
+        return L && landInfo(L, scene, mission, 1, 1).land;
+      } finally { busy = false; if (pending) { pending = false; draw(); } }
+    },
     litFraction: () => view.frame?.litFraction ?? null,
     when: () => fmtUTC(view.t),
   };

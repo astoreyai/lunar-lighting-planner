@@ -46,7 +46,7 @@ async function init() {
   setStatus('Loading sites and terrain…');
   await loadCore();
   const q = new URLSearchParams(location.hash.slice(1)), get = (k) => q.get(k) ?? undefined;
-  await planner.load({ site: get('site'), land: legacyLanding(q), dur: get('dur'), share: get('share'), earth: get('earth'), mh: get('mh'), ell: get('ell'), wp: get('wp'), rmax: get('rmax'), rspd: get('rspd'), cmp: get('cmp'), layer: get('layer'), zoom: get('zoom'), ptab: get('ptab'), from: get('from') }, data.sites.get('im2_athena') || [...data.sites.values()][0]);
+  await planner.load({ site: get('site'), land: legacyLanding(q), dur: get('dur'), share: get('share'), earth: get('earth'), mh: get('mh'), ell: get('ell'), wp: get('wp'), rmax: get('rmax'), rspd: get('rspd'), cmp: get('cmp'), layer: get('layer'), zoom: get('zoom'), ptab: get('ptab'), per: get('per'), from: get('from') }, data.sites.get('im2_athena') || [...data.sites.values()][0]);
   await explore.load({ ex: get('ex'), xs: get('xs'), xh: get('xh') });
   await field.load({ fs: get('fs'), ft: get('ft'), fe: get('fe') }, planner.st.site);
   if (matchMedia('(max-width: 700px)').matches) $('pScen').open = false; // phones: answer first, form on demand
