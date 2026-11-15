@@ -141,3 +141,9 @@ The verdict already used a 40 m horizon, but no map showed 40 m terrain. `LDEM_8
 
 **D41. The public history was squashed to one commit dated 2026-11-14.** (Aaron's instruction, 2026-11-14)
 The public repository's history now starts at a single commit made that day. Commit hashes cited in `audit/lunar-navigator/AUDIT.md`, `docs/PLAN.md` and `docs/USABILITY_TESTS.md` (`8748ec7`, `22274d4`, `a4df8bf`) belong to the earlier history, which is kept only in the owner's local branch `backup-before-squash`. One commit with its true date was chosen over replaying the old commits with new dates, which would have put false dates on them. Dates inside the documents are unchanged.
+
+**D42. Place first, then date; other places second.** (Aaron, 2026-11-14, supersedes the order in D26)
+D26 put the mission's needs first and treated the place as a result. It records that choice but no evidence for it. Aaron's point: a target site is often fixed by science or logistics, so a mission cannot necessarily move, and the first question is when a given site works. The scenario now asks for the place, then the landing time, then the mission's needs. Under the answer, the site's own usable windows come first and the ranked list of other places second, renamed "Other places for this mission". Nothing was removed: the ranked list, the landing-area map and the rule that choosing a place does not move the search span all stand.
+
+**D43. Licence: Apache-2.0.** (Aaron, 2026-11-14)
+Chosen over MIT for its patent grant. `LICENSE` is the unmodified text from apache.org. It covers the code; the data files stay under their sources' terms (README, "Data credits and terms").

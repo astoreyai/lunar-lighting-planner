@@ -100,7 +100,7 @@ T9 and T10 do not depend on Phases 2–4 and can ship right after Gate 1.
 
 That the terrain error budget (N5) yields a threshold small enough to be useful. If LOLA's error at long range turns out larger than typical grazing margins, many polar verdicts become "too close to call", and Phase 3 would need finer terrain rather than a label.
 
-## Status, 2026-11-14 (app version 37, data `31d05df6b9be`, 50 tests passing)
+## Status, 2026-11-14 (app version 38, data `31d05df6b9be`, 50 tests passing)
 
 | Task | State | Evidence or what is missing |
 |---|---|---|

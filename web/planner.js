@@ -92,7 +92,7 @@ export function createPlanner({ onChange }) {
     const act = st.site.landing_utc && Date.parse(st.site.landing_utc);
     $('pActual').hidden = !act;
     if (act) $('pActual').textContent = `Use the actual landing (${fmtUTC(act)})`;
-    $('pScenSum').textContent = `${st.durD}-day mission${st.earth ? ' · needs Earth contact' : ''} · ${st.site.short} · ${fmtUTC(st.land)}`;
+    $('pScenSum').textContent = `${st.site.short} · ${fmtUTC(st.land)} · ${st.durD}-day mission${st.earth ? ' · needs Earth contact' : ''}`;
     $('pSiteInfo').innerHTML = `${st.site.lat.toFixed(3)}°, ${st.site.lon.toFixed(3)}°E · ${Math.round(st.site.ground_m)} m${st.site.source_url ? ` · <a href="${st.site.source_url}" target="_blank" rel="noopener">source</a>` : ''}`;
     // Regions, candidate sites and crash sites carry a caveat the verdict depends on: show it.
     $('pSiteNote').textContent = !st.site.landing_utc || /crash|impact/i.test(st.site.note || '') ? (st.site.note || '') : '';
@@ -131,7 +131,7 @@ export function createPlanner({ onChange }) {
     $('pNearest').innerHTML = kind === 'full' ? '' : `<p class="lead">Nearest windows here that hold the mission</p><div class="alts">${alt(before, 'before')}${alt(after, 'after')}</div>`;
   }
 
-  // ---------- mission first: where it fits ----------
+  // ---------- other places for this mission ----------
   let places = [];
   function renderPlaces() {
     const [from, to] = lookRange();

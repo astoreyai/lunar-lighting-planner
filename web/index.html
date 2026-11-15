@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lunar Lighting Planner</title>
 <meta name="description" content="Plan a Moon landing around sunlight and Earth contact, or explore how light moves across the lunar south pole. Real JPL Horizons and LRO LOLA data, 1969-2040.">
-<link rel="stylesheet" href="style.css?v=37">
+<link rel="stylesheet" href="style.css?v=38">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -28,25 +28,8 @@
   <details id="pScen" class="scenwrap" open>
   <summary><span class="sumlabel">Scenario</span> <span id="pScenSum"></span> <span class="edit">Change</span></summary>
   <form class="scenario" onsubmit="return false" aria-label="Landing scenario">
-    <div class="field small-f">
-      <label for="pDur">Mission length (days)</label>
-      <input id="pDur" type="number" min="1" max="60" step="1" inputmode="numeric">
-    </div>
-    <div class="field">
-      <label for="pShare">Power needs</label>
-      <select id="pShare">
-        <option value="0">Any part of the Sun visible</option>
-        <option value="0.5">At least half the Sun's disk</option>
-        <option value="1">The whole Sun's disk</option>
-      </select>
-    </div>
-    <label class="check" for="pEarth"><input id="pEarth" type="checkbox"> Needs direct-to-Earth contact</label>
-    <div class="field">
-      <label for="pLand">Landing time (UTC): also where the search starts</label>
-      <input id="pLand" type="datetime-local" step="60">
-    </div>
     <div class="field wide-f">
-      <label for="pSite">Place (or choose one from the results below)</label>
+      <label for="pSite">Place</label>
       <select id="pSite"></select>
       <p id="pSiteInfo" class="hint"></p>
       <button id="pActual" type="button" class="btn" hidden></button>
@@ -60,6 +43,23 @@
       </div>
       <p class="hint">Or click the map. Defaults are examples, not NASA or CLPS requirements.</p>
     </details>
+    <div class="field">
+      <label for="pLand">Landing time (UTC): the search for windows starts here</label>
+      <input id="pLand" type="datetime-local" step="60">
+    </div>
+    <div class="field small-f">
+      <label for="pDur">Mission length (days)</label>
+      <input id="pDur" type="number" min="1" max="60" step="1" inputmode="numeric">
+    </div>
+    <div class="field">
+      <label for="pShare">Power needs</label>
+      <select id="pShare">
+        <option value="0">Any part of the Sun visible</option>
+        <option value="0.5">At least half the Sun's disk</option>
+        <option value="1">The whole Sun's disk</option>
+      </select>
+    </div>
+    <label class="check" for="pEarth"><input id="pEarth" type="checkbox"> Needs direct-to-Earth contact</label>
   </form>
   </details>
 
@@ -122,14 +122,20 @@
   </div>
 
   <nav class="modes sub" role="tablist" aria-label="More for this mission">
-    <button type="button" role="tab" id="ptPlaces" aria-controls="ppPlaces" aria-selected="true">Places and windows</button>
+    <button type="button" role="tab" id="ptPlaces" aria-controls="ppPlaces" aria-selected="true">Windows and places</button>
     <button type="button" role="tab" id="ptCompare" aria-controls="ppCompare" aria-selected="false" tabindex="-1">Compare sites</button>
     <button type="button" role="tab" id="ptTools" aria-controls="ppTools" aria-selected="false" tabindex="-1">Ellipse and route</button>
   </nav>
 
   <div id="ppPlaces" role="tabpanel" aria-labelledby="ptPlaces" class="two">
+    <section class="panel" aria-labelledby="hWins">
+      <h2 id="hWins">Usable windows at this place</h2>
+      <p id="pWinsLead" class="hint"></p>
+      <ol id="pWins" class="wins"></ol>
+      <p class="legend"><span class="li"><span class="key full"></span>Holds the mission</span><span class="li"><span class="key short"></span>Too short</span><span class="li">Tick: mission length</span></p>
+    </section>
     <section class="panel" aria-labelledby="hOthers" id="pOthersBox">
-      <h2 id="hOthers">Where this mission fits</h2>
+      <h2 id="hOthers">Other places for this mission</h2>
       <p id="pOthersLead" class="lead"></p>
       <button id="pFind" type="button" class="btn primary">Find landing areas on the map</button>
       <h3>Candidate sites and regions</h3>
@@ -139,12 +145,6 @@
       <p id="pNearNote" class="hint"></p>
       <button id="pNearBtn" type="button" class="btn primary">Check points within 20 km</button>
       <div id="pNear"></div>
-    </section>
-    <section class="panel" aria-labelledby="hWins">
-      <h2 id="hWins">Usable windows at this place</h2>
-      <p id="pWinsLead" class="hint"></p>
-      <ol id="pWins" class="wins"></ol>
-      <p class="legend"><span class="li"><span class="key full"></span>Holds the mission</span><span class="li"><span class="key short"></span>Too short</span><span class="li">Tick: mission length</span></p>
     </section>
   </div>
 
@@ -353,28 +353,28 @@
 <script type="importmap">
 {
  "imports": {
-  "./core.js": "./core.js?v=37",
-  "./dem.js": "./dem.js?v=37",
-  "./ephem.js": "./ephem.js?v=37",
-  "./explore.js": "./explore.js?v=37",
-  "./export.js": "./export.js?v=37",
-  "./field.js": "./field.js?v=37",
-  "./pair.js": "./pair.js?v=37",
-  "./globe-math.js": "./globe-math.js?v=37",
-  "./globe.js": "./globe.js?v=37",
-  "./horizon.js": "./horizon.js?v=37",
-  "./landing.js": "./landing.js?v=37",
-  "./mission.js": "./mission.js?v=37",
-  "./route.js": "./route.js?v=37",
-  "./litmap.js": "./litmap.js?v=37",
-  "./planner.js": "./planner.js?v=37",
-  "./shadow.js": "./shadow.js?v=37",
-  "./sky.js": "./sky.js?v=37",
-  "./suit.js": "./suit.js?v=37",
-  "./windows.js": "./windows.js?v=37"
+  "./core.js": "./core.js?v=38",
+  "./dem.js": "./dem.js?v=38",
+  "./ephem.js": "./ephem.js?v=38",
+  "./explore.js": "./explore.js?v=38",
+  "./export.js": "./export.js?v=38",
+  "./field.js": "./field.js?v=38",
+  "./pair.js": "./pair.js?v=38",
+  "./globe-math.js": "./globe-math.js?v=38",
+  "./globe.js": "./globe.js?v=38",
+  "./horizon.js": "./horizon.js?v=38",
+  "./landing.js": "./landing.js?v=38",
+  "./mission.js": "./mission.js?v=38",
+  "./route.js": "./route.js?v=38",
+  "./litmap.js": "./litmap.js?v=38",
+  "./planner.js": "./planner.js?v=38",
+  "./shadow.js": "./shadow.js?v=38",
+  "./sky.js": "./sky.js?v=38",
+  "./suit.js": "./suit.js?v=38",
+  "./windows.js": "./windows.js?v=38"
  }
 }
 </script>
-<script type="module" src="app.js?v=37"></script>
+<script type="module" src="app.js?v=38"></script>
 </body>
 </html>
