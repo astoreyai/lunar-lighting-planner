@@ -17,12 +17,13 @@ const near = await tileWindow(T40, 3500, 3337, 800, tile40); // the close-up aro
 // every 40 m cell with the 240 m terrain beyond. "land": the best window over 47 days; "left": from one landing, 10 days.
 // Throughput is cell-samples (a cell at one time step, Sun and Earth) per CPU second.
 const only = process.argv[2];
-for (const [name, g, grid, far, r0, c0, size, left] of [
+for (const [name, g, grid, far, r0, c0, size, left, stats] of [
   ['whole pole, land', map, fine, null, 0, 0, map.n, false], ['site window, land', fine, fine, null, 2300, 2100, 400, false], ['close-up, land', near, near, { grid: fine, dhM }, 200, 200, 400, false],
-  ['site window, left', fine, fine, null, 2300, 2100, 400, true], ['close-up, left', near, near, { grid: fine, dhM }, 200, 200, 400, true]]) {
-  if (only && !name.startsWith(only)) continue;
+  ['site window, left', fine, fine, null, 2300, 2100, 400, true], ['close-up, left', near, near, { grid: fine, dhM }, 200, 200, 400, true],
+  ['whole pole, land with statistics', map, fine, null, 0, 0, map.n, false, true], ['site window, land with statistics', fine, fine, null, 2300, 2100, 400, false, true]]) {
+  if (only && name !== only) continue;
   const cells = mapCells(g, grid, r0, c0, size, size), span = left ? durMs : spanMs, t = process.cpuUsage().user;
-  const suit = await buildSuit({ grid, far, cells, w: size, h: size, t0, spanMs: span, stepMs, durMs, needEarth: true, dhM: levels[Math.round(grid.cellM)], fromStart: left, bodies });
+  const suit = await buildSuit({ grid, far, cells, w: size, h: size, t0, spanMs: span, stepMs, durMs, needEarth: true, dhM: levels[Math.round(grid.cellM)], fromStart: left, stats, bodies });
   const cpu = (process.cpuUsage().user - t) / 1e6, img = suitImage(suit, grid, cells, { spacingM: g.cellM, slopeMax: 10, padM: 500, centre: [size / 2, size / 2] }), steps = Math.round(span / stepMs) + 1;
   console.log(`${name}: ${size}x${size}, ${steps} steps, ${cpu.toFixed(1)} CPU s, ${Math.round((img.count.inside * steps) / cpu / 1000)}k cell-samples/s`, JSON.stringify(img.count), 'areas', img.areasTotal);
 }

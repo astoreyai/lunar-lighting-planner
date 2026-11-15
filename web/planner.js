@@ -5,6 +5,7 @@ import { assumptions, missionCsv } from './export.js';
 import { R_MOON_M } from './dem.js';
 import { $, HOUR, DAY, T_MIN, T_MAX, APP_VERSION, eph, data, customSite, siteByKey, siteOptions, fmtDur, fmtUTC, fmtDay, fmtDayShort, isoMin, compass, css, setupCanvas, setStatus, ICON } from './core.js';
 import { createLitMap, hasClose } from './litmap.js';
+import { RAMP, RAMP_LOW, EL_MAX } from './suit.js';
 import { drawSky } from './sky.js';
 import { createMission } from './mission.js';
 
@@ -19,7 +20,7 @@ function hourly(site, from, to) {
 }
 
 export function createPlanner({ onChange }) {
-  const st = { site: null, land: 0, durD: 10, minShare: 0, earth: true, mapH: 0, near: null, notice: '', linkNote: null, cmp: [], layer: 'sun', from: 0, ptab: 'Places' }; // from: the date the search for places and windows starts at
+  const st = { site: null, land: 0, durD: 10, minShare: 0, earth: true, mapH: 0, near: null, notice: '', linkNote: null, cmp: [], layer: 'sun', from: 0, ptab: 'Places', sort: 'size', period: 'span' }; // layer: what the map shows; sort: the order of the listed areas; period: what the landing layer covers // from: the date the search for places and windows starts at
   const req = () => ({ minShare: st.minShare, earth: st.earth });
   const PT = ['Places', 'Compare', 'Tools']; // the sections under the answer and the map; st.ptab is the one shown
   const showTab = () => PT.forEach((k) => { const on = k === st.ptab; $(`pt${k}`).setAttribute('aria-selected', on); $(`pt${k}`).tabIndex = on ? 0 : -1; $(`pp${k}`).hidden = !on; });
@@ -107,7 +108,7 @@ export function createPlanner({ onChange }) {
     $('pAssumeSum').textContent = `${fa[1][1]} · ${(st.site.horizon_grids || st.site.horizon.grids).map((g) => g.replace('LOLA ', '')).join(' + ')} · hourly · DE441 · app ${APP_VERSION}, data ${data.dataId}`;
     $('pAssumeTable').tBodies[0].innerHTML = fa.map(([k, val]) => `<tr><th scope="row">${k}</th><td>${val}</td></tr>`).join('');
     renderWindows(kind);
-        renderPlaces(); renderNear(); renderCompare(); renderTimeline(); renderMoment(); updateMap(); mission.render(); renderCalendarIfOpen().catch((e) => setStatus(e.message));
+        renderPlaces(); renderClps(); renderNear(); renderCompare(); renderTimeline(); renderMoment(); updateMap(); mission.render(); renderCalendarIfOpen().catch((e) => setStatus(e.message));
     onChange();
   }
 
@@ -267,20 +268,60 @@ export function createPlanner({ onChange }) {
   const share = (a, b) => { const x = b ? (100 * a) / b : 0; return x > 0 && x < 0.5 ? 'under 1%' : `${Math.round(x)}%`; };
   const padM = () => Math.max(mission.m.ell.L, mission.m.ell.W) / 2;
   function bestText(L) {
-    const c = L.count, [from, to] = lookRange();
+    const c = L.count, from = L.t0, to = L.t0 + L.spanMs;
     if (L.done < L.total) return `Working through ${L.left ? st.durD : Math.round((to - from) / DAY)} days of light: step ${L.done} of ${L.total}.`;
-    const tail = `${share(c.steep, c.inside)} is too steep and ${share(c.close, c.inside)} too close to call. ${L.areasTotal ? `${L.areasTotal} separate landing area${L.areasTotal > 1 ? 's' : ''} found${L.areasTotal > L.areas.length ? `; the largest are listed, with the one nearest ${st.site.short}` : ''}.` : 'No landing area in this view.'}`;
+    const found = `${L.areasTotal ? `${L.areasTotal} separate landing area${L.areasTotal > 1 ? 's' : ''} found${L.areasTotal > L.areas.length ? `; the largest are listed, with the one nearest ${st.site.short}` : ''}.` : 'No landing area in this view.'}`;
+    const tail = `${share(c.steep, c.inside)} is too steep and ${share(c.close, c.inside)} too close to call. ${found}`, span = `between ${fmtDay(from)} and ${fmtDay(to)}`, mean = (x) => `${Math.round((100 * x) / (c.inside || 1))}%`;
+    if (L.paint === 'sun') return `On average the ground shown is in sunlight ${mean(c.sunSum)} of the time ${span}; ${share(c.sunHalf, c.inside)} of it is lit at least half that time. ${found}`;
+    if (L.paint === 'earth') return `On average Earth is in view from the ground shown ${mean(c.earthSum)} of the time ${span}; from ${share(c.earthHalf, c.inside)} of it Earth is in view at least half that time. ${found}`;
+    if (L.paint === 'el') return `Where the ground shown is ever lit ${span}, the Sun's centre is on average ${c.lit ? (c.elSum / c.lit).toFixed(1) : '0'}° above the level horizon while it is lit. A level array collects in proportion to the sine of that angle; an upright array that turns to the Sun collects nearly all of it. ${found}`;
     if (L.left) return `${share(c.pad, c.inside)} of the ground shown is a landing area for a landing at ${fmtUTC(L.t0)}: sunlight${st.earth ? ' with Earth in view' : ''} from then for all ${st.durD} days, no steeper than ${mission.m.ell.max}° anywhere within ${Math.round(padM())} m, and not a close call. ${share(c.full, c.inside)} holds the mission from that landing, ${share(c.short, c.inside)} is usable at landing but loses the ${st.earth ? 'Sun or Earth' : 'Sun'} early, ${share(c.none, c.inside)} is not usable at landing; ${tail}`;
     return `${share(c.pad, c.inside)} of the ground shown is a landing area: a window of at least ${st.durD} days of sunlight${st.earth ? ' with Earth in view' : ''} between ${fmtDay(from)} and ${fmtDay(to)}, no steeper than ${mission.m.ell.max}° anywhere within ${Math.round(padM())} m, and not a close call. ${share(c.full, c.inside)} has such a window, ${share(c.short, c.inside)} is usable for less, ${share(c.none, c.inside)} is never usable in that span; ${tail}`;
   }
   const bearing = (a, b) => { const D = Math.PI / 180, dl = (b.lon - a.lon) * D; return (Math.atan2(Math.sin(dl) * Math.cos(b.lat * D), Math.cos(a.lat * D) * Math.sin(b.lat * D) - Math.sin(a.lat * D) * Math.cos(b.lat * D) * Math.cos(dl)) / D + 360) % 360; };
+  // An area's sunlight and Earth statistics over the period, at its representative point.
+  const pc = (x) => `${Math.round(100 * x)}%`;
+  const areaStat = (q, stepMs) => `Sunlit ${pc(q.sun)} of the period, longest night ${q.dark ? `about ${fmtDur(q.dark * stepMs)}` : 'none'} · Earth in view ${pc(q.earth)}, longest outage ${q.outage ? `about ${fmtDur(q.outage * stepMs)}` : 'none'}${q.sunEl !== null ? ` · Sun ${q.sunEl.toFixed(1)}° up while lit` : ''}`;
   function renderBest(L) {
     $('pBestText').textContent = bestText(L).replace(/^u/, 'U');
     $('pAreas').innerHTML = L.done < L.total ? '' : L.areas.map((a, i) => {
       const open = L.t0 + a.start * L.stepMs, len = (a.best - 1) * L.stepMs;
-      return `<li><button type="button" class="siteRow" data-lat="${a.lat}" data-lon="${a.lon}" data-land="${L.left ? L.t0 : ceilHour(open)}"><span class="vi full">${String.fromCharCode(65 + i)}</span><span class="nm">${a.areaKm2 < 10 ? a.areaKm2.toFixed(1) : Math.round(a.areaKm2)} km², ${a.distM < 1.5 * L.cellM ? `at ${st.site.short}` : `${(a.distM / 1000).toFixed(a.distM < 20e3 ? 1 : 0)} km ${compass(bearing(st.site, a))} of ${st.site.short}`}${a.nearest && L.areasTotal > 1 ? ' <small>(nearest)</small>' : ''}</span><span class="rs">${L.left ? `holds the mission from ${dayHm(L.t0)}` : `window opens about ${dayHm(open)}, about ${fmtDur(len)}`}</span></button></li>`;
+      return `<li><button type="button" class="siteRow" data-lat="${a.lat}" data-lon="${a.lon}" data-land="${L.left ? L.t0 : ceilHour(open)}"><span class="vi full">${String.fromCharCode(65 + i)}</span><span class="nm">${a.areaKm2 < 10 ? a.areaKm2.toFixed(1) : Math.round(a.areaKm2)} km², ${a.distM < 1.5 * L.cellM ? `at ${st.site.short}` : `${(a.distM / 1000).toFixed(a.distM < 20e3 ? 1 : 0)} km ${compass(bearing(st.site, a))} of ${st.site.short}`}${a.nearest && L.areasTotal > 1 ? ' <small>(nearest)</small>' : ''}${a.stat ? `<small class="stt">${areaStat(a.stat, L.stepMs)}</small>` : ''}</span><span class="rs">${L.left ? `holds the mission from ${dayHm(L.t0)}` : `window opens about ${dayHm(open)}, about ${fmtDur(len)}`}</span></button></li>`;
     }).join('');
     $('pBestNote').textContent = `Sampled every ${L.stepMs / HOUR} hours on the ${L.terrainM} m terrain${L.cellM > 1.5 * L.terrainM ? ', at points 1.2 km apart' : ''}${L.terrainM < 100 ? ' (240 m terrain farther out)' : ''}, so times here are approximate; slopes are measured across ${2 * L.terrainM} m.${L.terrainM < 100 ? ` The uncertainty allowed for the 40 m terrain (${data.unc[40]} m) is scaled from the 240 m level, not measured.` : ''}${st.minShare > 0 ? ' This layer counts any part of the Sun as power; the verdict uses your stricter power setting.' : ''} ${L.left ? 'Choosing an area moves the landing there, at the same time' : "Choosing an area plans a landing at its window's opening"}, and the verdict then traces a finer horizon there.${L.tookS ? ` Worked out in ${L.tookS < 10 ? L.tookS.toFixed(1) : Math.round(L.tookS)} s${L.workers ? ` on ${L.workers} worker${L.workers > 1 ? 's' : ''}` : ''}.` : ''}`;
+  }
+
+  // The landing layer's mission and period: the search span every 4 hours, or a year from its start every 12.
+  const PAINT = { share: 'sun', contact: 'earth', sunel: 'el' }; // map settings that colour the landing layer by a statistic
+  const landMission = () => {
+    const [a, b] = lookRange(), year = st.period === 'year' && st.layer !== 'left';
+    return { t0: a, spanMs: year ? Math.min(365 * DAY, T_MAX - a) : b - a, stepMs: (year ? 12 : 4) * HOUR, landT: st.land, durMs: st.durD * DAY, needEarth: st.earth, slopeMax: mission.m.ell.max, padM: padM() };
+  };
+
+  // ---------- planned CLPS deliveries to the south pole ----------
+  const clpsCentre = (v) => (v.site ? data.sites.get(v.site) : v.lat !== undefined ? v : st.site);
+  function renderClps() {
+    const C = data.clps, link = (u, t) => `<a href="${u}" target="_blank" rel="noopener">${t}</a>`;
+    $('pClpsNote').innerHTML = `${C.note} Source: ${link(C.source, C.source_title)}, page dated ${C.page_updated}, read ${C.read}.`;
+    $('pClps').innerHTML = C.deliveries.map((d, i) => `<li><button type="button" class="siteRow" data-clps="${i}"><span class="vi out">${i + 1}</span><span class="nm">${d.id} · ${d.provider} ${d.lander}<small class="stt">NASA: "${d.region}"</small></span><span class="rs">search ${C.views[d.view].name}</span></button></li>`).join('');
+    $('pClpsBasis').innerHTML = [...Object.values(C.views).map((v) => `<li><b>${v.name}.</b> ${v.basis}${v.basis_source ? ` ${link(v.basis_source, 'Gazetteer')}` : ''}</li>`),
+      ...C.deliveries.filter((d) => d.detail).map((d) => `<li><b>${d.id}.</b> ${d.detail} ${link(d.detail_source, 'NASA release')}</li>`)].join('');
+    $('pClpsLead').textContent = `Runs the landing-area analysis for this ${st.durD}-day mission${st.earth ? ' with Earth contact' : ''} over each region NASA names for a planned south-pole delivery, and lists the largest landing area found in each. The regions are where this tool searches; NASA has published no coordinates. It takes about as long as three map builds.`;
+  }
+  async function compareClps() {
+    const C = data.clps, m = landMission(), body = $('pClpsTable').tBodies[0], td = (x) => `<td>${x}</td>`;
+    body.innerHTML = '';
+    for (const k of [...new Set(C.deliveries.map((d) => d.view))]) {
+      const v = C.views[k], c0 = clpsCentre(v);
+      $('pClpsStatus').textContent = `Working on ${v.name}…`;
+      const L = await map.analyse({ zoom: v.zoom, center: { lat: c0.lat, lon: c0.lon }, mission: m });
+      if (!L) { $('pClpsStatus').textContent = 'Stopped, because the map was asked to draw something else. Run it again.'; return; }
+      const a = L.areas[0], c = L.count, q = a?.stat;
+      body.insertAdjacentHTML('beforeend', `<tr><th scope="row">${v.name}</th>${td(C.deliveries.filter((d) => d.view === k).map((d) => d.id).join(', '))}${td(`${share(c.pad, c.inside)} of the ground, ${L.areasTotal} area${L.areasTotal === 1 ? '' : 's'}`)}${a
+        ? td(`${a.areaKm2 < 10 ? a.areaKm2.toFixed(1) : Math.round(a.areaKm2)} km² at ${a.lat.toFixed(2)}°, ${a.lon.toFixed(2)}°E`) + td(`opens about ${dayHm(L.t0 + a.start * L.stepMs)}, about ${fmtDur((a.best - 1) * L.stepMs)}`) + td(pc(q.sun)) + td(pc(q.earth)) + td(q.dark ? `about ${fmtDur(q.dark * L.stepMs)}` : 'none')
+        : td('none') + td('–').repeat(4)}</tr>`);
+    }
+    $('pClpsStatus').textContent = `Done: ${fmtDay(m.t0)} to ${fmtDay(m.t0 + m.spanMs)}, sampled every ${m.stepMs / HOUR} hours. The last three columns are at the largest area's best point.`;
   }
 
   function updateMap() {
@@ -291,7 +332,7 @@ export function createPlanner({ onChange }) {
     if (!polar) return;
     const t = st.land + st.mapH * HOUR;
     $('pMapWhen').textContent = fmtUTC(t);
-    const near = st.near?.points || [], col = { full: css('--full'), short: css('--short'), none: css('--none-dot') }, landLayer = st.layer !== 'sun', byWindow = st.layer === 'land';
+    const near = st.near?.points || [], col = { full: css('--full'), short: css('--short'), none: css('--none-dot') }, landLayer = st.layer !== 'sun', paint = PAINT[st.layer], byWindow = landLayer && st.layer !== 'left';
     const closeOk = hasClose(st.site.lat, st.site.lon), level = map.view.zoom === 'pole' ? 'pole' : map.view.zoom === 'close' && closeOk ? 'close' : 'site';
     $('pZoomNote').hidden = map.view.zoom !== 'close' || closeOk;
     // On the landing layer every polar catalogue site is drawn, coloured by its own verdict for this landing.
@@ -300,14 +341,20 @@ export function createPlanner({ onChange }) {
       ...near.map((n) => ({ lat: n.site.lat, lon: n.site.lon, color: col[n.v?.verdict] || '#888' })),
       ...cat.map((s) => ({ lat: s.lat, lon: s.lon, label: s.short.startsWith("Chang'e-7") || (landLayer && s.outline && level === 'pole') ? '' : s.short, ...(byWindow ? { color: (() => { const x = places.find((q) => q.site.key === s.key); return !x?.w ? col.none : x.fits ? col.full : col.short; })() } : {}) }))];
     $('pLayer').value = st.layer;
-    $('pLegSun').hidden = landLayer; $('pLegLand').hidden = !landLayer; $('pBest').hidden = !landLayer;
+    $('pLegSun').hidden = landLayer; $('pLegLand').hidden = !landLayer || !!paint; $('pLegStat').hidden = !paint; $('pBest').hidden = !landLayer;
+    if (paint) {
+      $('pRamp').style.background = `linear-gradient(to right, rgb(${RAMP_LOW}), rgb(${RAMP[paint]}))`;
+      $('pLegLo').textContent = paint === 'el' ? '0°' : '0%'; $('pLegHi').textContent = paint === 'el' ? `${EL_MAX}° or more` : '100%';
+      $('pLegWhat').textContent = { sun: 'Share of the period in sunlight', earth: 'Share of the period with Earth in view', el: "Mean height of the Sun's centre while lit" }[paint];
+    }
+    $('pPeriod').value = st.period; $('pSort').value = st.sort; $('pPeriod').closest('label').hidden = st.layer === 'left';
     if (landLayer && !map.view.frame?.land) $('pBestText').textContent = 'Working…';
     $('pMapRes').textContent = { pole: '1.2 km', site: '240 m', close: '40 m' }[level];
     $('pLegFull').textContent = byWindow ? 'Window holds the mission' : 'This landing holds the mission'; $('pLegShort').textContent = byWindow ? 'Usable, too short' : 'Usable at landing, lost early'; $('pLegNone').textContent = byWindow ? 'Never usable' : 'Not usable at landing';
     const outlines = [...data.sites.values()].filter((x) => x.outline && (level === 'pole' || x.key === st.site.key)).map((x) => ({ pts: x.outline, main: x.key === st.site.key }));
     const ov = mission.overlays();
     $('pMapTap').hidden = !mission.adding();
-    map.set({ t, center: { lat: st.site.lat, lon: st.site.lon }, markers: [...markers, ...ov.markers], outlines, paths: ov.paths, layer: st.layer, onLand: renderBest, mission: (() => { const [a, b] = lookRange(); return { t0: a, spanMs: b - a, landT: st.land, durMs: st.durD * DAY, needEarth: st.earth, slopeMax: mission.m.ell.max, padM: padM() }; })() }).catch((e) => setStatus(e.message));
+    map.set({ t, center: { lat: st.site.lat, lon: st.site.lon }, markers: [...markers, ...ov.markers], outlines, paths: ov.paths, layer: paint ? 'land' : st.layer, paint: paint || 'class', sort: st.sort, onLand: renderBest, mission: landMission() }).catch((e) => setStatus(e.message));
   }
 
   // The chosen moment: headline numbers with countdowns from that moment, and the sky panorama.
@@ -425,7 +472,7 @@ export function createPlanner({ onChange }) {
     $('pNearest').addEventListener('click', pickLand); $('pWins').addEventListener('click', pickLand);
     $('pFind').addEventListener('click', () => { st.layer = 'land'; updateMap(); onChange(); $('hMap').scrollIntoView({ behavior: 'smooth' }); });
     const pickRow = (e) => {
-      const b = e.target.closest('.siteRow'); if (!b) return;
+      const b = e.target.closest('.siteRow'); if (!b || b.dataset.clps) return; // a CLPS row has its own handler
       guard(async () => { st.site = b.dataset.site ? data.sites.get(b.dataset.site) : await customSite(+b.dataset.lat, +b.dataset.lon); if (b.dataset.site) st.near = null; if (b.dataset.land) shiftTo(+b.dataset.land, false); });
       $('plan').scrollIntoView({ behavior: 'smooth' });
     };
@@ -437,6 +484,15 @@ export function createPlanner({ onChange }) {
     $('pMapTime').addEventListener('input', () => { st.mapH = +$('pMapTime').value; renderMoment(); updateMap(); renderTimeline(); mission.timing(); onChange(); });
     $('pZoom').addEventListener('change', () => { map.view.zoom = $('pZoom').value; updateMap(); onChange(); });
     $('pLayer').addEventListener('change', () => { st.layer = $('pLayer').value; updateMap(); onChange(); });
+    $('pSort').addEventListener('change', () => { st.sort = $('pSort').value; updateMap(); });
+    $('pPeriod').addEventListener('change', () => { st.period = $('pPeriod').value; updateMap(); onChange(); });
+    $('pClps').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-clps]'); if (!b) return;
+      const v = data.clps.views[data.clps.deliveries[+b.dataset.clps].view];
+      guard(async () => { if (v.site) { st.site = data.sites.get(v.site); st.near = null; } else if (v.lat !== undefined) { st.site = await customSite(v.lat, v.lon, { name: `${v.name} (search point)` }); st.near = null; } map.view.zoom = v.zoom; $('pZoom').value = v.zoom; st.layer = 'land'; });
+      $('hMap').scrollIntoView({ behavior: 'smooth' });
+    });
+    $('pClpsRun').addEventListener('click', () => compareClps().catch((e) => { $('pClpsStatus').textContent = e.message; }));
     mission.bind();
     $('pCsv').addEventListener('click', () => {
       const rows = hourly(st.site, st.land, Math.min(st.land + st.durD * DAY, T_MAX)), v = verdictAt(st.site, st.land);
@@ -481,13 +537,13 @@ export function createPlanner({ onChange }) {
   const api = {
     st, bind, render, guard,
     resize() { if (st.site) { renderCompare(); renderTimeline(); renderMoment(); updateMap(); mission.resize(); if ($('pAll').open) drawCalendar(); } },
-    params() { return { site: st.site.key, land: isoMin(st.land), dur: st.durD, share: st.minShare, earth: st.earth ? 1 : 0, mh: st.mapH, ...(st.cmp.length ? { cmp: st.cmp.map((s) => s.key).join(';') } : {}), ...(st.layer !== 'sun' ? { layer: st.layer } : {}), ...(map.view.zoom !== 'pole' ? { zoom: map.view.zoom } : {}), ...(st.ptab !== 'Places' ? { ptab: st.ptab.toLowerCase() } : {}), ...(st.from !== st.land ? { from: isoMin(st.from) } : {}), ...mission.params() }; },
+    params() { return { site: st.site.key, land: isoMin(st.land), dur: st.durD, share: st.minShare, earth: st.earth ? 1 : 0, mh: st.mapH, ...(st.cmp.length ? { cmp: st.cmp.map((s) => s.key).join(';') } : {}), ...(st.layer !== 'sun' ? { layer: st.layer } : {}), ...(map.view.zoom !== 'pole' ? { zoom: map.view.zoom } : {}), ...(st.ptab !== 'Places' ? { ptab: st.ptab.toLowerCase() } : {}), ...(st.period !== 'span' ? { per: st.period } : {}), ...(st.from !== st.land ? { from: isoMin(st.from) } : {}), ...mission.params() }; },
     async load(q, fallbackSite) {
       st.site = q.site ? await siteByKey(q.site).catch(() => { st.linkNote = { site: fallbackSite, text: `This link names a place the planner does not have ("${q.site}"). Showing ${fallbackSite.short} instead.` }; return fallbackSite; }) : fallbackSite;
       st.durD = Math.min(60, Math.max(1, +(q.dur || 10))); st.minShare = +(q.share || 0); st.earth = q.earth !== '0';
       shiftTo(q.land || Math.floor(Date.now() / HOUR) * HOUR); st.mapH = Math.max(0, +(q.mh || 0));
       const f = q.from ? Date.parse(`${q.from}:00Z`) : NaN; if (!Number.isNaN(f)) st.from = Math.min(Math.max(f, T_MIN), landMax());
-      st.layer = ['land', 'left'].includes(q.layer) ? q.layer : 'sun';
+      st.layer = ['land', 'left', 'share', 'contact', 'sunel'].includes(q.layer) ? q.layer : 'sun'; st.period = q.per === 'year' ? 'year' : 'span';
       st.ptab = PT.find((k) => k.toLowerCase() === q.ptab) || 'Places';
       map.view.zoom = ['site', 'close'].includes(q.zoom) ? q.zoom : 'pole'; $('pZoom').value = map.view.zoom;
       st.cmp = q.cmp ? (await Promise.all(q.cmp.split(';').slice(0, CMP_MAX - 1).map((k) => siteByKey(k).catch(() => null)))).filter(Boolean) : [];

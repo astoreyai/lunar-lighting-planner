@@ -1,6 +1,10 @@
 {
- "data_id": "31d05df6b9be",
+ "data_id": "929e998ba03b",
  "files": {
+  "clps.json": {
+   "sha256": "446ff91d0f0ba050db54e1fe171bc1191cb82dcafbc9cb03632a0e94a20c0d67",
+   "bytes": 2257
+  },
   "dem/crop40/a3_g2.i16": {
    "sha256": "eade1ebb00f89083059ed97f48f27faccb9c19d077212c3c3f280101b8bc1da3",
    "bytes": 181202

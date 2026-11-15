@@ -178,13 +178,15 @@ export function visPass(ctx, r0, c0, w, h, out = new Uint8Array(w * h), only = n
 }
 
 // The same pass over a list of cells: `cells[i]` is an index into the grid (r * n + c), or -1 for nothing there.
-export function visCells(ctx, cells, out = new Uint8Array(cells.length), only = null) {
+// `up`, if given, receives the sine of the body's elevation above the level horizon at each cell computed.
+export function visCells(ctx, cells, out = new Uint8Array(cells.length), only = null, up = null) {
   const n = ctx.n;
   for (let i = 0; i < cells.length; i++) {
     const j = cells[i], r = Math.floor(j / n), c = j % n;
-    if (j < 0 || r < 1 || c < 1 || r >= n - 1 || c >= n - 1 || (only && !only[i])) { out[i] = 0; continue; }
+    if (j < 0 || r < 1 || c < 1 || r >= n - 1 || c >= n - 1 || (only && !only[i])) { out[i] = 0; if (up) up[i] = 0; continue; }
     const f = cellCode(ctx, r, c);
     out[i] = f < 0 ? 0 : VIS[f];
+    if (up) up[i] = f < 0 ? 0 : gUp;
   }
   return out;
 }

@@ -11,7 +11,7 @@ self.onmessage = async ({ data: d }) => {
   current = d.id ?? 0; // a stop carries no id: the run in progress ends at its next step
   if (d.stop) return;
   const { id, cells, every, run } = d;
-  const report = (s, done, final) => { const best = s.best.map((a) => a.slice()), start = s.start.slice(); self.postMessage({ id, done, final, best, start }, [...best.map((a) => a.buffer), start.buffer]); };
+  const report = (s, done, final) => { const arrays = (final ? s.arrays() : s.arrays().slice(0, 4)).map((a) => a.slice()); self.postMessage({ id, done, final, arrays, n: final && s.stats ? s.stats.n : undefined }, arrays.map((a) => a.buffer)); };
   let at = 0;
   const suit = await buildSuit({ ...terrain, ...run, cells, w: cells.length, h: 1, bodies: (t) => d.bodies[Math.round((t - run.t0) / run.stepMs)], pause: tick,
     onStep: (done, total, s) => { if (current !== id) return false; at = done; if (done % every === 0 && done < total) report(s, done, false); return true; } });

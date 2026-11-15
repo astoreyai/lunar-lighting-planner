@@ -1,6 +1,6 @@
 # Validation
 
-What has been checked, against what, with what result, and what has not. Written 2026-11-14 at app version 40, data fingerprint `31d05df6b9be`. Every check runs on real data unless marked synthetic. Run them with `node --test tests/*.test.mjs` (53 tests, all passing on that date).
+What has been checked, against what, with what result, and what has not. Written 2026-11-14 at app version 42, data fingerprint `929e998ba03b`. Every check runs on real data unless marked synthetic. Run them with `node --test tests/*.test.mjs` (55 tests, all passing on 2026-11-15).
 
 ## What the tool claims
 
@@ -39,6 +39,8 @@ Speed, on the development machine (32 logical cores, lightly loaded). `node test
 | Whole pole, 47 days | 74.9 CPU s | 62.2 CPU s | 2.07 million cell-samples per second |
 | Site view (240 m), 47 days | 28.7 CPU s | 24.4 CPU s | 1.86 million |
 | Close-up (40 m), 47 days | 38.6 CPU s | 35.3 CPU s | 1.28 million |
+| Whole pole, 47 days, with the sunlight and Earth statistics (version 42) | | 91.0 CPU s | 1.42 million |
+| Site view, 47 days, with the statistics (version 42) | | 32.8 CPU s | 1.38 million |
 | From a landing, 10 days (a case where nothing is usable at landing) | 5.9 and 5.6 CPU s | 0.1 CPU s | work is in proportion to the cells still usable |
 
 | Whole-pole layer, workers (page's worker code in Node threads) | Wall time | Speed-up over one thread |
@@ -61,6 +63,10 @@ Precision (`node tests/precision_sweep.mjs`):
 | Does the 240 m view give the class the 40 m close-up gives? | 90.7% of points around IM-2, 95.0% on Shackleton's rim; 99.7% and 99.9% of points neither level flags too close to call. |
 | How close is the verdict's loss time to a one-minute search? | 442 cut-short landings at 17 polar sites: median 0.7 min, 90th percentile 1.1 min, worst 7.2 min. The first failing hourly sample, which the verdict used to report, is a mean of 32 min late. |
 
+Long-term shares (`tests/layer_shares.test.mjs`): the layer's sunlight and Earth-contact shares over 18.6 years against the LOLA team's average-visibility maps at 40 fixed points. Sun r = 0.992, median difference 0.003; Earth r = 0.995, median difference 0.044 (the layer counts Earth by its centre, the maps by any part of its disc). Criteria fixed before the first run: r above 0.9, median below 0.05.
+
+In the browser at version 42 on 8 workers, with the statistics: 96 km view 4.8 s, a year at 12-hour steps for that view 13 s, the three CLPS regions together 19 s.
+
 Formal proofs: `formal/Layer.lean` (Lean 4, no `sorry`, standard axioms only) proves properties of a hand-written model of the layer's bookkeeping; see README, "Accuracy checks". It does not verify the JavaScript.
 
 ## Accessibility (inspection only)
@@ -69,7 +75,8 @@ At 375 px and at desktop width, the three views show no horizontal page scroll a
 
 ## Not validated
 
-- That the JavaScript matches the Lean model line for line: no tool checks it.
+- That the JavaScript matches the Lean model line for line: no tool checks it. The statistics added at version 42 are not in the Lean model.
+- The CLPS search places against any announced landing site: NASA has published none for the planned south-pole deliveries.
 - Usability, for any audience. The tasks, links, correct answers and measures are ready in `docs/USABILITY_TESTS.md`; no participant has run them.
 - The landing-area map's speed and memory use on a phone. The page reports its own run time under the map, so this can be read off a device.
 - The 40 m close-up's terrain uncertainty: 1.6 m is the 240 m level scaled by cell size, not a measurement.

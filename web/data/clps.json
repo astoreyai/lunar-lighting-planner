@@ -1,0 +1,25 @@
+{
+ "source": "https://science.nasa.gov/lunar-discovery/deliveries",
+ "source_title": "NASA, CLPS deliveries",
+ "page_updated": "2026-10-23",
+ "read": "2026-11-15",
+ "note": "NASA names a region for each planned delivery and gives no coordinates. The places below are where this tool searches for landing areas; they are not announced landing sites.",
+ "deliveries": [
+  { "id": "TO20A", "provider": "Astrobotic", "lander": "Griffin", "region": "Mons Mouton", "view": "mouton" },
+  { "id": "CP-22", "provider": "Intuitive Machines", "lander": "Nova-C", "region": "Mons Mouton", "view": "mouton" },
+  { "id": "CT-3", "provider": "Blue Origin", "lander": "Blue Moon Mark 1", "region": "Lunar South Pole", "view": "ridge",
+    "detail": "NASA's release 26-046 of 2026-05-26 says the Blue Moon Mark 1 lander of Moon Base I, carrying two payloads, will \"land on the Shackleton Connecting Ridge\". That it is this delivery (the same lander, two payloads) is inferred.",
+    "detail_source": "https://www.nasa.gov/news-release/nasa-provides-update-on-moon-base-rovers-landers-missions" },
+  { "id": "CS-6", "provider": "Firefly", "lander": "Blue Ghost Mission 4", "region": "Lunar south pole", "view": "pole" },
+  { "id": "CT-4", "provider": "Intuitive Machines", "lander": "Nova-D", "region": "Lunar south pole", "view": "pole" }
+ ],
+ "views": {
+  "mouton": { "name": "Mons Mouton", "zoom": "site", "site": "a3_mm",
+    "basis": "The Artemis III candidate region \"Mons Mouton\" already in the catalogue (USGS outline); the map shows 96 km around its centre." },
+  "ridge": { "name": "Shackleton connecting ridge", "zoom": "site", "lat": -89.455, "lon": -100.286,
+    "basis": "Constructed for this tool, not published by NASA: the point midway between the rims of Shackleton (centre -89.67, 129.78, diameter 20.92 km) and de Gerlache (centre -88.48, -88.34, diameter 32.71 km), from the IAU Gazetteer of Planetary Nomenclature, features 5450 and 1439 (read 2026-11-15). The rims are 27.5 km apart; the map shows 96 km around the point.",
+    "basis_source": "https://planetarynames.wr.usgs.gov/Feature/5450" },
+  "pole": { "name": "South pole, 75-90 S", "zoom": "pole",
+    "basis": "NASA says only \"lunar south pole\": the whole polar map is searched." }
+ }
+}

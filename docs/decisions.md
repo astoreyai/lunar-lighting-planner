@@ -165,3 +165,21 @@ The verdict reported the first failing hourly sample, a mean of 32 minutes late 
 
 **D49. Formal proofs in Lean 4, about a model of the layer.**
 `formal/Layer.lean` restates the layer's per-cell bookkeeping, the mission-length rule, the sharing between workers and the block skip, and proves the properties listed in the README, in core Lean with no Mathlib. Stated limit: the model is hand-written from the JavaScript, and no tool checks that the two agree; the tests do that job. Rejected: Mathlib, which would add a multi-gigabyte dependency for inequalities that can be stated without division; and claiming the JavaScript itself is verified.
+
+**D50. A method for the south-pole landing areas of CLPS deliveries.** (Aaron, 2026-11-15)
+NASA's deliveries page (dated 2026-10-23) names a region for each planned south-pole delivery and gives no coordinates, so the tool cannot list sites: it searches each named region and reports the landing areas it finds. `pipeline/clps.json` holds the deliveries with NASA's wording, sources and dates, and maps each to a search place: Mons Mouton (the catalogue's outline), the whole polar map where NASA says only "lunar south pole", and a point on the ridge between Shackleton and de Gerlache for the delivery a NASA release places on the "Shackleton Connecting Ridge". That point is constructed from IAU Gazetteer positions and labelled as constructed; that the release and the delivery are the same mission is inferred from the lander and payload count, and labelled so.
+
+**D51. The landing layer also keeps sunlight and Earth-contact statistics.**
+Per cell, on the terrain as mapped: shares of the period in sunlight and with Earth in view, the longest stretch in and out of each, and the mean height of the Sun and of Earth while in view. They are kept in the same run as the windows, so the three statistic layers, the area rows and the regions table need no second build. Cost: Earth is now checked at every cell and not only where the Sun is up, which adds 34 to 45% CPU (whole pole 62.9 to 91.0 s on one thread). Rejected: a separate statistics build, which would double the wait to see both.
+
+**D52. Sunlight efficiency is reported as geometry, not power.**
+The layer gives the sunlit share and the Sun's mean height while lit, and says what each array type collects in proportion to. Watts need the array's area, efficiency and pointing, which the project does not have (T12 stands).
+
+**D53. Areas are ranked by a key the user picks, not by a weighted score.**
+Size, longest window, sunlight or Earth contact. A single score would hide a trade-off the planner has to make.
+
+**D54. The period is the search span, or a year at 12-hour steps.**
+A year at the 4-hour step would take about eight times as long as the search span. At 12 hours a year costs 2.6 times the search span; shares are well sampled (731 samples), windows and nights are known to about half a day, and the page says so.
+
+**D55. Hosting stays on GitHub Pages until a concrete need appears.**
+Nothing in D50 to D54 needs more than static files: 350 data files, 158 MB. Aaron raised that it "may need to be hosted off of github"; the reason is not yet stated. If it moves, the self-hosted server is the fallback and GitHub stays the source.

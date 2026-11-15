@@ -85,7 +85,7 @@ T9 and T10 do not depend on Phases 2–4 and can ship right after Gate 1.
 
 ### Not planned
 
-- **T11** (future CLPS sites): waits on published coordinates.
+- **T11** (future CLPS sites): NASA still publishes regions, not coordinates (checked 2026-11-15). The planned south-pole deliveries are listed with search places instead (D50); sites wait on published coordinates.
 - **T12** (watts, link margin): needs array and radio engineering inputs the project does not have. Until then the tool reports sunlight as a power input and Earth visibility as line of sight only.
 - **Space Apps submission**: this repository is ineligible (begun before the event; README declares it a non-entry).
 
@@ -100,7 +100,7 @@ T9 and T10 do not depend on Phases 2–4 and can ship right after Gate 1.
 
 That the terrain error budget (N5) yields a threshold small enough to be useful. If LOLA's error at long range turns out larger than typical grazing margins, many polar verdicts become "too close to call", and Phase 3 would need finer terrain rather than a label.
 
-## Status, 2026-11-14 (app version 40, data `31d05df6b9be`, 53 tests passing)
+## Status, 2026-11-15 (app version 42, data `929e998ba03b`, 55 tests passing)
 
 | Task | State | Evidence or what is missing |
 |---|---|---|
@@ -109,7 +109,7 @@ That the terrain error budget (N5) yields a threshold small enough to be useful.
 | N2 README rule text | done | README "Each landing gets one verdict" |
 | T3 assumptions table, CSV | done | `tests/export.test.mjs` |
 | N3 version and data stamps | done | same test. Byte-identical across two machines: not run on a second machine |
-| N4 one rebuild command | done on one machine | `sh pipeline/rebuild.sh` reproduced 349 files |
+| N4 one rebuild command | done on one machine | `sh pipeline/rebuild.sh` reproduced 350 files |
 | N1 standards fetched | done | NASA-STD-7009B and NPR 7150.2D read; this plan's earlier wording stands, with the class assignment (E) inferred |
 | N5 terrain error budget | done as resolution sensitivity | no published accuracy exists for the grids used; the 40 m level is scaled, not measured |
 | N6 too close to call | done | 4.5% of 11,680 landings; the risk named above did not materialise |
@@ -125,6 +125,7 @@ That the terrain error budget (N5) yields a threshold small enough to be useful.
 | Whole-pole map on 240 m terrain at 4 hours, window chart for all sites, lighter workers, run-time note (2026-11-14) | done | `tests/suit.test.mjs`; seen in the browser |
 | Answer-first Plan tab with sub-tabs, mission clock, from-landing layer, 40 m close-up (2026-11-14, after a navigation review Aaron asked for) | done | `tests/suit.test.mjs`; seen in the browser at desktop and phone width |
 | Measured speed, precision and usability; faster march; workers run whole shares; interpolated loss time; Lean proofs (2026-11-14) | done | `docs/VALIDATION.md`, "Measured speed and precision"; `tests/suit.test.mjs`, `tests/formal.test.mjs` |
+| South-pole area method for CLPS: delivery table, sunlight and Earth statistics, statistic layers, area ranking, regions comparison (2026-11-15, D50 to D55) | done | `tests/suit.test.mjs`, `tests/layer_shares.test.mjs`; seen in the browser at desktop and phone width |
 | T7 usability tests | blocked | needs recruited planners, educators and analog participants; `docs/USABILITY_TESTS.md` is ready to run |
 | T9 licence and credits | done | Apache-2.0, chosen by Aaron on 2026-11-14; `LICENSE` is the text from apache.org |
 | T10 deploy | done at version 38 | pushed and redeployed 2026-11-14 with Aaron's yes each time (versions 33, 36, 37, 38); the public history was squashed to one commit that day (D41). Later versions wait for the next yes |

@@ -198,10 +198,13 @@ test('layer computed by three workers equals the serial layer exactly, in both m
   try {
     pool.forEach((wk) => wk.postMessage({ terrain: { grid, far: null } }));
     for (const fromStart of [false, true]) {
-      const o = { grid, cells, w: W, h: W, t0: fromStart ? t0 + 12 * 86400e3 : t0, spanMs: (fromStart ? 10 : 47) * 86400e3, stepMs: 4 * 3600e3, durMs: 10 * 86400e3, needEarth: true, dhM, fromStart, bodies: (t) => ({ sun: eph.bodyVec('sun', t), earth: eph.bodyVec('earth', t) }) };
+      const o = { stats: !fromStart, grid, cells, w: W, h: W, t0: fromStart ? t0 + 12 * 86400e3 : t0, spanMs: (fromStart ? 10 : 47) * 86400e3, stepMs: 4 * 3600e3, durMs: 10 * 86400e3, needEarth: true, dhM, fromStart, bodies: (t) => ({ sun: eph.bodyVec('sun', t), earth: eph.bodyVec('earth', t) }) };
       const serial = await buildSuit(o), steps = [], shared = await buildSuitShared(ports, { ...o, onStep: (done) => { steps.push(done); return true; } });
       for (let v = 0; v < 3; v++) assert.deepEqual(shared.best[v], serial.best[v], `variant ${v}, fromStart ${fromStart}`);
       assert.deepEqual(shared.start, serial.start);
+      serial.arrays().forEach((x, k) => assert.deepEqual(shared.arrays()[k], x, `array ${k}, fromStart ${fromStart}`)); // the statistics too
+      assert.equal(shared.stats?.n, serial.stats?.n);
+      assert.equal(!!serial.stats, !fromStart);
       let usable = 0; for (const x of serial.best[0]) if (x) usable++;
       assert.ok(usable > 100, `${usable} usable cells: the comparison is not empty`);
       if (!fromStart) assert.deepEqual(steps, steps.slice().sort((x, y) => x - y)), assert.ok(steps.length >= 10 && steps.every((x) => x % 12 === 0));
@@ -209,4 +212,17 @@ test('layer computed by three workers equals the serial layer exactly, in both m
     const stopped = await buildSuitShared(ports, { grid, cells, w: W, h: W, t0, spanMs: 47 * 86400e3, stepMs: 4 * 3600e3, durMs: 10 * 86400e3, needEarth: true, dhM, bodies: (t) => ({ sun: eph.bodyVec('sun', t), earth: eph.bodyVec('earth', t) }), onStep: () => false });
     assert.equal(stopped, null);
   } finally { await Promise.all(pool.map((wk) => wk.terminate())); }
+});
+
+test('sunlight and Earth statistics per cell: shares, longest stretches, mean elevations (synthetic)', () => {
+  const s = createSuit(2, 1, 2, false, true), S = Math.sin(Math.PI / 6); // sine of 30 degrees
+  // cell 0: Sun on for samples 0-2, off 3-4, on 5; Earth always in view, 30 deg up. cell 1: Sun never; Earth out for samples 1-3.
+  const sun = [[7, 0], [7, 0], [5, 0], [0, 0], [4, 0], [7, 0]], earth = [[7, 7], [7, 0], [7, 0], [7, 4], [7, 7], [7, 7]];
+  sun.forEach((row, k) => s.add(k, new Uint8Array(row), null, new Uint8Array(earth[k]), new Float32Array([S, -0.2]), new Float32Array([S, 0.1])));
+  const a = s.stat(0), b = s.stat(1);
+  assert.deepEqual([a.sun, a.lit, a.dark, a.earth, a.contact, a.outage], [4 / 6, 3, 2, 1, 6, 0]); // 5 counts (visible as mapped), 4 does not
+  assert.ok(Math.abs(a.sunEl - 30) < 1e-4 && Math.abs(a.earthEl - 30) < 1e-4 && Math.abs(a.flat - (4 / 6) * S) < 1e-6);
+  assert.deepEqual([b.sun, b.lit, b.dark, b.sunEl, b.flat, b.earth, b.contact, b.outage], [0, 0, 6, null, 0, 3 / 6, 2, 3]);
+  assert.deepEqual([...s.best[0]], [3, 0]); // the runs are untouched by the statistics
+  assert.equal(createSuit(1, 1, 2).stats, null);
 });

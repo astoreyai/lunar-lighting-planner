@@ -4,6 +4,7 @@
 //   web/data/dem/polarmap.i16   240 m grid resampled to 762 x 762 (~1.2 km cells) for the map hillshade
 //   web/data/horizons/<id>.json terrain horizon per catalogue site (40 m -> 240 m -> 16 px/deg stack)
 //   web/data/sites.json         catalogue + ground height + horizon file + grids used
+//   web/data/clps.json          pipeline/clps.json as it is
 import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync } from 'node:fs';
 import { polarGrid, globalGrid, stack, R_MOON_M } from '../web/dem.js';
 import { traceHorizon } from '../web/horizon.js';
@@ -57,3 +58,4 @@ for (const s of cat.sites) {
   console.log(s.id, h.grids.join(' + '), `${Date.now() - t0} ms`);
 }
 writeFileSync(out('sites.json'), JSON.stringify(cat, null, 1));
+copyFileSync(new URL('pipeline/clps.json', root), out('clps.json')); // planned CLPS deliveries to the south pole, as NASA lists them
