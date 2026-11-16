@@ -42,10 +42,11 @@ input[type="checkbox"] { width: 22px; height: 22px; min-height: 0; accent-color:
 .btn.ghost { background: transparent; }
 .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 .btn[disabled] { opacity: 0.6; cursor: progress; }
-label { display: block; color: var(--muted); font-size: 0.95rem; }
+label, .cap { display: block; color: var(--muted); font-size: 0.95rem; }
 .field { display: flex; flex-direction: column; gap: 6px; flex: 1 1 200px; min-width: 0; }
 .field.wide-f { flex: 2 1 320px; }
 .field.small-f { flex: 0 1 160px; }
+.field.half { flex: 1 1 max(320px, 45%); } /* where: two fields fill a row, so the mission fields start the next one */
 .check { display: flex; align-items: center; gap: 10px; min-height: 44px; color: var(--text); cursor: pointer; align-self: flex-end; }
 .inline { display: flex; align-items: center; gap: 8px; }
 .inline select, .inline input { width: auto; }
@@ -54,7 +55,9 @@ label { display: block; color: var(--muted); font-size: 0.95rem; }
 
 /* ---------- planner ---------- */
 .scenario { display: flex; flex-wrap: wrap; gap: 14px 16px; align-items: flex-start; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
-.custom { flex-basis: 100%; }
+.regions { display: flex; flex-wrap: wrap; gap: 8px; } .regions .btn { flex: 1 1 auto; } .btn small { color: var(--muted); font-weight: 400; }
+.siteline { display: flex; flex-wrap: wrap; align-items: center; gap: 0 14px; } .siteline .hint { margin: 0; }
+.custom { flex-basis: 100%; } .field .custom { flex: none; }
 .custom summary { min-height: 44px; display: inline-flex; align-items: center; cursor: pointer; color: var(--accent); }
 .coords { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
 .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; min-width: 0; }
@@ -94,6 +97,9 @@ label { display: block; color: var(--muted); font-size: 0.95rem; }
 .col { display: flex; flex-direction: column; gap: var(--gap); min-width: 0; }
 .modes.sub { align-self: flex-start; flex-wrap: wrap; }
 .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: var(--gap); align-items: start; }
+/* Answer, clock and sky down the left, the map beside them; in one column the map sits directly under the clock's slider. */
+.two.main { grid-template-areas: "v m" "c m" "s m"; grid-template-rows: auto auto 1fr; }
+#pVerdict { grid-area: v; } #pClockBox { grid-area: c; } #pMapBox { grid-area: m; } #pSkyBox { grid-area: s; }
 .rows { list-style: none; margin: 0; padding: 0; }
 .siteRow .stt { display: block; color: var(--muted); font-size: 0.85rem; font-weight: 400; }
 .ramp { display: inline-block; width: 120px; height: 12px; border-radius: 3px; margin: 0 8px; box-shadow: inset 0 0 0 1px var(--line); }
@@ -161,6 +167,7 @@ footer details p { max-width: 80ch; }
 
 @media (max-width: 960px) {
   .two, .exgrid { grid-template-columns: minmax(0, 1fr); }
+  .two.main { grid-template-areas: "v" "c" "m" "s"; grid-template-rows: none; }
 }
 @media (max-width: 560px) {
   .top, main, footer, .status { padding-left: 16px; padding-right: 16px; }

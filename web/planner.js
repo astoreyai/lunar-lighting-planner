@@ -304,6 +304,7 @@ export function createPlanner({ onChange }) {
     const C = data.clps, link = (u, t) => `<a href="${u}" target="_blank" rel="noopener">${t}</a>`;
     $('pClpsNote').innerHTML = `${C.note} Source: ${link(C.source, C.source_title)}, page dated ${C.page_updated}, read ${C.read}.`;
     $('pClps').innerHTML = C.deliveries.map((d, i) => `<li><button type="button" class="siteRow" data-clps="${i}"><span class="vi out">${i + 1}</span><span class="nm">${d.id} · ${d.provider} ${d.lander}<small class="stt">NASA: "${d.region}"</small></span><span class="rs">search ${C.views[d.view].name}</span></button></li>`).join('');
+    $('pRegions').innerHTML = Object.entries(C.views).map(([k, v]) => { const ds = C.deliveries.filter((d) => d.view === k); return `<button type="button" class="btn" data-clps="${C.deliveries.indexOf(ds[0])}">${v.name} <small>${ds.map((d) => d.id).join(', ')}</small></button>`; }).join('');
     $('pClpsBasis').innerHTML = [...Object.values(C.views).map((v) => `<li><b>${v.name}.</b> ${v.basis}${v.basis_source ? ` ${link(v.basis_source, 'Gazetteer')}` : ''}</li>`),
       ...C.deliveries.filter((d) => d.detail).map((d) => `<li><b>${d.id}.</b> ${d.detail} ${link(d.detail_source, 'NASA release')}</li>`)].join('');
     $('pClpsLead').textContent = `Runs the landing-area analysis for this ${st.durD}-day mission${st.earth ? ' with Earth contact' : ''} over each region NASA names for a planned south-pole delivery, and lists the largest landing area found in each. The regions are where this tool searches; NASA has published no coordinates. It takes about as long as three map builds.`;
@@ -486,7 +487,7 @@ export function createPlanner({ onChange }) {
     $('pLayer').addEventListener('change', () => { st.layer = $('pLayer').value; updateMap(); onChange(); });
     $('pSort').addEventListener('change', () => { st.sort = $('pSort').value; updateMap(); });
     $('pPeriod').addEventListener('change', () => { st.period = $('pPeriod').value; updateMap(); onChange(); });
-    $('pClps').addEventListener('click', (e) => {
+    for (const id of ['pClps', 'pRegions']) $(id).addEventListener('click', (e) => { // the delivery list and the region buttons in the scenario do the same thing
       const b = e.target.closest('[data-clps]'); if (!b) return;
       const v = data.clps.views[data.clps.deliveries[+b.dataset.clps].view];
       guard(async () => { if (v.site) { st.site = data.sites.get(v.site); st.near = null; } else if (v.lat !== undefined) { st.site = await customSite(v.lat, v.lon, { name: `${v.name} (search point)` }); st.near = null; } map.view.zoom = v.zoom; $('pZoom').value = v.zoom; st.layer = 'land'; });

@@ -183,3 +183,15 @@ A year at the 4-hour step would take about eight times as long as the search spa
 
 **D55. Hosting stays on GitHub Pages until a concrete need appears.**
 Nothing in D50 to D54 needs more than static files: 350 data files, 158 MB. Aaron raised that it "may need to be hosted off of github"; the reason is not yet stated. If it moves, the self-hosted server is the fallback and GitHub stays the source.
+
+**D56. The page is ordered by the planner's questions (2026-11-15, after Aaron asked for the presentation to be reassessed).**
+Where, what the mission needs, does this landing work and for how long, where exactly, when else, where else, the landing in detail. Measured at version 42 before the change: the CLPS delivery list began 1,947 px down the page at 1280 px wide and 3,757 px down at 390 px; on a phone the map began 1,707 px down, 700 px below the slider that drives it, with the sky chart in between.
+
+**D57. The CLPS regions are the first field of the scenario.**
+Three buttons, one per region NASA names, each labelled with its deliveries; they do what the rows of the delivery list do. The list stays under "Other places" because it carries NASA's wording, the provider and the basis of each search place. The regions sit inside the scenario, so on a phone they are behind "Change"; a row above the answer would have pushed the answer down for every reader.
+
+**D58. On one column the map follows the clock, and the sky chart follows the map.**
+The sky chart became its own panel. Document order is answer, clock, map, sky, so keyboard and screen-reader order match what a phone shows; at desktop width the map sits beside the other three.
+
+**D59. Smaller ordering changes in the same pass.**
+The map menu is grouped by question (at the chosen moment, for this mission, over the period) with the option names unchanged, so shared links still work. Under "Other places" the two nearby searches come first, then the CLPS deliveries, the candidate sites and the past landings: nearest alternative first. The first sub-tab is renamed "Other dates and places". The scenario's first row holds only the place fields and its second only the mission fields. Not changed: the three top-level tabs, the Explore and field tabs, and the default place.
