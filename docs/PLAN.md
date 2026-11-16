@@ -130,4 +130,4 @@ That the terrain error budget (N5) yields a threshold small enough to be useful.
 | One question-led navigation: seven tabs, each stating its question, what you enter and what you get (2026-11-15, D60 to D63) | done | seen in the browser at desktop and phone width; no new test, the change is navigation and layout |
 | T7 usability tests | blocked | needs recruited planners, educators and analog participants; `docs/USABILITY_TESTS.md` is ready to run |
 | T9 licence and credits | done | Apache-2.0, chosen by Aaron on 2026-11-14; `LICENSE` is the text from apache.org |
-| T10 deploy | done at version 43 | pushed and redeployed with Aaron's yes each time (versions 33, 36, 37, 38 on 2026-11-14; 42 and 43 on 2026-11-15); the public history was squashed to one commit on 2026-11-14 (D41). Later versions wait for the next yes |
+| T10 deploy | done at version 44 | pushed and redeployed with Aaron's yes each time (versions 33, 36, 37, 38 on 2026-11-14; 42, 43 and 44 on 2026-11-15); the public history was squashed to one commit on 2026-11-14 (D41). Later versions wait for the next yes |
