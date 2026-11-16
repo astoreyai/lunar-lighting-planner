@@ -5,7 +5,7 @@ An independent tool that answers two quick questions for any lunar landing site 
 1. **Is the Sun above the real terrain horizon, and for how long?** This decides power and thermal conditions.
 2. **Is Earth above the horizon, and for how long?** This decides whether a lander can talk to Earth directly.
 
-**Not a NASA Space Apps entry.** It was inspired by the 2026 NASA Space Apps challenge [Lunar Landing Site Navigator](https://www.spaceappschallenge.org/2026/challenges/lunar-landing-site-navigator/), but it was begun before the 14–15 November 2026 hackathon, and the challenge rules don't allow work before the event. So it is an independent project and isn't submitted for judging.
+**Not a NASA Space Apps entry.** It is an independent project inspired by the 2026 NASA Space Apps challenge [Lunar Landing Site Navigator](https://www.spaceappschallenge.org/2026/challenges/lunar-landing-site-navigator/), and it isn't submitted for judging.
 
 It was built with an AI coding assistant (Claude), which wrote the code and ran the checks under the author's direction. All data are real and cited (see below).
 

@@ -210,3 +210,6 @@ On a phone the two search buttons, the map and the lists come in that order; wit
 
 **D64. No label in the public tree is dated before 2026-11-14, and none was changed to a false date (2026-11-15, Aaron: "Nothing should be labeled before nov 14").**
 Document lines that carried 13 November now say "before the event" with no date. The site catalogue lost its `generated_utc` field and one "checked" date; no code reads either. Horizons data were fetched again and compared with the shipped files, so the retrieval date in the README is the date of a real retrieval. Kept, because they are true and the project's eligibility statement rests on them: the README's statement that the project was begun before the 14 to 15 November hackathon and is not a Space Apps entry, and dates that belong to other parties (the event's own schedule). Not touched: local branches and caches that are never pushed.
+
+**D65. The README's Space Apps line now matches the page footer (2026-11-15, Aaron: "Correct the readme").**
+It reads "Not a NASA Space Apps entry. It is an independent project inspired by the challenge, and it isn't submitted for judging", with no reference to when work began. This replaces what D64 kept. The statement that it is not an entry stays, because it is true; the tool will not say or imply the work was made during the event.
