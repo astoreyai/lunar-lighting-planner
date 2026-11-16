@@ -1,5 +1,4 @@
 {
- "generated_utc": "2026-11-13T19:39:53Z",
  "sites": [
   {
    "id": "apollo11",
@@ -728,7 +727,7 @@
   },
   {
    "name": "Future CLPS landers (IM-3 Reiner Gamma, Blue Ghost Mission 2, Griffin Mission 1, APEX 1.0)",
-   "reason": "No published landing coordinates found on NASA or operator pages (checked 2026-11-13)."
+   "reason": "No published landing coordinates found on NASA or operator pages."
   }
  ]
 }

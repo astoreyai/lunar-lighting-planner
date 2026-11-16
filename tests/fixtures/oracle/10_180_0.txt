@@ -26,7 +26,7 @@ API SOURCE: NASA/JPL Horizons API
 
 
 *******************************************************************************
-Ephemeris / API_USER Fri Nov 13 11:34:23 2026 Pasadena, USA      / Horizons    
+Ephemeris / API_USER Sun Nov 15 19:04:10 2026 Pasadena, USA      / Horizons    
 *******************************************************************************
 Target body name: Sun (10)                        {source: DE441}
 Center body name: Moon (301)                      {source: DE441}
@@ -50,8 +50,8 @@ Atmos refraction: NO (AIRLESS)
 RA format       : DEG
 Time format     : CAL 
 Calendar mode   : Mixed Julian/Gregorian
-EOP file        : eop.261112.p270208                                           
-EOP coverage    : DATA-BASED 1962-JAN-20 TO 2026-NOV-12. PREDICTS-> 2027-FEB-07
+EOP file        : eop.261113.p270209                                           
+EOP coverage    : DATA-BASED 1962-JAN-20 TO 2026-NOV-13. PREDICTS-> 2027-FEB-08
 Units conversion: 1 au= 149597870.700 km, c= 299792.458 km/s, 1 day= 86400.0 s 
 Table cut-offs 1: Elevation (-90.0deg=NO ),Airmass     n.a.    , Daylight (NO )
 Table cut-offs 2: Solar elongation (  0.0,180.0=NO ),Local Hour Angle( 0.0=NO )

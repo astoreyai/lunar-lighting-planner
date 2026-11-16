@@ -195,3 +195,18 @@ The sky chart became its own panel. Document order is answer, clock, map, sky, s
 
 **D59. Smaller ordering changes in the same pass.**
 The map menu is grouped by question (at the chosen moment, for this mission, over the period) with the option names unchanged, so shared links still work. Under "Other places" the two nearby searches come first, then the CLPS deliveries, the candidate sites and the past landings: nearest alternative first. The first sub-tab is renamed "Other dates and places". The scenario's first row holds only the place fields and its second only the mission fields. Not changed: the three top-level tabs, the Explore and field tabs, and the default place.
+
+**D60. One row of questions replaces the three modes and the sub-tabs (2026-11-15, Aaron: "ask what they want; what variable they enter determines what answer they get").**
+The page asks "What do you want to find out?" and offers seven answers: Check a landing, Find a date, Find a place, Compare sites, Touchdown and route, Explore the Moon, In the field. The first five are views of one scenario. Two levels (three modes, then three sub-tabs) lost because the second level sat below the answer, where it read as extra material rather than as other questions.
+
+**D61. Every view opens with its question, what you enter and what you get.**
+The text is in one table in `web/planner.js` (`QS`) for the five planning questions and in the page for the other two, so the wording and the panels a question shows cannot drift apart. It names how each input is used, including the dates each search covers (90 days either side of the landing time for windows; 7 days before to 30 after for places).
+
+**D62. Finding leads to checking.**
+Choosing a window, a place, a landing area or a compared site sets the scenario and opens Check a landing. A CLPS region opens Find a place with the landing-area layer. Not chosen: keeping the verdict visible in every view, which would have put the answer to one question above the inputs of another.
+
+**D63. Find a place is split into a search panel, the map and the candidate lists.**
+On a phone the two search buttons, the map and the lists come in that order; with one panel the map began 2,250 px below its button. The landing-area search still starts on a button, not on opening the view, because it takes 15 to 60 s on every core.
+
+**D64. No label in the public tree is dated before 2026-11-14, and none was changed to a false date (2026-11-15, Aaron: "Nothing should be labeled before nov 14").**
+Document lines that carried 13 November now say "before the event" with no date. The site catalogue lost its `generated_utc` field and one "checked" date; no code reads either. Horizons data were fetched again and compared with the shipped files, so the retrieval date in the README is the date of a real retrieval. Kept, because they are true and the project's eligibility statement rests on them: the README's statement that the project was begun before the 14 to 15 November hackathon and is not a Space Apps entry, and dates that belong to other parties (the event's own schedule). Not touched: local branches and caches that are never pushed.

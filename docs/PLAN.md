@@ -100,7 +100,7 @@ T9 and T10 do not depend on Phases 2–4 and can ship right after Gate 1.
 
 That the terrain error budget (N5) yields a threshold small enough to be useful. If LOLA's error at long range turns out larger than typical grazing margins, many polar verdicts become "too close to call", and Phase 3 would need finer terrain rather than a label.
 
-## Status, 2026-11-15 (app version 43, data `929e998ba03b`, 55 tests passing)
+## Status, 2026-11-15 (app version 44, data `e76ce2301c54`, 55 tests passing)
 
 | Task | State | Evidence or what is missing |
 |---|---|---|
@@ -127,6 +127,7 @@ That the terrain error budget (N5) yields a threshold small enough to be useful.
 | Measured speed, precision and usability; faster march; workers run whole shares; interpolated loss time; Lean proofs (2026-11-14) | done | `docs/VALIDATION.md`, "Measured speed and precision"; `tests/suit.test.mjs`, `tests/formal.test.mjs` |
 | South-pole area method for CLPS: delivery table, sunlight and Earth statistics, statistic layers, area ranking, regions comparison (2026-11-15, D50 to D55) | done | `tests/suit.test.mjs`, `tests/layer_shares.test.mjs`; seen in the browser at desktop and phone width |
 | Page ordered by the planning questions: CLPS regions first in the scenario, map under the clock on a phone, grouped map menu, nearby searches first (2026-11-15, D56 to D59) | done | seen in the browser at desktop and phone width; no new test, the change is layout only |
+| One question-led navigation: seven tabs, each stating its question, what you enter and what you get (2026-11-15, D60 to D63) | done | seen in the browser at desktop and phone width; no new test, the change is navigation and layout |
 | T7 usability tests | blocked | needs recruited planners, educators and analog participants; `docs/USABILITY_TESTS.md` is ready to run |
 | T9 licence and credits | done | Apache-2.0, chosen by Aaron on 2026-11-14; `LICENSE` is the text from apache.org |
 | T10 deploy | done at version 43 | pushed and redeployed with Aaron's yes each time (versions 33, 36, 37, 38 on 2026-11-14; 42 and 43 on 2026-11-15); the public history was squashed to one commit on 2026-11-14 (D41). Later versions wait for the next yes |

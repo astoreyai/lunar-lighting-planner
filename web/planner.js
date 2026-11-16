@@ -19,11 +19,24 @@ function hourly(site, from, to) {
   return seriesCache.get(k);
 }
 
-export function createPlanner({ onChange }) {
-  const st = { site: null, land: 0, durD: 10, minShare: 0, earth: true, mapH: 0, near: null, notice: '', linkNote: null, cmp: [], layer: 'sun', from: 0, ptab: 'Places', sort: 'size', period: 'span' }; // layer: what the map shows; sort: the order of the listed areas; period: what the landing layer covers // from: the date the search for places and windows starts at
+export function createPlanner({ onChange, onQ }) {
+  const st = { site: null, land: 0, durD: 10, minShare: 0, earth: true, mapH: 0, near: null, notice: '', linkNote: null, cmp: [], layer: 'sun', from: 0, q: 'check', sort: 'size', period: 'span' }; // layer: what the map shows; sort: the order of the listed areas; period: what the landing layer covers // from: the date the search for places and windows starts at
   const req = () => ({ minShare: st.minShare, earth: st.earth });
-  const PT = ['Places', 'Compare', 'Tools']; // the sections under the answer and the map; st.ptab is the one shown
-  const showTab = () => PT.forEach((k) => { const on = k === st.ptab; $(`pt${k}`).setAttribute('aria-selected', on); $(`pt${k}`).tabIndex = on ? 0 : -1; $(`pp${k}`).hidden = !on; });
+  // The planner's five questions (st.q): the panels each one shows, and what the visitor enters and gets.
+  const QS = {
+    check: { show: ['pVerdict', 'pClockBox', 'pMapBox', 'pSkyBox'], q: 'Does this landing work, and for how long?', enter: 'The place, the landing time, the mission length, the power needs and whether it needs Earth contact.', get: 'Full mission, cut short or no start; how long until sunlight or Earth contact is first lost; the map and the sky at any moment of the mission.' },
+    date: { show: ['pWinsBox'], q: 'When can I land at this place?', enter: `The place, the mission length, the power needs and Earth contact. The landing time sets the dates searched: ${RANGE_D} days either side of it.`, get: 'Every usable window at the place, how long each lasts, what ends it, and the latest landing that still holds the mission. Choosing a window checks a landing at its opening.' },
+    place: { show: ['pFindBox', 'pMapBox', 'pOthersBox'], q: 'Where can I land?', enter: `A region or place to search around, the mission length, the power needs and Earth contact. The landing time sets the dates searched: from ${LOOK_BACK_D} days before it to ${LOOK_D} days after.`, get: 'Landing areas on the map, listed by size, window, sunlight or Earth contact; points within 20 km; and how each candidate site does. Choosing one checks a landing there.' },
+    compare: { show: ['ppCompare'], q: 'Which site is better for this mission?', enter: 'The sites to compare, the mission length, the power needs and Earth contact. The landing time sets the dates searched, as in Find a place.', get: "Each site's best window on one calendar, what closes it and whether it holds the mission; the CLPS regions side by side; every window at every site." },
+    route: { show: ['ppTools', 'pMapBox'], q: 'Will the touchdown and the drive work?', enter: 'The place and landing time, the landing ellipse with its approach and slope limit, and waypoints with a driving speed.', get: 'Slope and sunlight inside the ellipse at touchdown; the route with its distance, slopes and height profile; Sun and Earth at each stop over the mission.' },
+  };
+  const showQ = () => {
+    const v = QS[st.q];
+    $('plan').dataset.q = st.q;
+    for (const id of new Set(Object.values(QS).flatMap((x) => x.show))) $(id).hidden = !v.show.includes(id);
+    $('pAskQ').textContent = v.q; $('pAskIn').textContent = v.enter; $('pAskOut').textContent = v.get;
+    onQ();
+  };
   const map = createLitMap($('pMap'), {
     onPick: (lat, lon) => (mission.adding() ? mission.addWaypoint(lat, lon) : guard(async () => { st.site = await customSite(lat, lon); st.near = null; })),
     describe: (v) => (v.frame?.land ? `Map of the best places to land for this mission. ${bestText(v.frame.land)} ${st.site.short} is marked with a ring.` : `Lit-terrain map at ${fmtUTC(v.t)}: ${Math.round((v.frame?.litFraction ?? 0) * 100)}% of the area shown is in sunlight. ${st.site.short} is marked with a ring.`),
@@ -83,7 +96,7 @@ export function createPlanner({ onChange }) {
   // ---------- rendering ----------
   const TITLE = { full: 'Full mission', short: 'Cut short', none: "Can't start" };
   function render() {
-    showTab();
+    showQ();
     $('pSite').innerHTML = `${st.site.key.startsWith('custom:') ? `<option value="" selected>${st.site.name}</option>` : ''}${siteOptions(st.site.key)}`;
     $('pLand').min = isoMin(T_MIN); $('pLand').max = isoMin(landMax());
     if (st.linkNote && st.linkNote.site !== st.site) st.linkNote = null; // said once, until another place is chosen
@@ -447,8 +460,7 @@ export function createPlanner({ onChange }) {
   async function guard(fn) {
     const from = document.activeElement?.closest?.('#pWins, #pNearest, #pOthersBox, #pNear, #pCalTable, #pBest')?.id;
     try { await fn(); await ensureAround(st.land); render(); } catch (e) { setStatus(e.message); console.error(e); return; }
-    if (from === 'pWins') $('pWins').querySelector('.sel')?.focus();
-    else if (from) { $('pVerdictTitle').focus(); $('pVerdict').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+    if (from) { $('pVerdictTitle').focus(); $('pVerdict').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
   }
   // A date outside the ephemeris is moved to the nearest one that fits the mission, and the page says so.
   const landMax = () => T_MAX - (st.durD + 1) * DAY;
@@ -458,29 +470,24 @@ export function createPlanner({ onChange }) {
     st.notice = st.land === t ? '' : `You asked for ${fmtUTC(t)}, which is outside the data (1 Jan 1969 to 31 Dec 2040). Showing the ${t > st.land ? 'latest' : 'earliest'} landing a ${st.durD}-day mission fits instead: ${fmtUTC(st.land)}.`;
   };
   function bind() {
-    const setTab = (k, focus) => { st.ptab = k; showTab(); if (focus) $(`pt${k}`).focus(); api.resize(); onChange(); }; // canvases sized while hidden need a redraw
-    PT.forEach((k, i) => {
-      $(`pt${k}`).addEventListener('click', () => setTab(k));
-      $(`pt${k}`).addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); setTab(PT[(i + (e.key === 'ArrowRight' ? 1 : PT.length - 1)) % PT.length], true); } });
-    });
     $('pSite').addEventListener('change', () => guard(async () => { if ($('pSite').value) { st.site = data.sites.get($('pSite').value); st.near = null; } }));
     $('pGo').addEventListener('click', () => guard(async () => { st.site = await customSite(parseFloat($('pLat').value), parseFloat($('pLon').value)); st.near = null; }));
     $('pLand').addEventListener('change', () => guard(async () => { const t = Date.parse(`${$('pLand').value}Z`); if (!Number.isNaN(t)) shiftTo(t); }));
     $('pDur').addEventListener('change', () => guard(async () => { st.durD = Math.min(60, Math.max(1, Math.round(+$('pDur').value || 10))); st.mapH = Math.min(st.mapH, st.durD * 24); }));
     $('pShare').addEventListener('change', () => guard(async () => { st.minShare = +$('pShare').value; }));
     $('pEarth').addEventListener('change', () => guard(async () => { st.earth = $('pEarth').checked; }));
-    const pickLand = (e) => { const b = e.target.closest('[data-land]'); if (b) guard(async () => shiftTo(+b.dataset.land)); };
+    const pickLand = (e) => { const b = e.target.closest('[data-land]'); if (b) guard(async () => { st.q = 'check'; shiftTo(+b.dataset.land); }); };
     $('pNearest').addEventListener('click', pickLand); $('pWins').addEventListener('click', pickLand);
     $('pFind').addEventListener('click', () => { st.layer = 'land'; updateMap(); onChange(); $('hMap').scrollIntoView({ behavior: 'smooth' }); });
     const pickRow = (e) => {
       const b = e.target.closest('.siteRow'); if (!b || b.dataset.clps) return; // a CLPS row has its own handler
-      guard(async () => { st.site = b.dataset.site ? data.sites.get(b.dataset.site) : await customSite(+b.dataset.lat, +b.dataset.lon); if (b.dataset.site) st.near = null; if (b.dataset.land) shiftTo(+b.dataset.land, false); });
+      guard(async () => { st.q = 'check'; st.site = b.dataset.site ? data.sites.get(b.dataset.site) : await customSite(+b.dataset.lat, +b.dataset.lon); if (b.dataset.site) st.near = null; if (b.dataset.land) shiftTo(+b.dataset.land, false); });
       $('plan').scrollIntoView({ behavior: 'smooth' });
     };
     $('pOthersBox').addEventListener('click', pickRow); $('pNear').addEventListener('click', pickRow); $('pAreas').addEventListener('click', pickRow);
     $('pCmpAdd').addEventListener('change', () => { const k = $('pCmpAdd').value; if (k) guard(async () => { if (!st.cmp.length) st.cmp = cmpAuto.filter((s) => s.key !== st.site.key); if (!st.cmp.some((s) => s.key === k)) st.cmp = [...st.cmp, data.sites.get(k)].slice(-(CMP_MAX - 1)); }); });
     $('pCmpReset').addEventListener('click', () => guard(async () => { st.cmp = []; }));
-    $('pCmpTable').addEventListener('click', (e) => { const b = e.target.closest('[data-cmp]'); if (b) guard(async () => { const s = cmpAuto.find((x) => x.key === b.dataset.cmp); if (s) { const w = placeInfo(s).w; st.site = s; if (!s.key.startsWith('custom:')) st.near = null; if (w) shiftTo(w.land, false); } }); });
+    $('pCmpTable').addEventListener('click', (e) => { const b = e.target.closest('[data-cmp]'); if (b) guard(async () => { const s = cmpAuto.find((x) => x.key === b.dataset.cmp); if (s) { st.q = 'check'; const w = placeInfo(s).w; st.site = s; if (!s.key.startsWith('custom:')) st.near = null; if (w) shiftTo(w.land, false); } }); });
     $('pNearBtn').addEventListener('click', () => searchNear().catch((e) => setStatus(e.message)));
     $('pMapTime').addEventListener('input', () => { st.mapH = +$('pMapTime').value; renderMoment(); updateMap(); renderTimeline(); mission.timing(); onChange(); });
     $('pZoom').addEventListener('change', () => { map.view.zoom = $('pZoom').value; updateMap(); onChange(); });
@@ -490,8 +497,7 @@ export function createPlanner({ onChange }) {
     for (const id of ['pClps', 'pRegions']) $(id).addEventListener('click', (e) => { // the delivery list and the region buttons in the scenario do the same thing
       const b = e.target.closest('[data-clps]'); if (!b) return;
       const v = data.clps.views[data.clps.deliveries[+b.dataset.clps].view];
-      guard(async () => { if (v.site) { st.site = data.sites.get(v.site); st.near = null; } else if (v.lat !== undefined) { st.site = await customSite(v.lat, v.lon, { name: `${v.name} (search point)` }); st.near = null; } map.view.zoom = v.zoom; $('pZoom').value = v.zoom; st.layer = 'land'; });
-      $('hMap').scrollIntoView({ behavior: 'smooth' });
+      guard(async () => { if (v.site) { st.site = data.sites.get(v.site); st.near = null; } else if (v.lat !== undefined) { st.site = await customSite(v.lat, v.lon, { name: `${v.name} (search point)` }); st.near = null; } map.view.zoom = v.zoom; $('pZoom').value = v.zoom; st.layer = 'land'; st.q = 'place'; }).then(() => $('hMap').scrollIntoView({ behavior: 'smooth' }));
     });
     $('pClpsRun').addEventListener('click', () => compareClps().catch((e) => { $('pClpsStatus').textContent = e.message; }));
     mission.bind();
@@ -509,7 +515,7 @@ export function createPlanner({ onChange }) {
     const cal1 = () => renderCalendarIfOpen().catch((e) => setStatus(e.message));
     $('pAll').addEventListener('toggle', cal1);
     $('pCalDays').addEventListener('change', cal1);
-    const openWin = (i, k) => { const r = cal.rows[i], w = r?.ws[k]; if (w) guard(async () => { st.site = r.site; st.near = null; shiftTo(w.land, false); $('plan').scrollIntoView({ behavior: 'smooth' }); }); };
+    const openWin = (i, k) => { const r = cal.rows[i], w = r?.ws[k]; if (w) guard(async () => { st.q = 'check'; st.site = r.site; st.near = null; shiftTo(w.land, false); $('plan').scrollIntoView({ behavior: 'smooth' }); }); };
     $('pCal').addEventListener('mousemove', (e) => { const c = calHit(e); if (c) $('pCalPick').textContent = c.k < 0 ? `${cal.rows[c.i].site.short} · no usable window on ${fmtDay(c.t)}` : winText(cal.rows[c.i].site, cal.rows[c.i].ws[c.k]); });
     $('pCal').addEventListener('click', (e) => { const c = calHit(e); if (c && c.k >= 0) openWin(c.i, c.k); });
     // Keyboard: left and right move between a site's windows, up and down between sites (to the window nearest in time), Enter plans it.
@@ -537,15 +543,16 @@ export function createPlanner({ onChange }) {
 
   const api = {
     st, bind, render, guard,
+    setQ(q) { st.q = q; showQ(); api.resize(); onChange(); }, // canvases sized while hidden need a redraw
     resize() { if (st.site) { renderCompare(); renderTimeline(); renderMoment(); updateMap(); mission.resize(); if ($('pAll').open) drawCalendar(); } },
-    params() { return { site: st.site.key, land: isoMin(st.land), dur: st.durD, share: st.minShare, earth: st.earth ? 1 : 0, mh: st.mapH, ...(st.cmp.length ? { cmp: st.cmp.map((s) => s.key).join(';') } : {}), ...(st.layer !== 'sun' ? { layer: st.layer } : {}), ...(map.view.zoom !== 'pole' ? { zoom: map.view.zoom } : {}), ...(st.ptab !== 'Places' ? { ptab: st.ptab.toLowerCase() } : {}), ...(st.period !== 'span' ? { per: st.period } : {}), ...(st.from !== st.land ? { from: isoMin(st.from) } : {}), ...mission.params() }; },
+    params() { return { site: st.site.key, land: isoMin(st.land), dur: st.durD, share: st.minShare, earth: st.earth ? 1 : 0, mh: st.mapH, ...(st.cmp.length ? { cmp: st.cmp.map((s) => s.key).join(';') } : {}), ...(st.layer !== 'sun' ? { layer: st.layer } : {}), ...(map.view.zoom !== 'pole' ? { zoom: map.view.zoom } : {}), ...(st.q !== 'check' ? { q: st.q } : {}), ...(st.period !== 'span' ? { per: st.period } : {}), ...(st.from !== st.land ? { from: isoMin(st.from) } : {}), ...mission.params() }; },
     async load(q, fallbackSite) {
       st.site = q.site ? await siteByKey(q.site).catch(() => { st.linkNote = { site: fallbackSite, text: `This link names a place the planner does not have ("${q.site}"). Showing ${fallbackSite.short} instead.` }; return fallbackSite; }) : fallbackSite;
       st.durD = Math.min(60, Math.max(1, +(q.dur || 10))); st.minShare = +(q.share || 0); st.earth = q.earth !== '0';
       shiftTo(q.land || Math.floor(Date.now() / HOUR) * HOUR); st.mapH = Math.max(0, +(q.mh || 0));
       const f = q.from ? Date.parse(`${q.from}:00Z`) : NaN; if (!Number.isNaN(f)) st.from = Math.min(Math.max(f, T_MIN), landMax());
       st.layer = ['land', 'left', 'share', 'contact', 'sunel'].includes(q.layer) ? q.layer : 'sun'; st.period = q.per === 'year' ? 'year' : 'span';
-      st.ptab = PT.find((k) => k.toLowerCase() === q.ptab) || 'Places';
+      st.q = QS[q.q] ? q.q : { compare: 'compare', tools: 'route' }[q.ptab] || 'check'; // ptab: links from before version 44
       map.view.zoom = ['site', 'close'].includes(q.zoom) ? q.zoom : 'pole'; $('pZoom').value = map.view.zoom;
       st.cmp = q.cmp ? (await Promise.all(q.cmp.split(';').slice(0, CMP_MAX - 1).map((k) => siteByKey(k).catch(() => null)))).filter(Boolean) : [];
       mission.load(q);

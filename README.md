@@ -5,21 +5,33 @@ An independent tool that answers two quick questions for any lunar landing site 
 1. **Is the Sun above the real terrain horizon, and for how long?** This decides power and thermal conditions.
 2. **Is Earth above the horizon, and for how long?** This decides whether a lander can talk to Earth directly.
 
-**Not a NASA Space Apps entry.** It was inspired by the 2026 NASA Space Apps challenge [Lunar Landing Site Navigator](https://www.spaceappschallenge.org/2026/challenges/lunar-landing-site-navigator/), but it was built on 13 November 2026, before the 14–15 November hackathon, and the challenge rules don't allow work before the event. So it is an independent project and isn't submitted for judging.
+**Not a NASA Space Apps entry.** It was inspired by the 2026 NASA Space Apps challenge [Lunar Landing Site Navigator](https://www.spaceappschallenge.org/2026/challenges/lunar-landing-site-navigator/), but it was begun before the 14–15 November 2026 hackathon, and the challenge rules don't allow work before the event. So it is an independent project and isn't submitted for judging.
 
 It was built with an AI coding assistant (Claude), which wrote the code and ran the checks under the author's direction. All data are real and cited (see below).
 
-It has three views, for three kinds of user.
+The page opens with one question, "What do you want to find out?", and seven answers to it. Five are planning questions on one shared scenario, one is for learning and one is for use on the surface. Each view states its question, what you enter and what you get.
 
-### Plan a landing (mission planners, navigation and operations engineers)
+| Tab | Question | You enter | You get |
+|---|---|---|---|
+| Check a landing | Does this landing work, and for how long? | Place, landing time, mission length, power needs, Earth contact | Full mission, cut short or no start; time to the first loss; map and sky at any moment |
+| Find a date | When can I land at this place? | Place and mission needs; the landing time centres a search of 90 days either side | Every usable window, what ends it, the latest landing that still holds the mission |
+| Find a place | Where can I land? | A region or place and mission needs; the landing time starts the search (7 days before to 30 days after) | Landing areas on the map, points within 20 km, how each candidate site does |
+| Compare sites | Which site is better for this mission? | The sites, mission needs, the same search dates | Best windows on one calendar, the CLPS regions side by side, every window at every site |
+| Touchdown and route | Will the touchdown and the drive work? | Place, landing time, ellipse, approach, slope limit, waypoints, speed | Slope and sunlight in the ellipse, the route's distance and slopes, Sun and Earth at each stop |
+| Explore the Moon | How does light move across the Moon? | A time, and points on the globe or map | The lit Moon, Sun and Earth from any point, a month at each compared site |
+| In the field | How long do I have right now? | Site, task length, Earth contact; the device clock | Whether the task fits before the first loss, and the time remaining |
+
+Choosing a window, a place, a landing area or a compared site sets the scenario and opens **Check a landing** for it.
+
+### The five planning questions (mission planners, navigation and operations engineers)
 
 Pick the place first, then a date: a target site is often fixed by science or logistics, so the first question is when that site works. Then set the mission: its length, its power needs (any part, half, or all of the Sun's disk visible) and whether direct-to-Earth contact is required. The date also says where in the calendar the search for windows starts. The defaults (10 days, any part of the Sun, Earth required) are examples, not NASA or CLPS requirements. On a phone the scenario folds into a one-line summary.
 
-The page follows the order of the planning questions: where, what the mission needs, whether this landing works and for how long, where exactly, when else, where else, and the landing in detail. The scenario's first row is the place (the three regions NASA names for planned CLPS deliveries, then the catalogue and coordinates); its second row is the mission. Directly under it sit the verdict and the mission clock, beside the map; on a phone the map comes straight after the clock's slider, which drives it, and the sky chart after the map. The map's menu is grouped by what each setting answers: at the chosen moment, for this mission, over the period. Three sub-tabs hold the rest: **Other dates and places**, **Compare sites**, and **Ellipse and route**; the open sub-tab, the map layer and the map level go into the shareable link.
+The scenario is shared by the five planning questions and sits under the question. Its first row is the place (the three regions NASA names for planned CLPS deliveries, then the catalogue and coordinates); its second row is the mission. In **Check a landing** the verdict and the mission clock sit beside the map; on a phone the map comes straight after the clock's slider, which drives it, and the sky chart after the map. Wherever the map appears (Check a landing, Find a place, Touchdown and route) it keeps the right-hand column. The map's menu is grouped by what each setting answers: at the chosen moment, for this mission, over the period. The open question, the map layer and the map level go into the shareable link; links from earlier versions still open.
 
 The page answers for the chosen place first: its verdict, its mission clock and its usable windows. Other places that could hold the same mission come second, for missions that can move. Sunlight and Earth contact come in **windows**, not days: near the equator every lunar day gives the same window (354–356 h at Apollo 11 through 2027), while at the south pole they run from 37 h to 380 h at IM-2 in the same year, so the unit the page offers is the window.
 
-- **Other places for this mission**: every candidate site and region, ranked by whether it has a window that holds the mission in the search span (a week before the chosen date to 30 days after it, plus the mission), with when that window opens and how long it lasts. Choosing a row selects the place and sets the landing to the window's first full hour. Past landing sites are folded below as reference: they are history, not options.
+- **Candidate places for this mission** (under Find a place): every candidate site and region, ranked by whether it has a window that holds the mission in the search span (a week before the chosen date to 30 days after it, plus the mission), with when that window opens and how long it lasts. Choosing a row selects the place and sets the landing to the window's first full hour. Past landing sites are folded below as reference: they are history, not options.
 - **Planned CLPS deliveries to the south pole**: the deliveries NASA lists for the south pole, each with NASA's own words for where it goes. NASA names regions and gives no coordinates, so each row opens the map on the place this tool searches for that region and runs the landing-area analysis there. How each search place was chosen is listed under the table; one of them, on the ridge between Shackleton and de Gerlache, is constructed for this tool.
 - **Find landing areas on the map**: see "Landing areas for this mission" below.
 
@@ -121,7 +133,7 @@ One command rebuilds everything under `web/data` from the raw inputs and checks 
 sh pipeline/rebuild.sh
 ```
 
-It runs `fetch_raw.sh` (download if missing, verify md5), `fetch_ephem.py 1969 2040` (packs the cached Horizons responses), `build_web_data.mjs`, `build_crops40.mjs`, `build_tiles40.mjs`, `build_uncertainty.mjs` and `manifest.mjs --check`. On 2026-11-15 it reproduced all 350 shipped files byte for byte (data fingerprint `929e998ba03b`) on the development machine; it has not been run on a second machine. After a deliberate data change, `node pipeline/manifest.mjs` writes the new manifest.
+It runs `fetch_raw.sh` (download if missing, verify md5), `fetch_ephem.py 1969 2040` (packs the cached Horizons responses), `build_web_data.mjs`, `build_crops40.mjs`, `build_tiles40.mjs`, `build_uncertainty.mjs` and `manifest.mjs --check`. On 2026-11-15 it reproduced all 350 shipped files byte for byte (data fingerprint then `929e998ba03b`; version 44 dropped two date fields from the site catalogue, giving `e76ce2301c54`) on the development machine; it has not been run on a second machine. After a deliberate data change, `node pipeline/manifest.mjs` writes the new manifest.
 
 ```bash
 node --test tests/*.test.mjs
@@ -243,7 +255,7 @@ Then open http://127.0.0.1:8765/. Any static host (for example GitHub Pages) can
 
 | Data | Credit | Terms as read on 2026-11-14 |
 |---|---|---|
-| Sun and Earth ephemeris | NASA/JPL Solar System Dynamics, Horizons (DE441). Data retrieved 2026-11-13. https://ssd.jpl.nasa.gov | JPL SSD asks for the credit "NASA/JPL Solar System Dynamics" with the retrieval date. No use restriction was found on the pages read. |
+| Sun and Earth ephemeris | NASA/JPL Solar System Dynamics, Horizons (DE441). Data retrieved 2026-11-15 (Pasadena time): all 72 years and the 24 test tables were fetched again that day; the yearly files packed byte for byte the same as those shipped. https://ssd.jpl.nasa.gov | JPL SSD asks for the credit "NASA/JPL Solar System Dynamics" with the retrieval date. No use restriction was found on the pages read. |
 | Terrain | LRO LOLA gridded data records, PDS data set LRO-L-LOLA-4-GDR-V1.0, NASA PDS Geosciences Node; Smith et al. 2017, Icarus 283:70–91 | PDS Geosciences: archives are "freely available for downloading"; cite as published research. No dataset DOI for the LDEM products was confirmed. |
 | Illumination maps (validation only, not shipped) | Mazarico et al. 2011, Icarus 211:1066–1081, via PGDA product 69 | PGDA: "Please cite the Mazarico et al. (2011) reference". |
 | Sun angles (validation only; three raw responses in `tests/fixtures/moontrek/`) | NASA Solar System Treks, Moon Trek Sun Angle service (JPL). Retrieved 2026-11-14. https://trek.nasa.gov/moon/ | The portal's home page links only NASA's privacy notice and the responses state no terms (checked 2026-11-14). Treated as NASA material used with credit; that reading is an inference. |

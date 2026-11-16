@@ -1,6 +1,6 @@
-# NASA Space Apps Challenge 2026: confirmed rules (read in the browser, 2026-11-13)
+# NASA Space Apps Challenge 2026: confirmed rules (read in the browser before the event)
 
-The pages below were read directly in a browser on 2026-11-13. They supersede the unconfirmed notes further down, which came from search snippets and could not be fetched over TLS from this host.
+The pages below were read directly in a browser before the event opened. They supersede the unconfirmed notes further down, which came from search snippets and could not be fetched over TLS from this host.
 
 ## The challenge
 
@@ -22,7 +22,7 @@ The Resources page said "Resources and Participant Guides will be updated period
 
 ---
 
-# NASA Space Apps Challenge: submission requirements (status as of 2026-11-13)
+# NASA Space Apps Challenge: submission requirements (status before the event)
 
 ## Status summary
 
