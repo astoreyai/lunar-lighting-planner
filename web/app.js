@@ -70,6 +70,10 @@ async function init() {
       setMode(n[1], n[2], true);
     });
   }
+  // Info bubbles close on a click elsewhere or on Escape.
+  const shut = (but) => { for (const d of document.querySelectorAll('details.info[open]')) if (!but || !d.contains(but)) d.open = false; };
+  document.addEventListener('click', (e) => shut(e.target));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') shut(); });
   let rt = 0;
   window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => (mode === 'plan' ? planner.resize() : mode === 'explore' ? explore.resize() : 0), 150); });
   setStatus('');

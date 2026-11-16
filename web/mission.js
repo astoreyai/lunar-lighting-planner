@@ -69,7 +69,7 @@ export function createMission({ st, updateMap, onChange }) {
       <div class="tile ${ap.ok ? 'good' : 'bad'}"><span class="tl">Approach Sun</span><b>${ap.ok ? 'Behind, in window' : !ap.behind ? 'Ahead of lander' : ap.el > m.ell.elMax ? 'Too high' : 'Too low'}</b><small>${ap.el.toFixed(1)}° up ${compass(ap.az)} · ${m.ell.hdg === null ? 'auto heading: flown away from the Sun' : `${Math.abs(ap.off).toFixed(0)}° off straight behind`}</small></div>`;
     $('eHdg').placeholder = `auto ${hdg}`;
     drawEllipse(G, site, hdg, cells, lit, sun0);
-    note.innerHTML = `Heights: ${res} LOLA${G.cellM === 40 ? '' : ' (coarse for an ellipse this size)'}; slopes miss boulders and craters smaller than a cell. ${lit ? `Sunlit: Sun's upper limb over the terrain (${lit.grids.join(' + ')}).` : 'Sunlight needs the 240 m polar terrain for the far horizon.'} Sun window: Apollo planning wanted the Sun 7–20° up behind the lander (<a href="https://www.nasa.gov/feature/50-years-ago-lunar-landing-sites-selected" target="_blank" rel="noopener">NASA</a>). Limits are examples; set your vehicle's.`;
+    note.innerHTML = `Heights: ${res} LOLA${G.cellM === 40 ? '' : ' (coarse for an ellipse this size)'}. Slopes miss boulders and craters smaller than a cell. ${lit ? `Sunlit: Sun's upper limb over the terrain (${lit.grids.join(' + ')}).` : 'Sunlight needs the 240 m polar terrain.'} Sun window: Apollo planning wanted the Sun 7–20° up behind the lander (<a href="https://www.nasa.gov/feature/50-years-ago-lunar-landing-sites-selected" target="_blank" rel="noopener">NASA</a>). The limits are examples. Set the limits of your vehicle.`;
   }
 
   function drawEllipse(G, site, hdg, cells, lit, sun) {
@@ -138,7 +138,7 @@ export function createMission({ st, updateMap, onChange }) {
     $('pRouteBox').classList.toggle('na', !polar());
     $('rAdd').disabled = !polar(); $('rUndo').disabled = !m.wps.length; $('rClear').disabled = !m.wps.length;
     if (!polar()) { body.hidden = true; hint.textContent = `Needs south-polar terrain (75–90°S); ${st.site.short} is at ${st.site.lat.toFixed(1)}°.`; return; }
-    if (!m.wps.length) { last = null; body.hidden = true; hint.textContent = m.adding ? `Tap the map to add up to ${MAX_WP} waypoints. The route starts at ${st.site.short}.` : 'Plan a drive or walk from the landing site: add waypoints on the map or by coordinates.'; return; }
+    if (!m.wps.length) { last = null; body.hidden = true; hint.textContent = m.adding ? `Tap the map to add up to ${MAX_WP} waypoints. The route starts at ${st.site.short}.` : 'Add waypoints on the map or by coordinates. The route starts at the landing site.'; return; }
     hint.textContent = m.adding ? `Tap the map to add waypoints (${m.wps.length} of ${MAX_WP}).` : '';
     const token = ++routeToken;
     const fresh = !data.grids.polar240;

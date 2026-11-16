@@ -9,29 +9,29 @@ An independent tool that answers two quick questions for any lunar landing site 
 
 It was built with an AI coding assistant (Claude), which wrote the code and ran the checks under the author's direction. All data are real and cited (see below).
 
-The page opens with one question, "What do you want to find out?", and seven answers to it. Five are planning questions on one shared scenario, one is for learning and one is for use on the surface. Each view states its question, what you enter and what you get.
+The page opens with one question, "What do you want to find out?", and seven answers to it. Five are planning questions on one shared scenario, one is for learning and one is for use on the surface. Each view states its question, what you enter and what you get. Page text is short, in simplified technical English. A small "i" opens a bubble of one or two sentences where a detail is needed.
 
 | Tab | Question | You enter | You get |
 |---|---|---|---|
-| Check a landing | Does this landing work, and for how long? | Place, landing time, mission length, power needs, Earth contact | Full mission, cut short or no start; time to the first loss; map and sky at any moment |
-| Find a date | When can I land at this place? | Place and mission needs; the landing time centres a search of 90 days either side | Every usable window, what ends it, the latest landing that still holds the mission |
-| Find a place | Where can I land? | A region or place and mission needs; the landing time starts the search (7 days before to 30 days after) | Landing areas on the map, points within 20 km, how each candidate site does |
+| Check landing | Does this landing work, and for how long? | Place, landing time, mission length, power needs, Earth contact | Full mission, cut short or no start; time to the first loss; map and sky at any moment |
+| Find dates | When can I land at this place? | Place and mission needs; the landing time centres a search of 90 days either side | Every usable window, what ends it, the latest landing that still holds the mission |
+| Find places | Where can I land? | A region or place and mission needs; the landing time starts the search (7 days before to 30 days after) | Landing areas on the map, points within 20 km, how each candidate site does |
 | Compare sites | Which site is better for this mission? | The sites, mission needs, the same search dates | Best windows on one calendar, the CLPS regions side by side, every window at every site |
-| Touchdown and route | Will the touchdown and the drive work? | Place, landing time, ellipse, approach, slope limit, waypoints, speed | Slope and sunlight in the ellipse, the route's distance and slopes, Sun and Earth at each stop |
-| Explore the Moon | How does light move across the Moon? | A time, and points on the globe or map | The lit Moon, Sun and Earth from any point, a month at each compared site |
-| In the field | How long do I have right now? | Site, task length, Earth contact; the device clock | Whether the task fits before the first loss, and the time remaining |
+| Route | Will the touchdown and the drive work? | Place, landing time, ellipse, approach, slope limit, waypoints, speed | Slope and sunlight in the ellipse, the route's distance and slopes, Sun and Earth at each stop |
+| Explore | How does light move across the Moon? | A time, and points on the globe or map | The lit Moon, Sun and Earth from any point, a month at each compared site |
+| Field | How long do I have right now? | Site, task length, Earth contact; the device clock | Whether the task fits before the first loss, and the time remaining |
 
-Choosing a window, a place, a landing area or a compared site sets the scenario and opens **Check a landing** for it.
+Choosing a window, a place, a landing area or a compared site sets the scenario and opens **Check landing** for it.
 
 ### The five planning questions (mission planners, navigation and operations engineers)
 
 Pick the place first, then a date: a target site is often fixed by science or logistics, so the first question is when that site works. Then set the mission: its length, its power needs (any part, half, or all of the Sun's disk visible) and whether direct-to-Earth contact is required. The date also says where in the calendar the search for windows starts. The defaults (10 days, any part of the Sun, Earth required) are examples, not NASA or CLPS requirements. On a phone the scenario folds into a one-line summary.
 
-The scenario is shared by the five planning questions and sits under the question. Its first row is the place (the three regions NASA names for planned CLPS deliveries, then the catalogue and coordinates); its second row is the mission. In **Check a landing** the verdict and the mission clock sit beside the map; on a phone the map comes straight after the clock's slider, which drives it, and the sky chart after the map. Wherever the map appears (Check a landing, Find a place, Touchdown and route) it keeps the right-hand column. The map's menu is grouped by what each setting answers: at the chosen moment, for this mission, over the period. The open question, the map layer and the map level go into the shareable link; links from earlier versions still open.
+The scenario is shared by the five planning questions and sits under the question. Its first row is the place (the three regions NASA names for planned CLPS deliveries, then the catalogue and coordinates); its second row is the mission. In **Check landing** the verdict and the mission clock sit beside the map; on a phone the map comes straight after the clock's slider, which drives it, and the sky chart after the map. Wherever the map appears (Check landing, Find places, Route) it keeps the right-hand column. The map's menu is grouped by what each setting answers: at the chosen moment, for this mission, over the period. The open question, the map layer and the map level go into the shareable link; links from earlier versions still open.
 
-**Check a landing** answers for the chosen place: its verdict and its mission clock. **Find a date** lists that place's usable windows. **Find a place** covers other places that could hold the same mission, for missions that can move. Sunlight and Earth contact come in **windows**, not days: near the equator every lunar day gives the same window (354–356 h at Apollo 11 through 2027), while at the south pole they run from 37 h to 380 h at IM-2 in the same year, so the unit the page offers is the window.
+**Check landing** answers for the chosen place: its verdict and its mission clock. **Find dates** lists that place's usable windows. **Find places** covers other places that could hold the same mission, for missions that can move. Sunlight and Earth contact come in **windows**, not days: near the equator every lunar day gives the same window (354–356 h at Apollo 11 through 2027), while at the south pole they run from 37 h to 380 h at IM-2 in the same year, so the unit the page offers is the window.
 
-#### Check a landing
+#### Check landing
 
 - **Verdict** for that landing (full mission, cut short, or can't start), with the reason in plain words taken from the real geometry. For example: "The Sun is 2.0° below the horizon toward the southwest: it's lunar night here", or "terrain there rises to 2.3° and blocks it".
 - **Too close to call**: when raising or lowering the terrain by its measured uncertainty changes the verdict (full, cut short, can't start), the verdict says so and gives both outcomes. When only the timing moves, the verdict gives the range.
@@ -41,14 +41,14 @@ The scenario is shared by the five planning questions and sits under the questio
 - **Where the light falls**: the lit-terrain map at the same moment, either the whole south pole or 96 km around the site.
 - **Assumptions and export**: under the verdict, a one-line summary opens into a table of what the answer rests on (observer height, terrain grids, terrain uncertainty, Sun and Earth rules, ephemeris, sampling, app version and data fingerprint). "Download this mission as CSV" saves one row per hour of the mission with the Sun's and Earth's elevation, azimuth, terrain height, margin and uncertainty. The file carries the same assumptions and the scenario link as comment lines, and reads no clock, so the same scenario gives the same bytes on any machine.
 
-#### Find a date
+#### Find dates
 
 - **Usable windows at this place**: every window of 6 hours or more within 90 days either side, with its opening and closing times, its length against the mission length, what closes it (the Sun or Earth), and whether it holds the mission. Choosing one lands at its first full hour.
 
-#### Find a place
+#### Find places
 
 - **Search around the selected place**: traces the real horizon at 24 points 5, 10 and 20 km away (240 m LOLA terrain) and checks the same landing at each.
-- **Find landing areas on the map**: see "Landing areas for this mission" below.
+- **Find landing areas**: see "Landing areas for this mission" below.
 - **Planned CLPS deliveries to the south pole**: the deliveries NASA lists for the south pole, each with NASA's own words for where it goes. NASA names regions and gives no coordinates, so each row opens the map on the place this tool searches for that region and runs the landing-area analysis there. How each search place was chosen is listed under the table; one of them, on the ridge between Shackleton and de Gerlache, is constructed for this tool.
 - **Candidate places for this mission**: every candidate site and region, ranked by whether it has a window that holds the mission in the search span (a week before the chosen date to 30 days after it, plus the mission), with when that window opens and how long it lasts. Choosing a row selects the place and sets the landing to the window's first full hour. Past landing sites are folded below as reference: they are history, not options.
 
@@ -57,7 +57,7 @@ The scenario is shared by the five planning questions and sits under the questio
 - **Sites side by side**: the selected site, the three best other candidate places for this mission and, after "Check points within 20 km", the two best nearby points, on one calendar covering the search span. Each row has a Sun band, an Earth band and a "usable" band (power, and Earth if required). The site's best window is outlined: its first window that holds the mission, or its longest one if none does. A tick marks where a mission landed at that window's opening would end, and a dashed line marks the selected landing. The table gives each window's dates, length, what closes it and whether it holds the mission. Choosing a site there plans a landing at its window's opening. Add a site from the list; the choice goes into the link.
 - **All sites, all windows**: every usable window at every site on one calendar, for up to 12 months from the search start. A window that holds the mission is green, and its brighter part is when a landing still fits; a shorter window is amber. Candidate places come first, past landing sites after. It works from the keyboard (left and right between a site's windows, up and down between sites, Enter to plan a landing at that window's opening) and has a table fallback.
 
-#### Touchdown and route
+#### Route
 
 - **Landing ellipse** (south of 75°S): set its length and width, the approach heading (blank = fly away from the Sun), a slope limit and a Sun-elevation window.
   - **Steeper than the limit**: share of the ellipse's terrain cells above the slope limit, from central differences on LOLA heights. The heights come from a 12 km window of the 40 m mosaic (LDEM_85S_40M) around each catalogue site it covers (13 sites), or the 240 m grid elsewhere. Slopes at 40 m miss boulders and craters smaller than a cell; site certification uses metre-scale data.
@@ -82,7 +82,7 @@ A landing time outside the data (1 Jan 1969 to 31 Dec 2040) is moved to the near
 
 Conditions are sampled hourly; window edges are interpolated between samples.
 
-### Explore the Moon (students, teachers, the public)
+### Explore (students, teachers, the public)
 
 - **Spin the Moon**: a globe you turn by dragging or tapping (tap centres that spot), zoom with pinch, scroll or the +/− buttons, and twist about the view axis with two fingers, Shift-drag, the ↺ ↻ buttons or the [ ] keys; "North up" (or N) undoes the twist and a compass shows where north points. Dragging follows the pointer at any twist.
   - It is lit by the real Sun at the chosen time, shading 7.6 km LOLA terrain, and rings mark where the Sun and Earth are straight overhead.
@@ -90,7 +90,7 @@ Conditions are sampled hourly; window edges are interpolated between samples.
   - While you rotate, the panel updates on every move for the point under the crosshair, with real terrain: it traces two rays, toward the Sun and toward Earth, so it can say "in shadow" or "behind terrain" and how high the terrain rises that way. It uses the 240 m polar grid south of 75°S once that has loaded (it starts loading when you reach the pole), else the 7.6 km global grid, and names the grid it used.
   - When you stop, it traces the full 720-ray horizon at that point and adds this month's sunlight, the longest night and Earth visibility. The globe also redraws at the screen's full resolution.
   - Play moves the day/night line across the globe.
-  - "Compare this point" adds the point to the site cards; "Plan a landing here" opens it in Check a landing.
+  - "Compare this point" adds the point to the site cards; "Plan a landing here" opens it in Check landing.
   - "Always, sometimes, never" comes from the largest libration in our Horizons data (10.47° over 1969–2040) plus the observer's parallax (0.28°). Earth's centre is always up within 79.25° of the Earth-facing centre of the Moon and never up beyond 100.75°; the test re-derives the bound from the data.
   - The globe is drawn on a plain 2D canvas, so it needs no WebGL or third-party library.
 - Pick up to four sites, or click the map to drop a point.
@@ -99,7 +99,7 @@ Conditions are sampled hourly; window edges are interpolated between samples.
 - **Why a short move changes everything**: pick a polar site and the page finds the lowest ground within 10 km on the 240 m LOLA grid. It then draws both skies on one scale at the chosen time and says in words why one is lit and the other dark. The low point is computed from the terrain, not a named or proposed site, and the panel says so.
 - Four short explainers say why the pole is so hard: the Sun skims the horizon, a day lasts a month, Earth hangs almost still, and there's no air to soften the shadows.
 
-### In the field (analog crews, training)
+### Field (analog crews, training)
 
 A single reading on the device's own clock for one site: how long until sunlight or Earth contact is lost, which goes first, when the next one follows, and whether a task of a given length fits. If the terrain's uncertainty moves the answer, it gives the range, and a task that fits only on the terrain as mapped is called too close to call.
 

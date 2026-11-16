@@ -1,6 +1,6 @@
 # Validation
 
-What has been checked, against what, with what result, and what has not. Written 2026-11-14, current at app version 44, data fingerprint `e76ce2301c54`. Every check runs on real data unless marked synthetic. Run them with `node --test tests/*.test.mjs` (55 tests, all passing on 2026-11-15).
+What has been checked, against what, with what result, and what has not. Written 2026-11-14, current at app version 45, data fingerprint `e76ce2301c54`. Every check runs on real data unless marked synthetic. Run them with `node --test tests/*.test.mjs` (55 tests, all passing on 2026-11-15).
 
 ## What the tool claims
 

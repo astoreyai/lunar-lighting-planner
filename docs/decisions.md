@@ -213,3 +213,9 @@ Document lines that carried 13 November now say "before the event" with no date.
 
 **D65. The README's Space Apps line now matches the page footer (2026-11-15, Aaron: "Correct the readme").**
 It reads "Not a NASA Space Apps entry. It is an independent project inspired by the challenge, and it isn't submitted for judging", with no reference to when work began. This replaces what D64 kept. The statement that it is not an entry stays, because it is true; the tool will not say or imply the work was made during the event.
+
+**D66. Page text is cut and written in simplified technical English; detail goes into info bubbles (2026-11-15, Aaron: "Clean up superfluous text ... STE100 language, short, concise ... small info bubbles if necessary").**
+Each view keeps one short sentence per fact. Secondary detail (search dates, what a window is, the NASA wording note, how to move the globe, the defaults caveat) opens from a small "i". The bubble is a native `details` element, so it works with a keyboard and on touch with no script; a few lines of script close it on Escape or a click elsewhere. Every number, limit and caveat is kept: none was removed, only moved or shortened. The landing layer's long method note is folded under "Method and limits". Measured on a 390 px screen, words per view fell from 320 to 257 (Check landing), 299 to 241 (Find dates), 538 to 442 (Find places), 494 to 426 (Compare sites) and 294 to 249 (Route).
+
+**D67. Tab names are shortened so each fits on one line on a phone.**
+Check landing, Find dates, Find places, Compare sites, Route, Explore, Field. Before, four of the seven wrapped to two lines at 390 px. This renames the tabs of D60; the questions under them are unchanged.
