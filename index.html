@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lunar Lighting Planner</title>
 <meta name="description" content="Plan a Moon landing around sunlight and Earth contact, or explore how light moves across the lunar south pole. Real JPL Horizons and LRO LOLA data, 1969-2040.">
-<link rel="stylesheet" href="style.css?v=42">
+<link rel="stylesheet" href="style.css?v=43">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -28,12 +28,14 @@
   <details id="pScen" class="scenwrap" open>
   <summary><span class="sumlabel">Scenario</span> <span id="pScenSum"></span> <span class="edit">Change</span></summary>
   <form class="scenario" onsubmit="return false" aria-label="Landing scenario">
-    <div class="field wide-f">
+    <div class="field half">
+      <span class="cap" id="pRegCap">Planned CLPS delivery regions (search places, not announced sites)</span>
+      <div id="pRegions" class="regions" role="group" aria-labelledby="pRegCap"></div>
+    </div>
+    <div class="field half">
       <label for="pSite">Place</label>
       <select id="pSite"></select>
-      <p id="pSiteInfo" class="hint"></p>
-      <button id="pActual" type="button" class="btn" hidden></button>
-    </div>
+      <div class="siteline"><p id="pSiteInfo" class="hint"></p><button id="pActual" type="button" class="link" hidden></button></div>
     <details class="custom">
       <summary>Use coordinates instead</summary>
       <div class="coords">
@@ -43,6 +45,7 @@
       </div>
       <p class="hint">Or click the map. Defaults are examples, not NASA or CLPS requirements.</p>
     </details>
+    </div>
     <div class="field">
       <label for="pLand">Landing time (UTC): the search for windows starts here</label>
       <input id="pLand" type="datetime-local" step="60">
@@ -63,8 +66,7 @@
   </form>
   </details>
 
-  <div class="two">
-    <div class="col">
+  <div class="two main">
     <section id="pVerdict" class="verdict" aria-live="polite">
       <p id="pNotice" class="note" hidden></p>
       <h2 id="pVerdictTitle" tabindex="-1"></h2>
@@ -81,7 +83,7 @@
         </div>
       </details>
     </section>
-    <section class="panel" aria-labelledby="hClock">
+    <section class="panel" id="pClockBox" aria-labelledby="hClock">
       <h2 id="hClock">Mission clock</h2>
       <p id="pClockLead" class="lead" aria-live="polite"></p>
       <canvas id="pTimeline" role="img" aria-label="Sun and Earth visibility from landing through the mission"></canvas>
@@ -90,16 +92,13 @@
       <label for="pMapTime" class="slider">Moment in the mission <output id="pMapLabel"></output></label>
     <input id="pMapTime" type="range" min="0" step="1" value="0">
     <div id="pTiles" class="tiles" aria-live="polite"></div>
-    <canvas id="pSky" role="img" aria-label="Sky all the way round the site, with the Sun and Earth"></canvas>
-    <p class="legend"><span class="li"><span class="key sunk"></span>Sun path</span><span class="li"><span class="key earthk"></span>Earth path</span><span class="li"><span class="key terr"></span>Terrain</span><span class="li">Dashed ring: hidden by terrain</span></p>
     </section>
-    </div>
-    <section class="panel" aria-labelledby="hMap">
+    <section class="panel" id="pMapBox" aria-labelledby="hMap">
       <div class="panelhead">
         <h2 id="hMap">Map</h2>
         <div class="row tight">
           <label class="sr-only" for="pLayer">What the map shows</label>
-          <select id="pLayer"><option value="sun">Sunlight at the chosen moment</option><option value="land">Landing areas for this mission</option><option value="left">Where this landing holds the mission</option><option value="share">Sunlight: share of the period</option><option value="contact">Earth contact: share of the period</option><option value="sunel">Sun elevation while lit</option></select>
+          <select id="pLayer"><optgroup label="At the chosen moment"><option value="sun">Sunlight at the chosen moment</option></optgroup><optgroup label="For this mission"><option value="land">Landing areas for this mission</option><option value="left">Where this landing holds the mission</option></optgroup><optgroup label="Over the period"><option value="share">Sunlight: share of the period</option><option value="contact">Earth contact: share of the period</option><option value="sunel">Sun elevation while lit</option></optgroup></select>
           <label class="sr-only" for="pZoom">Map view</label>
           <select id="pZoom"><option value="pole">Whole south pole</option><option value="site">Around the site (240 m)</option><option value="close">Close-up (40 m)</option></select>
         </div>
@@ -124,10 +123,15 @@
         <p class="hint">The verdict uses the finer horizon at the site, so it can differ from the map at a shadow edge.</p>
       </div>
     </section>
+    <section class="panel" id="pSkyBox" aria-labelledby="hSky">
+      <h2 id="hSky">Sky at that moment</h2>
+      <canvas id="pSky" role="img" aria-label="Sky all the way round the site, with the Sun and Earth"></canvas>
+      <p class="legend"><span class="li"><span class="key sunk"></span>Sun path</span><span class="li"><span class="key earthk"></span>Earth path</span><span class="li"><span class="key terr"></span>Terrain</span><span class="li">Dashed ring: hidden by terrain</span></p>
+    </section>
   </div>
 
   <nav class="modes sub" role="tablist" aria-label="More for this mission">
-    <button type="button" role="tab" id="ptPlaces" aria-controls="ppPlaces" aria-selected="true">Windows and places</button>
+    <button type="button" role="tab" id="ptPlaces" aria-controls="ppPlaces" aria-selected="true">Other dates and places</button>
     <button type="button" role="tab" id="ptCompare" aria-controls="ppCompare" aria-selected="false" tabindex="-1">Compare sites</button>
     <button type="button" role="tab" id="ptTools" aria-controls="ppTools" aria-selected="false" tabindex="-1">Ellipse and route</button>
   </nav>
@@ -142,7 +146,10 @@
     <section class="panel" aria-labelledby="hOthers" id="pOthersBox">
       <h2 id="hOthers">Other places for this mission</h2>
       <p id="pOthersLead" class="lead"></p>
-      <button id="pFind" type="button" class="btn primary">Find landing areas on the map</button>
+      <h3>Near the selected place</h3>
+      <p id="pNearNote" class="hint"></p>
+      <div class="row"><button id="pFind" type="button" class="btn primary">Find landing areas on the map</button><button id="pNearBtn" type="button" class="btn">Check points within 20 km</button></div>
+      <div id="pNear"></div>
       <h3>Planned CLPS deliveries to the south pole</h3>
       <p id="pClpsNote" class="hint"></p>
       <ul id="pClps" class="rows"></ul>
@@ -150,10 +157,6 @@
       <h3>Candidate sites and regions</h3>
       <ul id="pOthers" class="rows"></ul>
       <details><summary id="pPastSum">Past landing sites, for reference</summary><ul id="pOthersMore" class="rows"></ul></details>
-      <h3>Search around the selected place</h3>
-      <p id="pNearNote" class="hint"></p>
-      <button id="pNearBtn" type="button" class="btn primary">Check points within 20 km</button>
-      <div id="pNear"></div>
     </section>
   </div>
 
@@ -368,28 +371,28 @@
 <script type="importmap">
 {
  "imports": {
-  "./core.js": "./core.js?v=42",
-  "./dem.js": "./dem.js?v=42",
-  "./ephem.js": "./ephem.js?v=42",
-  "./explore.js": "./explore.js?v=42",
-  "./export.js": "./export.js?v=42",
-  "./field.js": "./field.js?v=42",
-  "./pair.js": "./pair.js?v=42",
-  "./globe-math.js": "./globe-math.js?v=42",
-  "./globe.js": "./globe.js?v=42",
-  "./horizon.js": "./horizon.js?v=42",
-  "./landing.js": "./landing.js?v=42",
-  "./mission.js": "./mission.js?v=42",
-  "./route.js": "./route.js?v=42",
-  "./litmap.js": "./litmap.js?v=42",
-  "./planner.js": "./planner.js?v=42",
-  "./shadow.js": "./shadow.js?v=42",
-  "./sky.js": "./sky.js?v=42",
-  "./suit.js": "./suit.js?v=42",
-  "./windows.js": "./windows.js?v=42"
+  "./core.js": "./core.js?v=43",
+  "./dem.js": "./dem.js?v=43",
+  "./ephem.js": "./ephem.js?v=43",
+  "./explore.js": "./explore.js?v=43",
+  "./export.js": "./export.js?v=43",
+  "./field.js": "./field.js?v=43",
+  "./pair.js": "./pair.js?v=43",
+  "./globe-math.js": "./globe-math.js?v=43",
+  "./globe.js": "./globe.js?v=43",
+  "./horizon.js": "./horizon.js?v=43",
+  "./landing.js": "./landing.js?v=43",
+  "./mission.js": "./mission.js?v=43",
+  "./route.js": "./route.js?v=43",
+  "./litmap.js": "./litmap.js?v=43",
+  "./planner.js": "./planner.js?v=43",
+  "./shadow.js": "./shadow.js?v=43",
+  "./sky.js": "./sky.js?v=43",
+  "./suit.js": "./suit.js?v=43",
+  "./windows.js": "./windows.js?v=43"
  }
 }
 </script>
-<script type="module" src="app.js?v=42"></script>
+<script type="module" src="app.js?v=43"></script>
 </body>
 </html>
