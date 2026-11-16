@@ -5,7 +5,7 @@ import { traceHorizon, horizonUnc } from './horizon.js';
 
 export const $ = (id) => document.getElementById(id);
 export const HOUR = 3600e3, DAY = 24 * HOUR, EYE_M = 2;
-export const APP_VERSION = '44'; // the ?v= in index.html; tests/export.test.mjs keeps the two equal
+export const APP_VERSION = '45'; // the ?v= in index.html; tests/export.test.mjs keeps the two equal
 export const T_MIN = Date.UTC(FIRST_YEAR, 0, 1), T_MAX = Date.UTC(LAST_YEAR + 1, 0, 1) - HOUR;
 
 // Data files are requested with their own hash from the manifest, so a browser never pairs new code with a stale cached file.
@@ -95,6 +95,8 @@ export const isoMin = (t) => new Date(t).toISOString().slice(0, 16);
 const DIRS = ['north', 'northeast', 'east', 'southeast', 'south', 'southwest', 'west', 'northwest'];
 export const compass = (az) => DIRS[Math.round((((az % 360) + 360) % 360) / 45) % 8];
 
+// A small "i" that opens one or two sentences of detail; keeps secondary notes off the page until asked for.
+export const info = (text, label = 'More information') => `<details class="info"><summary aria-label="${label}">i</summary><span>${text}</span></details>`;
 export const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 export function setupCanvas(cv, cssH) {
   const dpr = window.devicePixelRatio || 1, w = cv.clientWidth;

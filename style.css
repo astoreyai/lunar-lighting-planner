@@ -25,7 +25,7 @@ h3 { font-size: 1rem; margin: 18px 0 6px; }
 .brand h1 { font-size: 1.3rem; margin: 0; letter-spacing: -0.01em; }
 .brand p { margin: 0; color: var(--muted); font-size: 0.9rem; }
 .modes { display: flex; flex-wrap: wrap; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 4px; gap: 4px; }
-.modes button { min-height: 44px; padding: 0 18px; border: 0; border-radius: 9px; background: transparent; color: var(--muted); font: inherit; font-weight: 600; cursor: pointer; }
+.modes button { min-height: 44px; padding: 0 18px; white-space: nowrap; border: 0; border-radius: 9px; background: transparent; color: var(--muted); font: inherit; font-weight: 600; cursor: pointer; }
 .modes button[aria-selected="true"] { background: var(--raised); color: var(--text); box-shadow: inset 0 0 0 1px var(--line); }
 .status { max-width: 1240px; margin: 0 auto; padding: 8px 20px; color: var(--sun); }
 main { max-width: 1240px; margin: 0 auto; padding: 8px 20px 24px; }
@@ -37,7 +37,7 @@ input, select { min-height: 44px; background: #0f141e; border: 1px solid var(--l
 input[type="range"] { padding: 0; border: 0; background: transparent; accent-color: var(--sun); }
 input[type="checkbox"] { width: 22px; height: 22px; min-height: 0; accent-color: var(--accent); margin: 0; }
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 8px; border: 1px solid var(--line); background: var(--raised); cursor: pointer; font-weight: 600; }
-.btn, .alt, .day, .siteRow, .modes button { transition: border-color 150ms, background-color 150ms, filter 150ms; }
+.btn, .alt, .siteRow, .modes button { transition: border-color 150ms, background-color 150ms, filter 150ms; }
 .btn:hover { border-color: var(--accent); }
 .btn.ghost { background: transparent; }
 .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
@@ -188,7 +188,7 @@ footer details p { max-width: 80ch; }
   .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tile b { font-size: 1.2rem; }
   .card { padding: 12px; }
-  .modes { width: 100%; } .modes button { flex: 1; padding: 0 8px; }
+  .modes { width: 100%; } .modes button { flex: 1 1 auto; padding: 0 10px; font-size: 0.95rem; }
   .verdict h2 { font-size: 1.25rem; }
   .field.small-f { flex: 1 1 130px; }
   .siteRow { grid-template-columns: 30px minmax(0, 1fr); row-gap: 2px; }
@@ -273,8 +273,6 @@ canvas.ell { aspect-ratio: 1; border-radius: 10px; background: var(--map-bg); }
 
 /* Too close to call, assumptions */
 .verdict .close { margin: 8px 0 0; padding: 8px 12px; border: 1px dashed currentColor; border-radius: 8px; max-width: 75ch; }
-.day { position: relative; } .day.close { border: 2px dashed currentColor; }
-.day .q { position: absolute; top: 2px; right: 5px; font-weight: 700; font-size: 0.8rem; }
 .assume { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 8px; }
 .assume summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: var(--muted); }
 .assume th { text-align: left; vertical-align: top; white-space: nowrap; padding: 4px 12px 4px 0; font-weight: 600; }
@@ -316,3 +314,11 @@ table.cmp small { color: var(--muted); font-weight: 400; }
 .siteRow .vi { font-weight: 700; }
 .key.pad { background: #96f5b9; }
 #pFind { margin-bottom: 4px; }
+
+/* Info bubble: an "i" that opens one or two sentences below its line, across the width of its panel. */
+.panel, .scenario, .ask, .verdict, .fmain { position: relative; }
+.info { display: inline; }
+.info > summary { display: inline-grid; place-items: center; width: 26px; height: 26px; margin: 0 2px; border: 1px solid var(--line); border-radius: 50%; color: var(--accent); font: 700 0.85rem/1 system-ui, sans-serif; cursor: pointer; list-style: none; vertical-align: middle; }
+.info > summary::-webkit-details-marker { display: none; }
+.info[open] > summary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.info > span { position: absolute; left: 12px; right: 12px; max-width: 420px; z-index: 4; margin-top: 6px; padding: 10px 12px; background: var(--raised); border: 1px solid var(--accent); border-radius: 10px; color: var(--text); font-size: 0.92rem; font-weight: 400; line-height: 1.45; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); }

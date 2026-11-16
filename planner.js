@@ -3,7 +3,7 @@
 import { series, sample, landingCall as landingVerdict, events, usableWindows } from './windows.js';
 import { assumptions, missionCsv } from './export.js';
 import { R_MOON_M } from './dem.js';
-import { $, HOUR, DAY, T_MIN, T_MAX, APP_VERSION, eph, data, customSite, siteByKey, siteOptions, fmtDur, fmtUTC, fmtDay, fmtDayShort, isoMin, compass, css, setupCanvas, setStatus, ICON } from './core.js';
+import { $, HOUR, DAY, T_MIN, T_MAX, APP_VERSION, eph, data, customSite, siteByKey, siteOptions, fmtDur, fmtUTC, fmtDay, fmtDayShort, isoMin, compass, css, info, setupCanvas, setStatus, ICON } from './core.js';
 import { createLitMap, hasClose } from './litmap.js';
 import { RAMP, RAMP_LOW, EL_MAX } from './suit.js';
 import { drawSky } from './sky.js';
@@ -23,18 +23,19 @@ export function createPlanner({ onChange, onQ }) {
   const st = { site: null, land: 0, durD: 10, minShare: 0, earth: true, mapH: 0, near: null, notice: '', linkNote: null, cmp: [], layer: 'sun', from: 0, q: 'check', sort: 'size', period: 'span' }; // layer: what the map shows; sort: the order of the listed areas; period: what the landing layer covers // from: the date the search for places and windows starts at
   const req = () => ({ minShare: st.minShare, earth: st.earth });
   // The planner's five questions (st.q): the panels each one shows, and what the visitor enters and gets.
+  const SPAN = `The search covers ${LOOK_BACK_D} days before to ${LOOK_D} days after the landing time.`;
   const QS = {
-    check: { show: ['pVerdict', 'pClockBox', 'pMapBox', 'pSkyBox'], q: 'Does this landing work, and for how long?', enter: 'The place, the landing time, the mission length, the power needs and whether it needs Earth contact.', get: 'Full mission, cut short or no start; how long until sunlight or Earth contact is first lost; the map and the sky at any moment of the mission.' },
-    date: { show: ['pWinsBox'], q: 'When can I land at this place?', enter: `The place, the mission length, the power needs and Earth contact. The landing time sets the dates searched: ${RANGE_D} days either side of it.`, get: 'Every usable window at the place, how long each lasts, what ends it, and the latest landing that still holds the mission. Choosing a window checks a landing at its opening.' },
-    place: { show: ['pFindBox', 'pMapBox', 'pOthersBox'], q: 'Where can I land?', enter: `A region or place to search around, the mission length, the power needs and Earth contact. The landing time sets the dates searched: from ${LOOK_BACK_D} days before it to ${LOOK_D} days after.`, get: 'Landing areas on the map, listed by size, window, sunlight or Earth contact; points within 20 km; and how each candidate site does. Choosing one checks a landing there.' },
-    compare: { show: ['ppCompare'], q: 'Which site is better for this mission?', enter: 'The sites to compare, the mission length, the power needs and Earth contact. The landing time sets the dates searched, as in Find a place.', get: "Each site's best window on one calendar, what closes it and whether it holds the mission; the CLPS regions side by side; every window at every site." },
-    route: { show: ['ppTools', 'pMapBox'], q: 'Will the touchdown and the drive work?', enter: 'The place and landing time, the landing ellipse with its approach and slope limit, and waypoints with a driving speed.', get: 'Slope and sunlight inside the ellipse at touchdown; the route with its distance, slopes and height profile; Sun and Earth at each stop over the mission.' },
+    check: { show: ['pVerdict', 'pClockBox', 'pMapBox', 'pSkyBox'], q: 'Does this landing work, and for how long?', enter: 'Place, landing time, mission length, power needs and Earth contact.', get: 'The verdict, the time to the first loss, the map and the sky.' },
+    date: { show: ['pWinsBox'], q: 'When can I land at this place?', enter: `Place and mission needs. ${info(`The search covers ${RANGE_D} days before and after the landing time.`, 'About the search dates')}`, get: 'All usable windows. Select a window to check a landing at its opening.' },
+    place: { show: ['pFindBox', 'pMapBox', 'pOthersBox'], q: 'Where can I land?', enter: `A region or place, and mission needs. ${info(SPAN, 'About the search dates')}`, get: 'Landing areas on the map, points within 20 km and candidate sites. Select one to check a landing there.' },
+    compare: { show: ['ppCompare'], q: 'Which site is better for this mission?', enter: `The sites and mission needs. ${info(SPAN, 'About the search dates')}`, get: 'The best window at each site, the CLPS regions and all windows at all sites.' },
+    route: { show: ['ppTools', 'pMapBox'], q: 'Will the touchdown and the drive work?', enter: 'Place, landing time, landing ellipse, waypoints and speed.', get: 'Slope and sunlight in the ellipse. Distance, slope, Sun and Earth on the route.' },
   };
   const showQ = () => {
     const v = QS[st.q];
     $('plan').dataset.q = st.q;
     for (const id of new Set(Object.values(QS).flatMap((x) => x.show))) $(id).hidden = !v.show.includes(id);
-    $('pAskQ').textContent = v.q; $('pAskIn').textContent = v.enter; $('pAskOut').textContent = v.get;
+    $('pAskQ').textContent = v.q; $('pAskIn').innerHTML = v.enter; $('pAskOut').textContent = v.get;
     onQ();
   };
   const map = createLitMap($('pMap'), {
@@ -118,7 +119,7 @@ export function createPlanner({ onChange, onQ }) {
     $('pWhy').textContent = why(v);
     $('pClose').textContent = closeText(v); $('pClose').hidden = !v?.close;
     const fa = assumptions(facts());
-    $('pAssumeSum').textContent = `${fa[1][1]} · ${(st.site.horizon_grids || st.site.horizon.grids).map((g) => g.replace('LOLA ', '')).join(' + ')} · hourly · DE441 · app ${APP_VERSION}, data ${data.dataId}`;
+    $('pAssumeSum').textContent = `app ${APP_VERSION} · data ${data.dataId}`;
     $('pAssumeTable').tBodies[0].innerHTML = fa.map(([k, val]) => `<tr><th scope="row">${k}</th><td>${val}</td></tr>`).join('');
     renderWindows(kind);
         renderPlaces(); renderClps(); renderNear(); renderCompare(); renderTimeline(); renderMoment(); updateMap(); mission.render(); renderCalendarIfOpen().catch((e) => setStatus(e.message));
@@ -131,8 +132,8 @@ export function createPlanner({ onChange, onQ }) {
   function renderWindows(kind) {
     const [from, to] = siteRange(), all = windowsAt(st.site, from, to), ws = all.filter((w) => w.len >= 6 * HOUR), need = st.durD * DAY;
     const maxLen = Math.max(need, ...ws.map((w) => w.len)), nFit = ws.filter((w) => w.fits).length;
-    $('pWinsLead').textContent = ws.length ? `${ws.length} window${ws.length > 1 ? 's' : ''} of sunlight${st.earth ? ' with Earth in view' : ''} at ${st.site.short} between ${fmtDay(from)} and ${fmtDay(to)}; ${nFit} hold${nFit === 1 ? 's' : ''} a ${st.durD}-day mission. Choosing one sets the landing to its first full hour.${all.length > ws.length ? ` ${all.length - ws.length} shorter than 6 hours not listed.` : ''}`
-      : `No window of 6 hours or more at ${st.site.short} between ${fmtDay(from)} and ${fmtDay(to)}.`;
+    $('pWinsLead').innerHTML = ws.length ? `${ws.length} window${ws.length > 1 ? 's' : ''}, ${fmtDay(from)} to ${fmtDay(to)}. ${nFit} hold${nFit === 1 ? 's' : ''} the ${st.durD}-day mission. ${info(`A window is a period of sunlight${st.earth ? ' with Earth in view' : ''}. Select a window to land at its first full hour.${all.length > ws.length ? ` ${all.length - ws.length} shorter than 6 hours not shown.` : ''}`, 'About windows')}`
+      : `No window of 6 hours or more at ${st.site.short}, ${fmtDay(from)} to ${fmtDay(to)}.`;
     $('pWins').innerHTML = ws.map((w) => {
       const close = w.close ?? to, sel = st.land >= w.open - HOUR && st.land < close, short = need - (close - w.land);
       const what = `${w.openedBy ? dayHm(w.open) : `before ${dayHm(w.open)}`} to ${w.endKnown ? dayHm(close) : 'past the range shown'}`, how = `${fmtDur(w.len)}${w.endKnown ? ` · ${BY[w.closedBy]}` : ' or more'}`, fit = w.fits ? `holds the mission${w.endKnown ? ` · land by ${dayHm(close - need)}` : ''}` : `${fmtDur(short)} short`;
@@ -152,7 +153,7 @@ export function createPlanner({ onChange, onQ }) {
     places = [...data.sites.values(), ...(st.site.key.startsWith('custom:') ? [st.site] : [])].map(placeInfo).sort((a, b) => b.rank - a.rank);
     const row = ({ site: s, w, fits }) => `<li><button type="button" class="siteRow${s.key === st.site.key ? ' cur' : ''}" ${s.key.startsWith('custom:') ? `data-lat="${s.lat}" data-lon="${s.lon}"` : `data-site="${s.key}"`}${w ? ` data-land="${w.land}"` : ''}><span class="vi ${!w ? 'none' : fits ? 'full' : 'short'}">${ICON[!w ? 'none' : fits ? 'full' : 'short']}</span><span class="nm">${s.short}${s.key === st.site.key ? ' <small>(selected)</small>' : ''}</span><span class="rs">${!w ? 'no usable window' : fits ? `opens ${dayHm(w.open)}, lasts ${fmtDur(w.len)}${w.endKnown ? '' : ' or more'}` : `longest window ${fmtDur(w.len)}`}</span></button></li>`;
     const future = places.filter((x) => !x.site.landing_utc), past = places.filter((x) => x.site.landing_utc), n = future.filter((x) => x.fits).length;
-    $('pOthersLead').textContent = `A ${st.durD}-day mission${st.earth ? ' with Earth contact' : ''}, starting between ${fmtDay(from)} and ${fmtDay(Math.max(from, to - st.durD * DAY))}: ${n} of ${future.length} candidate sites and regions ${n === 1 ? 'has' : 'have'} a window that holds it.`;
+    $('pOthersLead').textContent = `${n} of ${future.length} candidate sites and regions have a window that holds the ${st.durD}-day mission${st.earth ? ' with Earth contact' : ''}. Landings from ${fmtDay(from)} to ${fmtDay(Math.max(from, to - st.durD * DAY))}.`;
     $('pOthers').innerHTML = future.map(row).join('');
     $('pOthersMore').innerHTML = past.map(row).join('');
     $('pPastSum').textContent = `Past landing sites, for reference (${past.filter((x) => x.fits).length} of ${past.length} would hold it)`;
@@ -161,7 +162,7 @@ export function createPlanner({ onChange, onQ }) {
   function renderNear() {
     const polar = st.site.lat <= -75;
     $('pNearBtn').hidden = !polar;
-    $('pNearNote').textContent = polar ? 'Checks this landing at 24 points 5–20 km away.' : 'Needs south-polar terrain: sites south of 75°S only.';
+    $('pNearNote').textContent = polar ? 'Checks this landing at 24 points, 5 to 20 km away.' : 'Needs south-polar terrain: sites south of 75°S only.';
     if (!st.near || st.near.key !== `${st.site.key}|${st.land}|${st.durD}|${st.minShare}|${st.earth}`) { $('pNear').innerHTML = ''; return; }
     const rows = [...st.near.points].sort((a, b) => (b.v?.verdict === 'full') - (a.v?.verdict === 'full') || (b.v?.lostMs || 0) - (a.v?.lostMs || 0));
     const nFull = rows.filter((p) => p.v?.verdict === 'full').length;
@@ -210,7 +211,7 @@ export function createPlanner({ onChange, onQ }) {
     $('pCmpAdd').innerHTML = `<option value="">Add a site…</option>${siteOptions('')}`;
     $('pCmpReset').hidden = !st.cmp.length;
     $('pCmpNeed').textContent = st.earth ? 'Usable: power and Earth together' : 'Usable: power';
-    $('pCmpLead').textContent = `Each site's best window for a ${st.durD}-day mission between ${fmtDay(t0)} and ${fmtDay(t1)}, on one calendar. The sites that hold the mission come first.`;
+    $('pCmpLead').textContent = `The best window at each site for a ${st.durD}-day mission, ${fmtDay(t0)} to ${fmtDay(t1)}. Sites that hold the mission are first.`;
     const cv = $('pCmp'), RH = 58, TOP = 18, { g, w } = setupCanvas(cv, TOP + list.length * RH), X = (t) => ((t - t0) / (t1 - t0)) * w;
     g.font = '13px system-ui, sans-serif'; g.strokeStyle = css('--line'); g.fillStyle = css('--muted');
     const step = Math.max(1, Math.ceil((t1 - t0) / DAY / Math.max(2, Math.floor(w / 64))));
@@ -320,7 +321,7 @@ export function createPlanner({ onChange, onQ }) {
     $('pRegions').innerHTML = Object.entries(C.views).map(([k, v]) => { const ds = C.deliveries.filter((d) => d.view === k); return `<button type="button" class="btn" data-clps="${C.deliveries.indexOf(ds[0])}">${v.name} <small>${ds.map((d) => d.id).join(', ')}</small></button>`; }).join('');
     $('pClpsBasis').innerHTML = [...Object.values(C.views).map((v) => `<li><b>${v.name}.</b> ${v.basis}${v.basis_source ? ` ${link(v.basis_source, 'Gazetteer')}` : ''}</li>`),
       ...C.deliveries.filter((d) => d.detail).map((d) => `<li><b>${d.id}.</b> ${d.detail} ${link(d.detail_source, 'NASA release')}</li>`)].join('');
-    $('pClpsLead').textContent = `Runs the landing-area analysis for this ${st.durD}-day mission${st.earth ? ' with Earth contact' : ''} over each region NASA names for a planned south-pole delivery, and lists the largest landing area found in each. The regions are where this tool searches; NASA has published no coordinates. It takes about as long as three map builds.`;
+    $('pClpsLead').textContent = `Finds the largest landing area in each CLPS region for this ${st.durD}-day mission${st.earth ? ' with Earth contact' : ''}.`;
   }
   async function compareClps() {
     const C = data.clps, m = landMission(), body = $('pClpsTable').tBodies[0], td = (x) => `<td>${x}</td>`;
@@ -409,7 +410,7 @@ export function createPlanner({ onChange, onQ }) {
       Object.assign(cal, { sig, t0: from, t1: to, cur: { i: 0, k: 0 } });
       cal.rows = sites.map((site) => { const ws = windowsAt(site, from, to).filter((w) => w.len >= 6 * HOUR); return { site, ws, fit: ws.filter((w) => w.fits) }; })
         .sort((a, b) => !!a.site.landing_utc - !!b.site.landing_utc || b.fit.length - a.fit.length || b.ws.length - a.ws.length); // candidate places first, past landing sites after
-      $('pCalLead').textContent = `Every window of sunlight${st.earth ? ' with Earth in view' : ''} at every site between ${fmtDay(from)} and ${fmtDay(to)}. Green holds a ${st.durD}-day mission, and its brighter part is when a landing still fits; amber is a shorter window. Hover or use the arrow keys for the details; click or Enter plans a landing at the window's opening.`;
+      $('pCalLead').textContent = `All windows of sunlight${st.earth ? ' with Earth in view' : ''} at all sites, ${fmtDay(from)} to ${fmtDay(to)}. Green holds a ${st.durD}-day mission, and its bright part is when a landing still fits. Amber is a shorter window. Select a window to plan a landing at its opening.`;
       $('pCalTable').tBodies[0].innerHTML = cal.rows.map((r, i) => {
         const w = r.fit[0];
         return `<tr><th scope="row">${r.site.short}</th><td>${r.fit.length} of ${r.ws.length}</td><td>${!w ? 'none in this range' : `<button type="button" data-row="${i}" data-win="${r.ws.indexOf(w)}">${dayHm(w.open)}, ${fmtDur(w.len)}${w.endKnown ? '' : ' or more'}</button>`}</td></tr>`;
